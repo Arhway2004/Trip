@@ -1,0 +1,137 @@
+{
+  "format": "wanderplan.trip",
+  "schemaVersion": 2,
+  "trip": {
+    "title": "Autumn in Chengdu & Chongqing",
+    "description": "First trip to Sichuan with family.",
+    "startDate": "2026-11-20",
+    "endDate": "2026-11-28",
+    "departureTime": "08:30",
+    "datesConfirmed": true,
+    "timeZone": "Asia/Shanghai",
+    "travelerCount": 2,
+    "currency": "CNY",
+    "totalBudget": 15000,
+    "travelStyle": "balanced",
+    "stage": "planning"
+  },
+  "destinations": [
+    { "city": "Chengdu", "country": "China" },
+    { "city": "Chongqing", "country": "China" }
+  ],
+  "banner": {
+    "kind": "gradient",
+    "colorA": "#0E7C6B",
+    "colorB": "#22D3EE",
+    "showTitle": true,
+    "titlePlacement": "bottomLeft",
+    "textColor": "#FFFFFF",
+    "style": "classic"
+  },
+  "todos": [
+    { "title": "Check passport expiry date", "category": "documents", "dueDate": "2026-10-30" },
+    { "title": "Check visa and entry requirements", "category": "documents", "dueDate": "2026-10-25" },
+    { "title": "Arrange travel insurance", "category": "health" },
+    { "title": "Set up Alipay / WeChat Pay", "category": "money", "notes": "Link a foreign card" },
+    { "title": "Arrange eSIM or roaming", "category": "connectivity" }
+  ],
+  "activities": [
+    {
+      "ref": "flight-out",
+      "title": "Flight to Chengdu",
+      "kind": "flight",
+      "date": "2026-11-20",
+      "start": "08:30",
+      "end": "12:45",
+      "location": { "name": "Departure airport" },
+      "destination": { "name": "Chengdu Tianfu International Airport" },
+      "cost": 9000,
+      "currency": "THB",
+      "bookingStatus": "notBooked",
+      "notes": "Enter the real flight number and times once booked."
+    },
+    {
+      "ref": "hotel-chengdu",
+      "title": "Hotel in Chengdu",
+      "kind": "hotel",
+      "date": "2026-11-20",
+      "start": "15:00",
+      "endDate": "2026-11-24",
+      "end": "11:00",
+      "location": { "name": "Chengdu city centre" },
+      "cost": 2400,
+      "currency": "CNY",
+      "bookingStatus": "booked"
+    },
+    {
+      "title": "Hotpot dinner",
+      "kind": "food",
+      "date": "2026-11-20",
+      "start": "18:30",
+      "end": "20:00",
+      "cost": 300,
+      "currency": "CNY"
+    },
+    {
+      "title": "Giant Panda Breeding Base",
+      "kind": "sightseeing",
+      "date": "2026-11-21",
+      "start": "07:30",
+      "end": "11:30",
+      "location": { "name": "Chengdu Research Base of Giant Panda Breeding" },
+      "cost": 110,
+      "currency": "CNY",
+      "notes": "Go early, pandas are most active in the morning."
+    },
+    {
+      "title": "Lunch break",
+      "kind": "food",
+      "date": "2026-11-21",
+      "start": "12:00",
+      "end": "13:00"
+    },
+    {
+      "title": "Kuanzhai Alley",
+      "kind": "sightseeing",
+      "date": "2026-11-21",
+      "start": "14:00",
+      "end": "17:00",
+      "location": { "name": "Kuanzhai Alley" },
+      "isOptional": true
+    },
+    {
+      "ref": "train-cq",
+      "title": "High-speed train to Chongqing",
+      "kind": "train",
+      "date": "2026-11-24",
+      "start": "12:00",
+      "end": "13:30",
+      "location": { "name": "Chengdu East Railway Station" },
+      "destination": { "name": "Chongqing West Railway Station" },
+      "cost": 300,
+      "currency": "CNY",
+      "bookingStatus": "notBooked",
+      "notes": "Times are placeholders; check the real timetable before booking."
+    },
+    {
+      "title": "Hotel in Chongqing",
+      "kind": "hotel",
+      "date": "2026-11-24",
+      "start": "15:00",
+      "endDate": "2026-11-28",
+      "end": "11:00",
+      "location": { "name": "Jiefangbei, Chongqing" },
+      "cost": 2000,
+      "currency": "CNY"
+    }
+  ],
+  "expenses": [
+    { "title": "Travel insurance", "category": "insurance", "amount": 1200, "currency": "THB", "kind": "planned", "isPaid": false },
+    { "title": "eSIM 10 GB", "category": "internet", "amount": 15, "currency": "USD", "kind": "planned", "isPaid": false },
+    { "title": "Emergency fund", "category": "emergency", "amount": 1000, "currency": "CNY", "kind": "planned", "isPaid": false }
+  ],
+  "exchangeRates": [
+    { "currency": "THB", "rate": 0.2 },
+    { "currency": "USD", "rate": 7.1 }
+  ]
+}

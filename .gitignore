@@ -1,0 +1,11 @@
+# Monorepo-wide
+.DS_Store
+.idea/
+*.iml
+.env
+.env.*
+!.env.example
+!.env.*.example
+**/xcuserdata/
+
+# Each app keeps its own rules: mobile/.gitignore, backend/.gitignore, frontend/.gitignore

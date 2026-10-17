@@ -1,0 +1,42 @@
+[
+  {
+    "label": "numbered map and untimed stops",
+    "violations": []
+  },
+  {
+    "label": "travel and buffer timeline",
+    "violations": []
+  },
+  {
+    "label": "public live search form",
+    "violations": []
+  },
+  {
+    "label": "unified actual visit form",
+    "violations": []
+  },
+  {
+    "label": "planned versus actual timeline",
+    "violations": []
+  },
+  {
+    "label": "trip log evidence",
+    "violations": []
+  },
+  {
+    "label": "linked actual budget",
+    "violations": []
+  },
+  {
+    "label": "mobile day workflow",
+    "violations": []
+  },
+  {
+    "label": "mobile actual evidence",
+    "violations": []
+  },
+  {
+    "label": "mobile dark day workflow",
+    "violations": []
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "signin-desktop",
+      "violations": []
+    },
+    {
+      "name": "import-desktop",
+      "violations": []
+    },
+    {
+      "name": "imported-desktop",
+      "violations": []
+    },
+    {
+      "name": "imported-phone",
+      "violations": []
+    },
+    {
+      "name": "collection-phone",
+      "violations": []
+    },
+    {
+      "name": "import-phone",
+      "violations": []
+    },
+    {
+      "name": "collection-desktop",
+      "violations": []
+    },
+    {
+      "name": "collection-tablet",
+      "violations": []
+    },
+    {
+      "name": "collection-compact",
+      "violations": []
+    },
+    {
+      "name": "collection-dark",
+      "violations": []
+    }
+  ],
+  "errors": []
+}

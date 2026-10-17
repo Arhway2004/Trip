@@ -1,0 +1,42 @@
+[
+  {
+    "name": "desktop",
+    "route": "/trips",
+    "violations": []
+  },
+  {
+    "name": "desktop",
+    "route": "/trips/new",
+    "violations": []
+  },
+  {
+    "name": "phone",
+    "route": "/trips",
+    "violations": []
+  },
+  {
+    "name": "phone",
+    "route": "/trips/new",
+    "violations": []
+  },
+  {
+    "name": "phone",
+    "route": "imported trip",
+    "violations": []
+  },
+  {
+    "name": "dark",
+    "route": "/trips",
+    "violations": []
+  },
+  {
+    "name": "dark",
+    "route": "/trips/new",
+    "violations": []
+  },
+  {
+    "name": "signed-out",
+    "route": "/sign-in",
+    "violations": []
+  }
+]

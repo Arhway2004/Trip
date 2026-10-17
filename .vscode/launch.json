@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "mobile (Flutter)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "mobile",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "backend (Go, in-memory)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/backend/cmd/api",
+      "env": {
+        "AUTH_MODE": "dev",
+        "DEV_JWT_SECRET": "change-me-local-dev-secret-at-least-32-chars"
+      }
+    },
+    {
+      "name": "frontend (TanStack Start)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}

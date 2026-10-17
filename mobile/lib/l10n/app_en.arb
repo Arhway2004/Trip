@@ -1,0 +1,1059 @@
+{
+  "@@locale": "en",
+  "appTitle": "WanderPlan",
+  "tabHome": "Home",
+  "tabMap": "Map",
+  "tabTimeline": "Timeline",
+  "tabBudget": "Budget",
+  "tabMore": "More",
+  "searchTrips": "Search trips",
+  "searchTripsEmpty": "No trips match your search.",
+  "clearSearch": "Clear search",
+  "myTrips": "My trips",
+  "createTrip": "Create new trip",
+  "newTrip": "New Trip",
+  "editTrip": "Edit Trip",
+  "emptyTripsTitle": "No trips yet",
+  "emptyTripsBody": "Plan your next adventure. A trip only needs a title — you can add everything else later.",
+  "emptyFilterBody": "No trips match this filter.",
+  "filterAll": "All",
+  "filterUpcoming": "Upcoming",
+  "filterTraveling": "Traveling",
+  "filterCompleted": "Completed",
+  "filterArchived": "Archived",
+  "statusDreaming": "Dreaming",
+  "statusPlanning": "Planning",
+  "statusUpcoming": "Upcoming",
+  "statusTraveling": "Traveling",
+  "statusCompleted": "Completed",
+  "statusArchived": "Archived",
+  "actionEdit": "Edit",
+  "actionDuplicate": "Duplicate",
+  "actionArchive": "Archive",
+  "actionUnarchive": "Unarchive",
+  "actionDelete": "Delete",
+  "actionEditBanner": "Edit banner",
+  "actionReorder": "Reorder trips",
+  "actionDone": "Done",
+  "actionSave": "Save",
+  "actionCancel": "Cancel",
+  "duplicateSuffix": " (copy)",
+  "deleteTripTitle": "Delete trip?",
+  "deleteTripBody": "“{title}” and all of its photos will be permanently deleted. This cannot be undone.",
+  "@deleteTripBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "tripDuplicated": "Trip duplicated",
+  "tripArchived": "Trip archived",
+  "tripUnarchived": "Trip restored from archive",
+  "tripDeleted": "Trip deleted",
+  "restoreFromBackup": "Restore from backup",
+  "restoreNotYet": "Backup and restore are not implemented yet (planned for the Import / Export phase).",
+  "datesUndecided": "Dates not decided",
+  "datesFlexible": "Flexible dates",
+  "daysCount": "{count, plural, =1{1 day} other{{count} days}}",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "travelersCount": "{count, plural, =1{1 traveler} other{{count} travelers}}",
+  "@travelersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unitDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@unitDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unitHours": "{count, plural, =1{1 hour} other{{count} hours}}",
+  "@unitHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unitMinutes": "{count, plural, =1{1 minute} other{{count} minutes}}",
+  "@unitMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countdownDaysToGo": "{count, plural, =0{Departing today} =1{1 day to go} other{{count} days to go}}",
+  "@countdownDaysToGo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countdownRemaining": "{value} remaining",
+  "@countdownRemaining": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "countdownDayOf": "Day {day} of {total}",
+  "@countdownDayOf": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "countdownCompleted": "Trip Completed",
+  "countdownNoDate": "Set dates to start the countdown",
+  "departsOn": "Departs {date}",
+  "@departsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "departsOnAt": "Departs {date} at {time}",
+  "@departsOnAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "fieldTitle": "Trip title",
+  "fieldTitleHint": "e.g. Autumn in Kyoto",
+  "titleRequired": "Please enter a title",
+  "fieldDescription": "Description",
+  "optional": "Optional",
+  "sectionCover": "Cover image",
+  "coverPick": "Choose photo",
+  "coverCamera": "Take photo",
+  "coverRemove": "Remove",
+  "coverHint": "You can crop and style the banner after saving.",
+  "sectionDestinations": "Destinations",
+  "fieldCountry": "Country",
+  "fieldCity": "City",
+  "addDestination": "Add destination",
+  "removeDestination": "Remove destination",
+  "mainDestination": "Main destination",
+  "sectionDates": "Dates",
+  "pickDates": "Choose dates",
+  "clearDates": "Clear dates",
+  "datesConfirmed": "Dates confirmed",
+  "datesConfirmedHelp": "Turn off while your dates are still flexible.",
+  "departureTime": "Departure time",
+  "notSet": "Not set",
+  "fieldTimeZone": "Time zone",
+  "timeZoneHelp": "Countdown and dates use this time zone.",
+  "searchTimeZone": "Search time zones",
+  "sectionDetails": "Details",
+  "fieldTravelers": "Travelers",
+  "fieldCurrency": "Primary currency",
+  "currencyInvalid": "Use a 3-letter ISO currency code, e.g. USD",
+  "fieldBudget": "Total budget",
+  "budgetInvalid": "Enter a positive number",
+  "budgetNeedsCurrency": "Choose a currency for the budget",
+  "fieldTravelStyle": "Travel style",
+  "fieldStage": "Planning stage",
+  "stageHelp": "Upcoming, traveling and completed are set automatically from your dates.",
+  "styleRelaxed": "Relaxed",
+  "styleBalanced": "Balanced",
+  "stylePacked": "Packed",
+  "styleBudget": "Budget",
+  "styleComfort": "Comfort",
+  "styleLuxury": "Luxury",
+  "styleAdventure": "Adventure",
+  "styleFamily": "Family",
+  "saveTripCreate": "Create trip",
+  "saveTripChanges": "Save changes",
+  "discardChangesTitle": "Discard changes?",
+  "discard": "Discard",
+  "keepEditing": "Keep editing",
+  "saveFailed": "Could not save: {error}",
+  "@saveFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "overview": "Overview",
+  "budgetTitle": "Budget",
+  "budgetNotSet": "No budget set",
+  "budgetPerPerson": "{amount} per person",
+  "@budgetPerPerson": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "photosTitle": "Photos",
+  "photoCount": "{count, plural, =0{No photos} =1{1 photo} other{{count} photos}}",
+  "@photoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openGallery": "Open gallery",
+  "addPhoto": "Add photo",
+  "quickActions": "Quick actions",
+  "planningModules": "Planning tools",
+  "notImplementedYet": "Not implemented yet",
+  "moduleMap": "Open Map",
+  "moduleAttraction": "Add Attraction",
+  "moduleItinerary": "Edit Itinerary",
+  "moduleFlight": "Add Flight",
+  "moduleTrain": "Add Train",
+  "moduleHotel": "Add Hotel",
+  "moduleExpense": "Add Expense",
+  "moduleBudget": "Open Budget",
+  "moduleExport": "Export Trip",
+  "tripNotFound": "This trip no longer exists.",
+  "bannerEditorTitle": "Edit banner",
+  "bannerTabImage": "Image",
+  "bannerTabBackground": "Background",
+  "bannerTabText": "Title",
+  "bannerTabStyle": "Style",
+  "bannerFromDevice": "Upload from device",
+  "bannerFromTrip": "Choose a trip photo",
+  "bannerNoTripPhotos": "This trip has no photos yet.",
+  "bannerAdjustHint": "Drag to reposition · pinch or use the slider to zoom",
+  "bannerZoom": "Zoom",
+  "bannerResetCrop": "Reset crop",
+  "bannerRemoveImage": "Use color instead",
+  "bannerGradient": "Gradient",
+  "bannerSolid": "Solid color",
+  "bannerColorsBehindImage": "Colors show when no photo is used.",
+  "bannerShowTitle": "Show title on banner",
+  "bannerPlacement": "Title placement",
+  "placementTopLeft": "Top left",
+  "placementCenter": "Center",
+  "placementBottomLeft": "Bottom left",
+  "placementBottomCenter": "Bottom center",
+  "bannerTextColor": "Text color",
+  "bannerStyleClassic": "Classic",
+  "bannerStyleMinimal": "Minimal",
+  "bannerStyleBold": "Bold",
+  "bannerStyleFramed": "Framed",
+  "galleryEmpty": "No photos yet. Add some to remember this trip.",
+  "galleryFromDevice": "From device",
+  "photoCaption": "Caption",
+  "photoFavorite": "Favorite",
+  "favoritesOnly": "Favorites only",
+  "setAsCover": "Set as cover banner",
+  "coverUpdated": "Cover banner updated",
+  "deletePhotoTitle": "Delete photo?",
+  "deletePhotoBody": "The photo will be removed from this trip and from the device storage used by WanderPlan.",
+  "photoAccessError": "Could not access photos or camera. Check permissions in system Settings.",
+  "selectTripFirst": "Open a trip from the Home tab first.",
+  "goToTrips": "Go to My Trips",
+  "currentTrip": "Current trip: {title}",
+  "@currentTrip": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "mapNotYet": "The real-world map, place search and route display are planned for Phase 3 and are not implemented yet.",
+  "timelineNotYet": "The morning-to-night daily timeline is planned for Phase 2 and is not implemented yet.",
+  "budgetNotYet": "Expense tracking and budget analysis are planned for Phase 2 and are not implemented yet.",
+  "moreFlights": "Flights",
+  "moreTransportation": "Transportation",
+  "moreHotels": "Hotels",
+  "moreAttractions": "Attractions",
+  "moreScenarios": "Scenarios",
+  "moreGallery": "Gallery",
+  "moreJournal": "Journal",
+  "moreAnalysis": "Analysis",
+  "moreImportExport": "Import / Export",
+  "moreSettings": "Settings",
+  "noTripSelected": "No trip selected",
+  "todosTitle": "Before you go",
+  "todosShort": "To-dos",
+  "todosProgress": "{done} of {total} done",
+  "@todosProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "todosEmpty": "Nothing on your list yet. Add tasks to finish before departure.",
+  "todosAllDone": "All done — ready to go!",
+  "todosNextUp": "Next up",
+  "todoAdd": "Add task",
+  "todoEdit": "Edit task",
+  "todoTitleField": "Task",
+  "todoNotes": "Notes",
+  "todoCategory": "Category",
+  "todoDueDate": "Due date",
+  "todoNoDueDate": "No due date",
+  "todoDueIn": "{count, plural, =0{Due today} =1{Due tomorrow} other{Due in {count} days}}",
+  "@todoDueIn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todoOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+  "@todoOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todoAfterDeparture": "After departure",
+  "todoHideDone": "Hide completed",
+  "todoSuggestions": "Add suggestions",
+  "todoSuggestionsTitle": "Common pre-trip tasks",
+  "todoAddSelected": "{count, plural, =0{Add} other{Add {count}}}",
+  "@todoAddSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todoDeleted": "Task deleted",
+  "undo": "Undo",
+  "todoCatDocuments": "Documents",
+  "todoCatBookings": "Bookings",
+  "todoCatPacking": "Packing",
+  "todoCatHealth": "Health & insurance",
+  "todoCatMoney": "Money & cards",
+  "todoCatConnectivity": "Phone & internet",
+  "todoCatHome": "Home",
+  "todoCatOther": "Other",
+  "sugPassport": "Check passport / ID expiry date",
+  "sugEntryRequirements": "Check visa and entry requirements",
+  "sugInsurance": "Arrange travel insurance",
+  "sugMedication": "Pack medication and prescriptions",
+  "sugConfirmStay": "Confirm accommodation bookings",
+  "sugCheckIn": "Do online check-in for the flight",
+  "sugAirportTransport": "Plan how to get to the airport or station",
+  "sugBankCards": "Check card fees and notify your bank",
+  "sugLocalCash": "Get some local currency",
+  "sugSimCard": "Arrange SIM, eSIM or roaming",
+  "sugOfflineCopies": "Save offline copies of tickets and documents",
+  "sugChargers": "Pack chargers and a travel adapter",
+  "sugHomeArrangements": "Arrange pets, plants and mail",
+  "shareTrip": "Share with a friend",
+  "shareExplain": "Your friend gets their own copy of this trip as a file. They open WanderPlan → My Trips → ⋮ → Import trip. Later changes are not synced between your copies.",
+  "shareIncludePhotos": "Include gallery photos",
+  "shareIncludePhotosHelp": "{count, plural, =0{No photos to include} =1{1 photo · makes the file larger} other{{count} photos · makes the file larger}}",
+  "@shareIncludePhotosHelp": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareSend": "Share file",
+  "shareMessage": "My WanderPlan trip “{title}”. To add it: WanderPlan → My Trips → ⋮ → Import trip.",
+  "@shareMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "shareFailed": "Could not create the share file: {error}",
+  "@shareFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "importTrip": "Import trip",
+  "importSuccess": "Imported “{title}”",
+  "@importSuccess": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "importInvalid": "This is not a WanderPlan trip file.",
+  "importTooNew": "This file was made by a newer version of WanderPlan. Update the app to import it.",
+  "homeSubtitle": "{count, plural, =0{Where to next?} =1{1 trip in your collection} other{{count} trips in your collection}}",
+  "@homeSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kpiDuration": "Duration",
+  "kpiStatus": "Status",
+  "soon": "Soon",
+  "tripTools": "Trip tools",
+  "viewAll": "View all",
+  "addActivity": "Add activity",
+  "editActivity": "Edit activity",
+  "activityTitle": "Title",
+  "activityKind": "Type",
+  "kindSightseeing": "Sightseeing",
+  "kindFood": "Food",
+  "kindActivity": "Activity",
+  "kindShopping": "Shopping",
+  "kindRest": "Rest",
+  "kindFlight": "Flight",
+  "kindTrain": "Train",
+  "kindBus": "Bus",
+  "kindTransfer": "Taxi / metro",
+  "kindFerry": "Ferry",
+  "kindHotel": "Hotel",
+  "kindOther": "Other",
+  "fieldDate": "Date",
+  "fieldStart": "Start",
+  "fieldEnd": "End",
+  "fieldEndDate": "End date",
+  "fieldCheckIn": "Check-in",
+  "fieldCheckOut": "Check-out",
+  "sameDay": "Same day",
+  "fieldLocation": "Location",
+  "fieldFrom": "From",
+  "fieldTo": "To",
+  "pickOnMap": "Pick on map",
+  "onMap": "On the map",
+  "notOnMap": "Not on the map yet",
+  "fieldCost": "Estimated cost",
+  "fieldBooking": "Booking",
+  "bookingNotBooked": "Not booked",
+  "bookingBooked": "Booked",
+  "bookingConfirmed": "Confirmed",
+  "bookingCancelled": "Cancelled",
+  "fieldProvider": "Airline / operator / hotel",
+  "fieldServiceNumber": "Flight / train number",
+  "fieldBookingRef": "Booking reference (private)",
+  "fieldBookingUrl": "Booking link",
+  "fieldNotes": "Notes",
+  "fieldLocked": "Locked",
+  "lockedHelp": "Locked items are confirmed bookings and are never moved by dragging.",
+  "fieldOptional": "Optional",
+  "optionalHelp": "Nice to have; can be skipped if time is short.",
+  "endBeforeStart": "End must be after start",
+  "deleteActivityTitle": "Delete activity?",
+  "activityDeleted": "Activity deleted",
+  "duplicateToNextDay": "Copy to next day",
+  "lockedCannotMove": "Locked activities can't be moved. Unlock it first.",
+  "timelineEmptyDay": "Nothing planned for this day yet.",
+  "timelineNoDays": "Set trip dates or add an activity to start planning day by day.",
+  "viewList": "List",
+  "viewGrid": "Time grid",
+  "dragHint": "Long-press a block and drag to move it · drag its bottom edge to change the duration",
+  "freeTime": "{duration} free",
+  "@freeTime": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHm": "{h} h {m} min",
+  "@durationHm": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "durationH": "{h} h",
+  "@durationH": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "durationM": "{m} min",
+  "@durationM": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "nightsCount": "{count, plural, =1{1 night} other{{count} nights}}",
+  "@nightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dayN": "Day {n}",
+  "@dayN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "outsideTrip": "Outside trip",
+  "dayFeasible": "Feasible",
+  "dayTight": "Tight",
+  "dayUnrealistic": "Unrealistic",
+  "dayUnknown": "Needs info",
+  "dayEmpty": "Free day",
+  "issueOverlap": "“{a}” overlaps “{b}” by {minutes} min",
+  "@issueOverlap": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "issueNoTravelTime": "No time to get from “{a}” to “{b}”",
+  "@issueNoTravelTime": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "issueTightTravel": "“{a}” → “{b}” are {km} km apart in a straight line but only {minutes} min is free; allow about {needed} min",
+  "@issueTightTravel": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      },
+      "needed": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDepartureBuffer": "Only {minutes} min before “{b}”; allow at least {needed} min to get there and check in",
+  "@issueDepartureBuffer": {
+    "placeholders": {
+      "b": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      },
+      "needed": {
+        "type": "int"
+      }
+    }
+  },
+  "issueLongDay": "Very full day: {hours} h of activities",
+  "@issueLongDay": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "issueEarlyAndLate": "Early start and late finish ({hours} h day)",
+  "@issueEarlyAndLate": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "issueNoMealBreak": "No meal or rest break around lunch",
+  "issueLateFinish": "Ends after 23:00",
+  "issueMissingAccommodation": "No accommodation planned for this night",
+  "issueOverlappingStays": "Two stays on the same night: {titles}",
+  "@issueOverlappingStays": {
+    "placeholders": {
+      "titles": {
+        "type": "String"
+      }
+    }
+  },
+  "issueTransportNotBooked": "Not booked yet: {titles}",
+  "@issueTransportNotBooked": {
+    "placeholders": {
+      "titles": {
+        "type": "String"
+      }
+    }
+  },
+  "issueOutsideTripDates": "Outside the trip dates: {titles}",
+  "@issueOutsideTripDates": {
+    "placeholders": {
+      "titles": {
+        "type": "String"
+      }
+    }
+  },
+  "feasibilityNote": "Checks use rules of thumb (straight-line distance at about 25 km/h, 2 h before flights, 30 min before trains). They are estimates, not live routes.",
+  "bookingsTitle": "Bookings",
+  "bookingsEmpty": "No flights, trains or hotels yet.",
+  "bookingsTransport": "Transport",
+  "bookingsStays": "Stays",
+  "nextUp": "Next up",
+  "planCheck": "Plan check",
+  "daysNeedAttention": "{count, plural, =1{1 day needs attention} other{{count} days need attention}}",
+  "@daysNeedAttention": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allDaysOk": "All planned days look feasible",
+  "noActivitiesYet": "No activities planned yet",
+  "activitiesCount": "{count, plural, =1{1 activity} other{{count} activities}}",
+  "@activitiesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapAllDays": "All days",
+  "mapNoPins": "{count, plural, =1{1 activity has no location yet} other{{count} activities have no location yet}}",
+  "@mapNoPins": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mapOnlineNote": "Map tiles and place search need an internet connection.",
+  "mapEmpty": "Nothing on the map yet. Search for a place, explore nearby, or edit an activity and use “Pick on map”.",
+  "fitAll": "Show all",
+  "placeAttraction": "Attractions",
+  "placeRestaurant": "Restaurants",
+  "placeHotel": "Hotels",
+  "placeAirport": "Airports",
+  "placeRailwayStation": "Railway stations",
+  "placeBusStation": "Bus stations",
+  "placeOther": "Other",
+  "modeWalking": "Walking",
+  "modeCycling": "Cycling",
+  "modeDriving": "Driving / taxi",
+  "mapProvider": "Map provider",
+  "providerAuto": "Automatic",
+  "providerAutoHelp": "Amap in mainland China, OpenStreetMap elsewhere",
+  "providerOsm": "OpenStreetMap",
+  "providerAmap": "Amap (Gaode)",
+  "amapNoKey": "Amap search and routes need an Amap key, so OpenStreetMap search and routes are used.",
+  "savedPlaces": "Saved places",
+  "savedPlacesEmpty": "No saved places yet. Search, explore nearby, or long-press the map to pin one.",
+  "savePlace": "Save place",
+  "removePlace": "Remove",
+  "placeSaved": "Saved to this trip",
+  "placeRemoved": "Place removed",
+  "addToDay": "Add to day",
+  "chooseDay": "Choose a day",
+  "addedToDay": "Added to {date} · time not set",
+  "@addedToDay": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "plannedOn": "In the plan: {dates}",
+  "@plannedOn": {
+    "placeholders": {
+      "dates": {
+        "type": "String"
+      }
+    }
+  },
+  "notPlanned": "Not in the plan yet",
+  "sourceSearch": "Coordinates from {provider} search",
+  "@sourceSearch": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "sourcePinned": "Pinned on the map by you",
+  "sourceImported": "Coordinates imported",
+  "mapPinnedPlace": "Pinned place",
+  "mapLongPressHint": "Long-press to pin a place",
+  "nearbyEmpty": "Nothing found around this area",
+  "filterMarkers": "Filter markers",
+  "layerPlan": "Plan",
+  "layerResults": "Search & nearby results",
+  "myLocation": "My location",
+  "locationOff": "Location services are turned off",
+  "locationDenied": "Location permission was denied",
+  "locationDeniedForever": "Location permission is blocked. Allow it in system settings.",
+  "locationUnavailable": "Couldn't get your location",
+  "routeLoading": "Finding routes…",
+  "routeTotal": "{distance} · about {duration}",
+  "@routeTotal": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "routeEstimateNote": "Road routes: {provider}. Times are typical estimates, not live traffic or timetables.",
+  "@routeEstimateNote": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "routeUnverified": "{count, plural, =1{1 leg has no road route: straight line, unverified} other{{count} legs have no road route: straight lines, unverified}}",
+  "@routeUnverified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "routeBooked": "Flights, trains and ferries are drawn as direct dotted lines, not their actual path.",
+  "routeNoTransit": "Public transport routing isn’t available here; use “Navigate with” for transit directions.",
+  "routeUnordered": "{count, plural, =1{1 stop has no time yet, so it isn’t in the route} other{{count} stops have no time yet, so they aren’t in the route}}",
+  "@routeUnordered": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "findLocations": "Find locations",
+  "locateTitle": "Find locations",
+  "locateIntro": "These places have a name but no coordinates, so they can’t be shown on the map. Each name is searched online and matches near your trip’s destinations come first. Nothing changes until you choose a match.",
+  "locateProgress": "Searched {done} of {total}…",
+  "@locateProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "locateUsedBy": "{count, plural, =1{Used by 1 activity} other{Used by {count} activities}}",
+  "@locateUsedBy": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "locatePlaceholder": "General name: choose the exact place yourself",
+  "locateNoMatch": "No match for “{query}”. Try another name or pick it on the map.",
+  "@locateNoMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "locateFar": "{km} km from your destinations",
+  "@locateFar": {
+    "placeholders": {
+      "km": {
+        "type": "int"
+      }
+    }
+  },
+  "locateUse": "Use this",
+  "locateLocated": "Located",
+  "locateSearchAgain": "Search again",
+  "locateSearch": "Search",
+  "locateRefineHelp": "Tip: add the city, e.g. “中山路步行街 厦门”",
+  "locateUseAll": "Use selected matches ({count})",
+  "@locateUseAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "locateAllDone": "Every place in the plan has coordinates.",
+  "pasteLocation": "Paste a link or coordinates",
+  "pasteLocationHint": "Google Maps link, share link (maps.app.goo.gl), embed code, “27.8124, 99.7048” or a Plus Code like “RP63+XW2, Shangri-La”",
+  "pasteFromClipboard": "Paste from clipboard",
+  "pasteFromChineseMap": "Copied from Google Maps, Amap or Apple Maps",
+  "pasteFromChineseMapHelp": "In mainland China these maps are offset from GPS; WanderPlan corrects it. Turn off for GPS or OpenStreetMap coordinates.",
+  "pasteResolve": "Use location",
+  "linkUnrecognized": "Not recognised. Paste a Google Maps / Amap / Apple Maps link, coordinates like “27.81, 99.70”, or a Plus Code.",
+  "linkShortFailed": "Couldn’t open the short link (are you online?). Open it in Google Maps and copy the full link or coordinates instead.",
+  "linkPlusNeedsArea": "This short Plus Code needs its area, e.g. “RP63+XW2, Shangri-La”.",
+  "linkCentreOnly": "This link only gives the map’s centre, so the pin may be slightly off. Check it.",
+  "linkConverted": "Converted from China’s map offset (GCJ-02) to GPS coordinates.",
+  "sourceLink": "Coordinates from a {provider} link",
+  "@sourceLink": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "sourcePlusCode": "Coordinates from a Plus Code",
+  "sourceCoordinates": "Coordinates entered by you",
+  "pasteLink": "Paste link",
+  "navigateWith": "Navigate with",
+  "openGoogleMaps": "Google Maps",
+  "openAppleMaps": "Apple Maps",
+  "openAmap": "Amap (Gaode)",
+  "openFailed": "Could not open the maps app",
+  "chooseLocation": "Choose location",
+  "pickHint": "Tap the map to drop a pin, or search for a place.",
+  "useThisPlace": "Use this place",
+  "searchPlaces": "Search places (online)",
+  "searchFailed": "Search unavailable: {error}",
+  "@searchFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "noResults": "No places found",
+  "placeName": "Place name",
+  "removePin": "Remove pin",
+  "budgetPlanned": "Planned",
+  "budgetSpent": "Spent",
+  "budgetRemaining": "Remaining",
+  "budgetLimit": "Budget",
+  "budgetOverview": "Overview",
+  "budgetExpenses": "Expenses",
+  "budgetRates": "Rates",
+  "byCategory": "By category",
+  "byDay": "By day",
+  "plannedVsActual": "Planned vs actual",
+  "variance": "Difference",
+  "perPersonSpent": "{amount} spent per person",
+  "@perPersonSpent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "unpaidPlanned": "{amount} still to pay or book",
+  "@unpaidPlanned": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "addExpense": "Add expense",
+  "editExpense": "Edit expense",
+  "expenseTitle": "What for",
+  "fieldAmount": "Amount",
+  "fieldCategory": "Category",
+  "expensePlanned": "Planned",
+  "expenseActual": "Actual",
+  "expensePaid": "Paid",
+  "expenseUnpaid": "Unpaid",
+  "expenseShared": "Shared by all travelers",
+  "linkedActivity": "Linked activity",
+  "noneOption": "None",
+  "expenseDeleted": "Expense deleted",
+  "noExpenses": "No expenses yet. Add what you spend during the trip, or planned costs that aren’t in the itinerary.",
+  "fromItinerary": "From itinerary",
+  "budgetEmpty": "Add costs to activities or planned expenses to see your plan here.",
+  "warnNoCurrency": "Set a primary currency for this trip to track the budget.",
+  "warnMissingRates": "No exchange rate for {currencies}. Those amounts are not counted yet.",
+  "@warnMissingRates": {
+    "placeholders": {
+      "currencies": {
+        "type": "String"
+      }
+    }
+  },
+  "warnOverPlanned": "The plan is over budget by {amount}.",
+  "@warnOverPlanned": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "warnOverActual": "Spending is over budget by {amount}.",
+  "@warnOverActual": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "warnNearLimit": "The plan uses more than 90% of the budget.",
+  "rateLabel": "1 {currency} = ? {base}",
+  "@rateLabel": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "rateManual": "Entered manually · not verified",
+  "rateFrom": "From {source} · {date}",
+  "@rateFrom": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "rateMissing": "No rate yet",
+  "refreshRates": "Fetch live rates (online)",
+  "ratesUpdated": "Rates updated",
+  "ratesUnsupported": "Not available online: {currencies}. Enter them manually.",
+  "@ratesUnsupported": {
+    "placeholders": {
+      "currencies": {
+        "type": "String"
+      }
+    }
+  },
+  "ratesFailed": "Could not fetch rates: {error}",
+  "@ratesFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "addRate": "Add rate",
+  "rateInvalid": "Enter a number greater than 0",
+  "ratesHelp": "Amounts in other currencies are converted to {base} with these rates.",
+  "@ratesHelp": {
+    "placeholders": {
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "amountInvalid": "Enter an amount of 0 or more",
+  "catFlights": "Flights",
+  "catTrains": "Trains",
+  "catBuses": "Buses & ferries",
+  "catTaxis": "Taxis & local transport",
+  "catHotels": "Hotels",
+  "catFood": "Food",
+  "catAttractions": "Attractions",
+  "catActivities": "Activities",
+  "catInternet": "Internet & SIM",
+  "catInsurance": "Insurance",
+  "catShopping": "Shopping",
+  "catEmergency": "Emergency fund",
+  "catMisc": "Miscellaneous",
+  "kindTransport": "Transport (mode TBD)",
+  "catTransport": "Other transport",
+  "timeTbd": "Time TBD",
+  "timeTbdToggle": "Time to be decided",
+  "timeTbdHelp": "Use this while the schedule isn’t confirmed. No time is guessed; the day shows “Needs info” until you set one.",
+  "issueTimeNotSet": "No time set yet: {titles}",
+  "@issueTimeNotSet": {
+    "placeholders": {
+      "titles": {
+        "type": "String"
+      }
+    }
+  },
+  "notScheduled": "Not scheduled yet",
+  "importInvalidDetail": "Could not import: {detail}",
+  "@importInvalidDetail": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "importHow": "How do you want to import?",
+  "importChooseFile": "Choose a file",
+  "importChooseFileHelp": "A .wanderplan file from a friend, or a .json file",
+  "importPaste": "Paste text",
+  "importPasteHelp": "Paste trip JSON copied from ChatGPT, Notes, email…",
+  "importPasteHint": "Paste the trip JSON here",
+  "clipboardEmpty": "The clipboard is empty",
+  "actionClear": "Clear",
+  "importAction": "Import",
+  "importFormatHelp": "Format guide: docs/IMPORT_FORMAT.md",
+  "language": "Language",
+  "languageSystem": "System default",
+  "privacyTitle": "Data & privacy",
+  "privacyBody": "WanderPlan stores your trips and photos only on this device. No account is required.",
+  "deleteAllData": "Delete all data",
+  "deleteAllDataBody": "All trips, photos and settings on this device will be permanently deleted.",
+  "allDataDeleted": "All data deleted",
+  "atlasEyebrow": "Your personal atlas",
+  "atlasSubtitle": "Your plans, places and days away.",
+  "atlasCollection": "{count} trips in your collection",
+  "@atlasCollection": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "atlasJourney": "Journey",
+  "atlasFilters": "Filter trips",
+  "atlasBegin": "A new chapter",
+  "atlasFooter": "Good journeys start with a little planning.",
+  "atlasEdition": "The travel collection",
+  "atlasSigninHeadline": "Somewhere new.\nSomething to look forward to."
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Google pin confirmation",
+    "violations": []
+  },
+  {
+    "label": "Road-based alternative orders",
+    "violations": []
+  },
+  {
+    "label": "Route preview and apply",
+    "violations": []
+  },
+  {
+    "label": "Phone route options",
+    "violations": []
+  },
+  {
+    "label": "Dark phone route options",
+    "violations": []
+  }
+]

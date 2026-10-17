@@ -1,0 +1,29 @@
+# Local development: PostgreSQL + the API with development auth.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: wanderplan
+      POSTGRES_PASSWORD: wanderplan
+      POSTGRES_DB: wanderplan
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wanderplan"]
+      interval: 2s
+      retries: 20
+
+  api:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgres://wanderplan:wanderplan@db:5432/wanderplan?sslmode=disable
+      AUTH_MODE: dev
+      DEV_JWT_SECRET: change-me-local-dev-secret-at-least-32-chars
+      LOG_LEVEL: debug
+    ports: ["8080:8080"]
+
+volumes:
+  pgdata:
