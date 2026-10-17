@@ -140,6 +140,7 @@ class AmapWebService implements PlaceSearch, RouteService {
           TravelMode.walking => '/v3/direction/walking',
           TravelMode.driving => '/v3/direction/driving',
           TravelMode.cycling => '/v4/direction/bicycling',
+          TravelMode.transit => throw const RoutingException('Public transport is not routed'),
         }, params);
       } on PlaceSearchException catch (e) {
         throw RoutingException(e.message);
@@ -152,7 +153,35 @@ class AmapWebService implements PlaceSearch, RouteService {
       durationSeconds: legs.fold(0, (s, l) => s + l.durationSeconds),
       mode: mode,
       source: routeSource,
+      legs: [for (final l in legs) (l.distanceMeters, l.durationSeconds)],
     );
+  }
+
+  /// Amap's distance service (one request per destination, all origins at
+  /// once). It has driving (type 1) and walking (type 3) only.
+  @override
+  Future<TravelMatrix> matrix(List<GeoPoint> points, TravelMode mode) async {
+    final type = switch (mode) {
+      TravelMode.driving => 1,
+      TravelMode.walking => 3,
+      _ => throw const RoutingException('Amap has no matrix for this mode'),
+    };
+    final origins = points.map(_lngLat).join('|');
+    final seconds = [for (final _ in points) List<double?>.filled(points.length, null)];
+    for (var j = 0; j < points.length; j++) {
+      final Map<String, dynamic> json;
+      try {
+        json = await _get('/v3/distance', {'origins': origins, 'destination': _lngLat(points[j]), 'type': type});
+      } on PlaceSearchException catch (e) {
+        throw RoutingException(e.message);
+      }
+      if ('${json['status']}' != '1') throw RoutingException('${json['info'] ?? 'Amap error'}');
+      for (final r in ((json['results'] as List?) ?? const []).cast<Map<String, dynamic>>()) {
+        final i = (int.tryParse('${r['origin_id']}') ?? 0) - 1;
+        if (i >= 0 && i < points.length) seconds[i][j] = i == j ? 0 : double.tryParse('${r['duration']}');
+      }
+    }
+    return TravelMatrix(seconds, source: routeSource, estimated: false);
   }
 
   /// Parses a v3 (walking/driving) or v4 (bicycling) direction response.

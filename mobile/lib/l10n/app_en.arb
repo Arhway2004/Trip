@@ -846,6 +846,369 @@
   "sourcePlusCode": "Coordinates from a Plus Code",
   "sourceCoordinates": "Coordinates entered by you",
   "pasteLink": "Paste link",
+  "modeTransit": "Train / metro / bus",
+  "dayStart": "Start",
+  "dayEnd": "End",
+  "dayStartTitle": "Where does this day start?",
+  "dayEndTitle": "Where does this day end?",
+  "dayAnchorNotSet": "not set (no hotel that night)",
+  "dayAnchorHotel": "hotel",
+  "dayAnchorUseHotel": "Use the hotel (default)",
+  "dayLegs": "Getting between stops",
+  "legTitle": "How do you get there?",
+  "legDefault": "Day default ({mode})",
+  "@legDefault": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "legMinutes": "Your travel time (optional)",
+  "legMinutesHelp": "Leave empty to use the route’s typical time.",
+  "legTransitHelp": "Train, metro and bus times aren’t calculated (no timetable data). Enter the time from the timetable or a map app.",
+  "legTransitNoTime": "Train/metro/bus · enter your time",
+  "legUndecided": "Transport not decided yet",
+  "legNoRoute": "No route (unverified)",
+  "legYourEstimate": "your estimate",
+  "legTooShort": "{minutes} min short before the next start",
+  "@legTooShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "routeTransitNote": "Dashed blue lines are train/metro/bus legs: straight lines with your own times.",
+  "optimizeOrder": "Optimize order",
+  "optimizeNeedsTwo": "Needs at least 2 places with a location that aren’t locked or booked.",
+  "optimizeTitle": "Suggested order",
+  "optimizeSaves": "Travel {before} → {after} (saves {saved})",
+  "@optimizeSaves": {
+    "placeholders": {
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      },
+      "saved": {
+        "type": "String"
+      }
+    }
+  },
+  "optimizeAlreadyBest": "Your order is already the shortest ({travel} of travel).",
+  "@optimizeAlreadyBest": {
+    "placeholders": {
+      "travel": {
+        "type": "String"
+      }
+    }
+  },
+  "optimizeRouted": "Based on {mode} routes; typical times, not live traffic.",
+  "@optimizeRouted": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "optimizeEstimated": "No route data: estimated from straight-line distance for {mode}.",
+  "@optimizeEstimated": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "optimizeDayStart": "Day starts at",
+  "optimizeTravel": "{time} travel",
+  "@optimizeTravel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "optimizeWait": "wait {time} for opening",
+  "@optimizeWait": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "optimizeFixed": "Fixed",
+  "optimizeAssumed": "No time set: 1 h assumed",
+  "optimizeClosed": "Closed that day",
+  "optimizeOutsideHours": "Outside opening hours",
+  "optimizeLate": "{minutes} min late",
+  "@optimizeLate": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "optimizeKeepsFixed": "Locked, booked and transport items keep their times. Only places you haven’t booked are moved.",
+  "optimizeApply": "Apply",
+  "optimizeApplied": "{count, plural, =1{Updated 1 activity} other{Updated {count} activities}}",
+  "@optimizeApplied": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gettingHere": "Getting here",
+  "gettingHereDefault": "Day default",
+  "openingHours": "Opening hours",
+  "openingHoursKnown": "Has opening hours",
+  "openingHoursHelp": "Check the official site; WanderPlan uses them to warn and to plan the order.",
+  "opens": "Opens",
+  "closes": "Closes",
+  "closesNextDay": "closes after midnight",
+  "closedOn": "Closed on",
+  "closedThatDay": "Closed on this day!",
+  "reservation": "Reservation",
+  "reservationRequired": "Needs a reservation or ticket in advance",
+  "reservationVia": "Where / how to book",
+  "reservationViaHint": "e.g. official WeChat account, Trip.com app, website",
+  "bookAheadDays": "Book how many days before?",
+  "daysUnit": "days",
+  "bookByDate": "Book by {date}",
+  "@bookByDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "remindToBook": "Remind me on that day",
+  "remindToBookHelp": "A notification at 09:00 (trip time) on the book-by date.",
+  "remindPermissionDenied": "Notifications are off for WanderPlan. Allow them in system settings to get reminders.",
+  "reminderTitle": "Time to book",
+  "reminderBody": "Book “{title}” for {date}. {via}",
+  "@reminderBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "via": {
+        "type": "String"
+      }
+    }
+  },
+  "issueTightTravelOwn": "“{a}” → “{b}”: only {minutes} min, but you allowed {needed} min to get there",
+  "@issueTightTravelOwn": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      },
+      "needed": {
+        "type": "int"
+      }
+    }
+  },
+  "issueClosedOnDay": "“{title}” is closed on this day",
+  "@issueClosedOnDay": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "issueOutsideOpeningHours": "“{title}” is planned outside its opening hours",
+  "@issueOutsideOpeningHours": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "issueBookingNeeded": "“{title}” still needs a reservation",
+  "@issueBookingNeeded": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "issueBookBy": "Book “{title}” by {date}",
+  "@issueBookBy": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "flightUpdates": "Flight updates",
+  "flightUpdatesSubtitle": "Live status from your WanderPlan server",
+  "flightPrivacyTitle": "Privacy",
+  "actionRetry": "Try again",
+  "flightUpdatesOff": "Not working right now",
+  "flightServerChecking": "Connecting…",
+  "flightServerIntro": "Live flight status comes from the WanderPlan server. It checks each flight once for everyone and holds the flight-data key; this phone only reads the results. Nothing to set up.",
+  "flightServerTitle": "Status",
+  "flightServerConnectedAs": "On · signed in as {who}",
+  "@flightServerConnectedAs": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  },
+  "flightServerPrivacy": "No flight-data API key is stored on this phone. The app signs in to the WanderPlan server by itself and keeps that sign-in in the keychain (this device only).",
+  "flightNotConnected": "Live flight updates aren’t available in this version of the app.",
+  "flightSignInRejected": "The WanderPlan server didn’t accept the sign-in. Try again later.",
+  "flightServerNoKey": "Live flight data isn’t switched on at the WanderPlan server yet.",
+  "flightNoDataYet": "No data yet. Your server checks this flight on its schedule (live data appears around the flight day).",
+  "flightStale": "Last check failed; showing the last known data",
+  "flightNeedsNumber": "Add the flight number (e.g. MU5103) to get live updates.",
+  "flightCheckNow": "Check now",
+  "flightNoChanges": "No changes since the last check",
+  "flightQuotaReached": "Your server’s flight-data plan is out of requests this month.",
+  "flightNetwork": "Can’t reach the WanderPlan server right now. Check your internet connection and try again.",
+  "flightUnknownError": "The server didn’t answer as expected. Try again later.",
+  "flightScheduled": "Scheduled",
+  "flightInAir": "In the air",
+  "flightLanded": "Landed",
+  "flightCancelled": "Cancelled",
+  "flightIncident": "Incident",
+  "flightDiverted": "Diverted",
+  "flightStatusUnknown": "Status unknown",
+  "flightDelayed": "Delayed {minutes} min",
+  "@flightDelayed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "flightDep": "Dep",
+  "flightArr": "Arr",
+  "flightTerminal": "T{t}",
+  "@flightTerminal": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "flightGate": "Gate {g}",
+  "@flightGate": {
+    "placeholders": {
+      "g": {
+        "type": "String"
+      }
+    }
+  },
+  "flightBelt": "Belt {b}",
+  "@flightBelt": {
+    "placeholders": {
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChecked": "Checked {time} · times are local at each airport",
+  "@flightChecked": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "flightNotifyTitle": "{flight}: flight update",
+  "@flightNotifyTitle": {
+    "placeholders": {
+      "flight": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeStatus": "Now {status}",
+  "@flightChangeStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeDeparture": "Departure {from} → {to}",
+  "@flightChangeDeparture": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeArrival": "Arrival {from} → {to}",
+  "@flightChangeArrival": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeDepTerminal": "Departure terminal {t}",
+  "@flightChangeDepTerminal": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeDepGate": "Gate {g}",
+  "@flightChangeDepGate": {
+    "placeholders": {
+      "g": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeArrTerminal": "Arrival terminal {t}",
+  "@flightChangeArrTerminal": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeArrGate": "Arrival gate {g}",
+  "@flightChangeArrGate": {
+    "placeholders": {
+      "g": {
+        "type": "String"
+      }
+    }
+  },
+  "flightChangeBaggage": "Baggage belt {b}",
+  "@flightChangeBaggage": {
+    "placeholders": {
+      "b": {
+        "type": "String"
+      }
+    }
+  },
   "navigateWith": "Navigate with",
   "openGoogleMaps": "Google Maps",
   "openAppleMaps": "Apple Maps",

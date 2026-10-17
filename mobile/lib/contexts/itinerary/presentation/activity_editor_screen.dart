@@ -4,6 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanderplan/app/providers.dart';
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
+import 'package:wanderplan/contexts/itinerary/domain/opening_hours.dart';
+import 'package:wanderplan/contexts/itinerary/presentation/booking_reminder_sync.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
+import 'package:wanderplan/contexts/places/presentation/place_category_ui.dart';
+import 'package:intl/intl.dart';
 import 'package:wanderplan/contexts/itinerary/presentation/itinerary_l10n.dart';
 import 'package:wanderplan/contexts/itinerary/presentation/itinerary_providers.dart';
 import 'package:wanderplan/contexts/places/presentation/location_picker_screen.dart';
@@ -40,6 +45,9 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
   final _notes = TextEditingController();
   final _locationName = TextEditingController();
   final _destinationName = TextEditingController();
+  final _arrivalMinutes = TextEditingController();
+  final _reservationVia = TextEditingController();
+  final _bookAhead = TextEditingController();
 
   ActivityDraft? _d;
   bool _endTouched = false;
@@ -79,6 +87,9 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
     _notes.text = d.notes ?? '';
     _locationName.text = d.location.name ?? '';
     _destinationName.text = d.destination.name ?? '';
+    _arrivalMinutes.text = d.arrivalMinutes?.toString() ?? '';
+    _reservationVia.text = d.reservationVia ?? '';
+    _bookAhead.text = d.bookAheadDays?.toString() ?? '';
     _timeTbd = existing != null && !existing.hasTime;
     if (d.startMinute == null || d.endMinute == null) {
       // Working values for the pickers only; saved as "no time" while _timeTbd is on.
@@ -133,6 +144,9 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
       _notes,
       _locationName,
       _destinationName,
+      _arrivalMinutes,
+      _reservationVia,
+      _bookAhead,
     ]) {
       c.dispose();
     }
@@ -160,6 +174,9 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
       ..bookingReference = _bookingRef.text
       ..bookingUrl = _bookingUrl.text
       ..notes = _notes.text
+      ..arrivalMinutes = int.tryParse(_arrivalMinutes.text.trim())
+      ..reservationVia = _reservationVia.text
+      ..bookAheadDays = int.tryParse(_bookAhead.text.trim())
       ..location = PlaceRef(name: _blank(_locationName.text), point: d.location.point, source: d.location.source)
       ..destination = PlaceRef(
         name: _blank(_destinationName.text),
@@ -170,9 +187,7 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
     if (d.title.trim().isEmpty) return setState(() => _error = l.titleRequired);
     if (d.currency != null && !isValidCurrencyCode(d.currency!)) return setState(() => _error = l.currencyInvalid);
     if (_timeTbd) {
-      d
-        ..startMinute = null
-        ..endMinute = null;
+      // Don't clear the working times: the form keeps showing them while saving.
       if (d.endDate != null && d.endDate! < d.date) return setState(() => _error = l.endBeforeStart);
     } else {
       final endAbs = (d.endDate ?? d.date).epochDay * 1440 + d.endMinute!;
@@ -185,11 +200,13 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
     });
     try {
       final svc = ref.read(itineraryServiceProvider);
+      final toSave = _timeTbd ? d.withoutTime() : d;
       if (_isEdit) {
-        await svc.updateActivity(widget.activityId!, d);
+        await svc.updateActivity(widget.activityId!, toSave);
       } else {
-        await svc.addActivity(widget.tripId, d);
+        await svc.addActivity(widget.tripId, toSave);
       }
+      if (mounted) await syncBookingReminders(context, ref, widget.tripId);
       if (mounted) Navigator.pop(context);
     } on DomainException catch (e) {
       setState(() {
@@ -515,6 +532,16 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
             ],
           ),
         ),
+        if (!isStay) ...[
+          const SizedBox(height: 12),
+          _gettingHere(context, d),
+        ],
+        if (!isTransport && !isStay) ...[
+          const SizedBox(height: 12),
+          _openingHours(context, d),
+        ],
+        const SizedBox(height: 12),
+        _reservation(context, d),
         const SizedBox(height: 12),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
@@ -540,6 +567,188 @@ class _ActivityEditorScreenState extends ConsumerState<ActivityEditorScreen> {
         const SizedBox(height: 20),
         FilledButton(onPressed: _saving ? null : _save, child: Text(l.actionSave)),
       ],
+    );
+  }
+
+  /// How the traveller reaches this stop from the previous one.
+  Widget _gettingHere(BuildContext context, ActivityDraft d) {
+    final l = context.l10n;
+    return SectionCard(
+      title: l.gettingHere,
+      icon: Icons.alt_route,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              ChoiceChip(
+                showCheckmark: false,
+                label: Text(l.gettingHereDefault),
+                selected: d.arrivalMode == null,
+                onSelected: (_) => setState(() => d.arrivalMode = null),
+              ),
+              for (final m in TravelMode.values)
+                ChoiceChip(
+                  showCheckmark: false,
+                  avatar: Icon(m.icon, size: 18),
+                  label: Text(m.label(l)),
+                  selected: d.arrivalMode == m,
+                  onSelected: (_) => setState(() => d.arrivalMode = m),
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: _arrivalMinutes,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: InputDecoration(
+              labelText: l.legMinutes,
+              helperText: d.arrivalMode == TravelMode.transit ? l.legTransitHelp : l.legMinutesHelp,
+              helperMaxLines: 3,
+              suffixText: 'min',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _openingHours(BuildContext context, ActivityDraft d) {
+    final l = context.l10n;
+    final c = context.colors;
+    final h = d.openingHours;
+    final weekdays = DateFormat.E(context.localeTag);
+    Future<void> pick(bool opens) async {
+      final m = opens ? h!.opens : h!.closes % 1440;
+      final t = await showTimePicker(context: context, initialTime: TimeOfDay(hour: m ~/ 60, minute: m % 60));
+      if (t == null) return;
+      final v = t.hour * 60 + t.minute;
+      setState(
+        () => d.openingHours = OpeningHours(
+          opens: opens ? v : h.opens,
+          closes: opens ? h.closes : v,
+          closedWeekdays: h.closedWeekdays,
+        ),
+      );
+    }
+
+    return SectionCard(
+      title: l.openingHours,
+      icon: Icons.access_time,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l.openingHoursKnown),
+            subtitle: Text(l.openingHoursHelp),
+            value: h != null,
+            onChanged: (v) =>
+                setState(() => d.openingHours = v ? OpeningHours(opens: 9 * 60, closes: 17 * 60) : null),
+          ),
+          if (h != null) ...[
+            Wrap(
+              spacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(l.opens),
+                OutlinedButton(onPressed: () => pick(true), child: Text(formatMinutes(h.opens))),
+                Text(l.closes),
+                OutlinedButton(onPressed: () => pick(false), child: Text(formatMinutes(h.closes % 1440))),
+                if (h.overnight) Badge2(label: l.closesNextDay, tone: Tone.info),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(l.closedOn, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: c.ink2)),
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 4,
+              runSpacing: 4,
+              children: [
+                for (var wd = DateTime.monday; wd <= DateTime.sunday; wd++)
+                  FilterChip(
+                    showCheckmark: false,
+                    visualDensity: VisualDensity.compact,
+                    // 2024-01-01 was a Monday.
+                    label: Text(weekdays.format(DateTime(2024, 1, wd))),
+                    selected: h.closedWeekdays.contains(wd),
+                    onSelected: (v) {
+                      final days = {...h.closedWeekdays};
+                      v ? days.add(wd) : days.remove(wd);
+                      if (days.length == 7) return;
+                      setState(() => d.openingHours = OpeningHours(opens: h.opens, closes: h.closes, closedWeekdays: days));
+                    },
+                  ),
+              ],
+            ),
+            if (h.isClosedOn(d.date))
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Badge2(label: l.closedThatDay, tone: Tone.bad, icon: Icons.block),
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _reservation(BuildContext context, ActivityDraft d) {
+    final l = context.l10n;
+    final c = context.colors;
+    final ahead = int.tryParse(_bookAhead.text.trim());
+    final bookBy = ahead == null ? null : d.date.addDays(-ahead);
+    return SectionCard(
+      title: l.reservation,
+      icon: Icons.event_available_outlined,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l.reservationRequired),
+            value: d.reservationRequired,
+            onChanged: (v) => setState(() => d.reservationRequired = v),
+          ),
+          if (d.reservationRequired) ...[
+            TextField(
+              controller: _reservationVia,
+              decoration: InputDecoration(labelText: l.reservationVia, hintText: l.reservationViaHint),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _bookAhead,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(labelText: l.bookAheadDays, suffixText: l.daysUnit),
+              onChanged: (_) => setState(() {}),
+            ),
+            if (bookBy != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(l.bookByDate(formatDate(context, bookBy)), style: TextStyle(color: c.ink2)),
+              ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l.remindToBook),
+              subtitle: Text(l.remindToBookHelp),
+              value: d.remindToBook && ahead != null,
+              onChanged: ahead == null
+                  ? null
+                  : (v) async {
+                      setState(() => d.remindToBook = v);
+                      if (!v) return;
+                      final ok = await ref.read(bookingReminderServiceProvider).requestPermission();
+                      if (!ok && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.remindPermissionDenied)));
+                      }
+                    },
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

@@ -30,6 +30,7 @@ var statusByKind = map[kernel.Kind]int{
 	kernel.KindConflict:           http.StatusConflict,
 	kernel.KindPreconditionFailed: http.StatusPreconditionFailed,
 	kernel.KindUnauthenticated:    http.StatusUnauthorized,
+	kernel.KindUnavailable:        http.StatusServiceUnavailable,
 }
 
 // WriteError renders err as a problem response. Unknown errors are logged and

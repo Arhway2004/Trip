@@ -4,6 +4,9 @@
 *.iml
 .env
 .env.*
+# Private keys and API keys never go into git (see docs/SECRETS.md)
+secrets/
+*.key
 !.env.example
 !.env.*.example
 **/xcuserdata/

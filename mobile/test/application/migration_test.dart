@@ -4,6 +4,8 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
+import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/contexts/places/application/saved_place_service.dart';
 import 'package:wanderplan/shared/domain/geo_point.dart';
 import 'package:wanderplan/contexts/trip/application/trip_draft.dart';
@@ -81,6 +83,46 @@ void main() {
     expect((await d.app.trips.getTrip(id))!.title, 'Before v5');
     await d.app.savedPlaces.savePlace(id, SavedPlaceDraft(name: 'Works', point: const GeoPoint(1, 2)));
     expect(await d.app.savedPlaces.placesOf(id), hasLength(1));
+    await d.dispose();
+    await dir.delete(recursive: true);
+  });
+
+  test('a v5 database upgrades to v6: activities gain day-planning fields and day plans', () async {
+    final dir = await Directory.systemTemp.createTemp('wanderplan_mig6_');
+    final file = File('${dir.path}/app.sqlite');
+    var d = await TestDevice.create(db: AppDatabase(NativeDatabase(file)));
+    final id = await d.app.trips.createTrip(TripDraft(title: 'Before v6', timeZone: 'UTC'));
+    final a = await d.app.itinerary.addActivity(
+      id,
+      ActivityDraft(title: 'Museum', date: const LocalDate(2026, 1, 1), startMinute: 600, endMinute: 660),
+    );
+    await d.db.close();
+
+    final raw = sqlite.sqlite3.open(file.path);
+    for (final c in [
+      'arrival_mode',
+      'arrival_minutes',
+      'opens_at',
+      'closes_at',
+      'closed_weekdays',
+      'reservation_required',
+      'reservation_via',
+      'book_ahead_days',
+      'remind_to_book',
+    ]) {
+      raw.execute('ALTER TABLE activities DROP COLUMN $c');
+    }
+    raw.execute('DROP TABLE day_plans');
+    raw.execute('PRAGMA user_version = 5');
+    raw.dispose();
+
+    d = await TestDevice.create(db: AppDatabase(NativeDatabase(file)));
+    expect((await d.app.itinerary.getActivity(a))!.title, 'Museum');
+    await d.app.itinerary.setArrival(a, TravelMode.transit, 25);
+    await d.app.itinerary.setDayAnchors(id, const LocalDate(2026, 1, 1), start: const PlaceRef(name: 'Home', point: GeoPoint(1, 2)));
+    final got = (await d.app.itinerary.getActivity(a))!;
+    expect((got.arrivalMode, got.arrivalMinutes), (TravelMode.transit, 25));
+    expect((await d.app.itinerary.daySettingsOf(id)).single.start.name, 'Home');
     await d.dispose();
     await dir.delete(recursive: true);
   });

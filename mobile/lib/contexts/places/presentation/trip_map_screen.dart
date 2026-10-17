@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:wanderplan/app/providers.dart';
 import 'package:wanderplan/app/router.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
+import 'package:wanderplan/contexts/itinerary/domain/day_optimizer.dart';
 import 'package:wanderplan/contexts/itinerary/domain/day_route.dart';
 import 'package:wanderplan/contexts/itinerary/presentation/itinerary_l10n.dart';
 import 'package:wanderplan/contexts/itinerary/presentation/itinerary_providers.dart';
@@ -20,6 +21,7 @@ import 'package:wanderplan/contexts/places/domain/place_category.dart';
 import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/contexts/places/domain/saved_place.dart';
 import 'package:wanderplan/contexts/places/domain/location_link.dart';
+import 'package:wanderplan/contexts/places/presentation/day_plan_panel.dart';
 import 'package:wanderplan/contexts/places/presentation/map_tiles.dart';
 import 'package:wanderplan/contexts/places/presentation/paste_location_dialog.dart';
 import 'package:wanderplan/contexts/places/presentation/pin_clusters.dart';
@@ -43,6 +45,9 @@ enum _LegStyle {
 
   /// Booked flight/train/ferry: direct line, not its real path.
   booked,
+
+  /// Train/metro/bus chosen by the traveller: direct line, time is theirs.
+  transit,
 }
 
 class _LegDraw {
@@ -53,22 +58,17 @@ class _LegDraw {
 }
 
 class _RouteState {
-  const _RouteState({
-    this.draws = const [],
-    this.loading = false,
-    this.distanceMeters = 0,
-    this.durationSeconds = 0,
-    this.unverifiedLegs = 0,
-    this.bookedLegs = 0,
-    this.sources = const {},
-  });
+  const _RouteState({this.draws = const [], this.legs = const [], this.loading = false, this.sources = const {}});
   final List<_LegDraw> draws;
+  final List<LegResult> legs;
   final bool loading;
-  final double distanceMeters;
-  final double durationSeconds;
-  final int unverifiedLegs;
-  final int bookedLegs;
   final Set<String> sources;
+
+  double get distanceMeters => legs.fold(0, (s, l) => s + (l.meters ?? 0));
+  int get minutes => legs.fold(0, (s, l) => s + (l.minutes ?? 0));
+  int get unverifiedLegs => legs.where((l) => l.unverified).length;
+  int get bookedLegs => legs.where((l) => l.leg.kind == DayLegKind.booked).length;
+  bool get hasTransit => legs.any((l) => l.mode == TravelMode.transit);
 }
 
 /// A marker on the map (activity pin, saved place, search result, me).
@@ -180,70 +180,72 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
 
   // --- Routes ---------------------------------------------------------------
 
-  /// Fetches road routes for the day's legs. Consecutive road legs travelled
-  /// the same way go in one request; failures fall back to straight lines
-  /// that are labelled unverified, never to an invented road.
+  /// Fetches road routes for the day's legs. Consecutive legs travelled the
+  /// same routed way go in one request; failures fall back to straight lines
+  /// labelled unverified, never to an invented road. Train/metro/bus legs are
+  /// never calculated: their time is the traveller's own estimate.
   Future<void> _loadRoute(String key, DayRoutePlan plan, MapProviderId provider, TravelMode mode) async {
     setState(() => _route = const _RouteState(loading: true));
     final maps = ref.read(mapServicesProvider);
     final draws = <_LegDraw>[];
-    var distance = 0.0, duration = 0.0, unverified = 0, booked = 0;
+    final results = <LegResult>[];
     final sources = <String>{};
 
     var i = 0;
     while (i < plan.legs.length) {
       final leg = plan.legs[i];
+      final legMode = leg.mode(mode);
       if (leg.kind == DayLegKind.booked) {
-        draws.add(_LegDraw([leg.from.point, leg.to.point], _LegStyle.booked, leg.from.activity.kind.color));
-        booked++;
+        draws.add(_LegDraw([leg.from.point, leg.to.point], _LegStyle.booked, leg.from.activity?.kind.color));
+        results.add(LegResult(leg, null));
         i++;
         continue;
       }
       if (leg.kind == DayLegKind.undecided) {
         draws.add(_LegDraw([leg.from.point, leg.to.point], _LegStyle.unverified));
-        unverified++;
+        results.add(LegResult(leg, null, unverified: true));
         i++;
         continue;
       }
-      final runMode = leg.fixedMode ?? mode;
+      if (!legMode.isRouted) {
+        draws.add(_LegDraw([leg.from.point, leg.to.point], _LegStyle.transit));
+        results.add(LegResult(leg, legMode));
+        i++;
+        continue;
+      }
       final run = <DayLeg>[leg];
       while (i + run.length < plan.legs.length) {
         final next = plan.legs[i + run.length];
-        if (next.kind != DayLegKind.road || (next.fixedMode ?? mode) != runMode) break;
+        if (next.kind != DayLegKind.road || next.mode(mode) != legMode) break;
         run.add(next);
       }
       i += run.length;
       try {
-        final r = await maps.route(provider, [run.first.from.point, for (final l in run) l.to.point], runMode);
+        final r = await maps.route(provider, [run.first.from.point, for (final l in run) l.to.point], legMode);
         draws.add(_LegDraw(r.geometry, _LegStyle.routed));
-        distance += r.distanceMeters;
-        duration += r.durationSeconds;
         sources.add(maps.routingFor(provider).attribution);
+        for (var k = 0; k < run.length; k++) {
+          final (m, sec) = r.legs.length == run.length
+              ? r.legs[k]
+              : (r.distanceMeters / run.length, r.durationSeconds / run.length);
+          results.add(LegResult(run[k], legMode, meters: m, seconds: sec));
+        }
       } catch (_) {
         for (final l in run) {
           draws.add(_LegDraw([l.from.point, l.to.point], _LegStyle.unverified));
+          results.add(LegResult(l, legMode, unverified: true));
         }
-        unverified += run.length;
       }
       if (!mounted || _routeKey != key) return;
     }
     if (!mounted || _routeKey != key) return;
-    setState(
-      () => _route = _RouteState(
-        draws: draws,
-        distanceMeters: distance,
-        durationSeconds: duration,
-        unverifiedLegs: unverified,
-        bookedLegs: booked,
-        sources: sources,
-      ),
-    );
+    setState(() => _route = _RouteState(draws: draws, legs: results, sources: sources));
   }
 
   void _scheduleRoute(DayRoutePlan? plan, MapProviderId provider) {
     final key = plan == null || plan.legs.isEmpty
         ? null
-        : '${provider.name}|${_mode.name}|${plan.legs.map((l) => '${l.from.point}>${l.to.point}:${l.kind.name}').join(',')}';
+        : '${provider.name}|${_mode.name}|${plan.legs.map((l) => '${l.from.point}>${l.to.point}:${l.kind.name}:${l.chosenMode?.name}:${l.manualMinutes}').join(',')}';
     if (key == _routeKey) return;
     _routeKey = key;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -374,7 +376,11 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
     final provider = _provider(acts, saved);
     final maps = ref.watch(mapServicesProvider);
     final days = ref.watch(dayAssessmentsProvider(widget.tripId)).map((d) => d.date).toList();
-    final plan = _day == null ? null : planDayRoute(acts, _day!);
+    final settings = _day == null
+        ? null
+        : (ref.watch(daySettingsProvider(widget.tripId)).value ?? const []).where((s) => s.date == _day).firstOrNull;
+    final plan = _day == null ? null : planDayRoute(acts, _day!, settings: settings);
+    final movable = _day == null ? 0 : acts.where((a) => isMovable(a, _day!)).length;
     _scheduleRoute(plan, provider);
 
     final presentKinds = {for (final a in acts) a.kind}.toList()..sort((a, b) => a.index.compareTo(b.index));
@@ -516,7 +522,7 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
               ],
             ),
           ),
-          _infoPanel(context, provider, maps.usesFallbackFor(provider), plan, pins.isEmpty, missing),
+          _infoPanel(context, provider, maps.usesFallbackFor(provider), plan, pins.isEmpty, missing, movable),
         ],
       ),
     );
@@ -556,6 +562,12 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
         strokeWidth: 3,
         color: d.color ?? c.info,
         pattern: const StrokePattern.dotted(spacingFactor: 2),
+      ),
+      _LegStyle.transit => Polyline(
+        points: pts,
+        strokeWidth: 3.5,
+        color: c.info,
+        pattern: StrokePattern.dashed(segments: const [4, 6]),
       ),
     };
   }
@@ -600,27 +612,44 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
     } else {
       for (var i = 0; i < plan.stops.length; i++) {
         final s = plan.stops[i];
-        if (!visible(s.activity)) continue;
-        final place = s.isArrival ? s.activity.destination : s.activity.location;
+        final a = s.activity;
+        if (a == null) {
+          // A start/end point the traveller chose (not an activity).
+          final which = s.anchor!;
+          pins.add(
+            _Pin(
+              s.point,
+              _anchorDot(which),
+              () => showDayAnchorSheet(context, ref, tripId: widget.tripId, day: _day!, which: which, near: s.point),
+              label: s.label ?? '',
+              icon: which == DayAnchor.start ? Icons.trip_origin : Icons.sports_score,
+            ),
+          );
+          continue;
+        }
+        if (!visible(a)) continue;
+        final place = s.isArrival ? a.destination : a.location;
         pins.add(
           _Pin(
             s.point,
-            _numberDot(s.activity.kind, i + 1),
-            () => _showActivity(context, s.activity, place),
-            label: '${i + 1}. ${_pinLabel(s.activity, place)}',
-            icon: s.activity.kind.icon,
+            _numberDot(a.kind, i + 1),
+            () => _showActivity(context, a, place),
+            label: '${i + 1}. ${_pinLabel(a, place)}',
+            icon: a.kind.icon,
           ),
         );
       }
-      for (final s in plan.unordered.where((s) => visible(s.activity))) {
-        final place = s.isArrival ? s.activity.destination : s.activity.location;
+      for (final s in plan.unordered) {
+        final a = s.activity!;
+        if (!visible(a)) continue;
+        final place = s.isArrival ? a.destination : a.location;
         pins.add(
           _Pin(
             s.point,
-            _kindDot(s.activity.kind, outlined: true),
-            () => _showActivity(context, s.activity, place),
-            label: _pinLabel(s.activity, place),
-            icon: s.activity.kind.icon,
+            _kindDot(a.kind, outlined: true),
+            () => _showActivity(context, a, place),
+            label: _pinLabel(a, place),
+            icon: a.kind.icon,
           ),
         );
       }
@@ -741,6 +770,17 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
     ),
     alignment: Alignment.center,
     child: Icon(kind.icon, size: 16, color: outlined ? kind.color : Colors.white),
+  );
+
+  Widget _anchorDot(DayAnchor which) => Container(
+    decoration: BoxDecoration(
+      color: context.colors.ink,
+      shape: BoxShape.circle,
+      border: Border.all(color: Colors.white, width: 2.5),
+      boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 1))],
+    ),
+    alignment: Alignment.center,
+    child: Icon(which == DayAnchor.start ? Icons.trip_origin : Icons.sports_score, size: 16, color: Colors.white),
   );
 
   Widget _numberDot(ActivityKind kind, int n) => Container(
@@ -890,18 +930,20 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
     DayRoutePlan? plan,
     bool empty,
     int missing,
+    int movable,
   ) {
     final l = context.l10n;
     final c = context.colors;
     final small = TextStyle(fontSize: 12, color: c.ink2);
     final hasRoute = plan != null && plan.legs.isNotEmpty;
+    final day = _day;
     return Material(
       color: c.surface,
       elevation: 6,
       child: SafeArea(
         top: false,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 230),
+          constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * (day == null ? 0.28 : 0.42)),
           child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
             child: Column(
@@ -916,7 +958,7 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
                           showSelectedIcon: false,
                           style: const ButtonStyle(visualDensity: VisualDensity.compact),
                           segments: [
-                            for (final m in TravelMode.values)
+                            for (final m in TravelMode.routed)
                               ButtonSegment(value: m, icon: Icon(m.icon, size: 18), tooltip: m.label(l)),
                           ],
                           selected: {_mode},
@@ -932,12 +974,9 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
                             Text(l.routeLoading, style: small),
                           ],
                         )
-                      else if (_route.distanceMeters > 0)
+                      else if (_route.minutes > 0)
                         Text(
-                          l.routeTotal(
-                            _km(_route.distanceMeters),
-                            formatDuration(l, (_route.durationSeconds / 60).round()),
-                          ),
+                          l.routeTotal(_km(_route.distanceMeters), formatDuration(l, _route.minutes)),
                           style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
                     ],
@@ -949,7 +988,31 @@ class _TripMapScreenState extends ConsumerState<TripMapScreen> {
                     Badge2(label: l.routeUnverified(_route.unverifiedLegs), tone: Tone.warn, icon: Icons.warning_amber),
                   ],
                   if (_route.bookedLegs > 0) Text(l.routeBooked, style: small),
-                  Text(l.routeNoTransit, style: TextStyle(fontSize: 11, color: c.ink3)),
+                  Text(
+                    _route.hasTransit ? l.routeTransitNote : l.routeNoTransit,
+                    style: TextStyle(fontSize: 11, color: c.ink3),
+                  ),
+                ],
+                if (plan != null && day != null) ...[
+                  const Divider(height: 16),
+                  DayPlanPanel(
+                    plan: plan,
+                    legs: _route.loading ? const [] : _route.legs,
+                    day: day,
+                    canOptimize: movable >= 2,
+                    onEditAnchor: (which) => showDayAnchorSheet(
+                      context,
+                      ref,
+                      tripId: widget.tripId,
+                      day: day,
+                      which: which,
+                      near: plan.stops.firstOrNull?.point,
+                    ),
+                    onEditLeg: (r) =>
+                        showLegSheet(context, ref, tripId: widget.tripId, day: day, result: r, dayDefault: _mode),
+                    onOptimize: () =>
+                        showOptimizeSheet(context, tripId: widget.tripId, day: day, provider: provider, mode: _mode),
+                  ),
                 ],
                 if (plan != null && plan.unordered.isNotEmpty)
                   Padding(

@@ -6,10 +6,17 @@ import 'package:wanderplan/contexts/budget/infrastructure/drift_budget_repositor
 import 'package:wanderplan/contexts/budget/infrastructure/frankfurter_rate_source.dart';
 import 'package:wanderplan/contexts/checklist/application/checklist_service.dart';
 import 'package:wanderplan/contexts/checklist/infrastructure/drift_checklist_repository.dart';
+import 'package:wanderplan/contexts/flight_status/application/flight_status_ports.dart';
+import 'package:wanderplan/contexts/flight_status/application/flight_update_service.dart';
+import 'package:wanderplan/contexts/flight_status/infrastructure/backend_flight_server.dart';
+import 'package:wanderplan/contexts/flight_status/infrastructure/drift_flight_status_repository.dart';
 import 'package:wanderplan/contexts/gallery/application/gallery_service.dart';
 import 'package:wanderplan/contexts/gallery/infrastructure/drift_photo_repository.dart';
+import 'package:wanderplan/contexts/itinerary/application/booking_reminders.dart';
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
 import 'package:wanderplan/contexts/itinerary/infrastructure/drift_activity_repository.dart';
+import 'package:wanderplan/contexts/itinerary/infrastructure/drift_day_settings_repository.dart';
+import 'package:wanderplan/contexts/itinerary/infrastructure/local_notification_scheduler.dart';
 import 'package:wanderplan/contexts/places/application/location_link_service.dart';
 import 'package:wanderplan/contexts/places/application/location_service.dart';
 import 'package:wanderplan/contexts/places/application/map_services.dart';
@@ -29,12 +36,14 @@ import 'package:wanderplan/contexts/trip/application/trip_queries.dart';
 import 'package:wanderplan/contexts/trip/application/trip_service.dart';
 import 'package:wanderplan/contexts/trip/infrastructure/drift_trip_repository.dart';
 import 'package:wanderplan/shared/application/media_store.dart';
+import 'package:wanderplan/shared/application/secret_store.dart';
 import 'package:wanderplan/shared/application/settings_store.dart';
 import 'package:wanderplan/shared/domain/clock.dart';
 import 'package:wanderplan/shared/domain/id_generator.dart';
 import 'package:wanderplan/shared/infrastructure/database/app_database.dart';
 import 'package:wanderplan/shared/infrastructure/persistence/drift_settings_store.dart';
 import 'package:wanderplan/shared/infrastructure/persistence/drift_unit_of_work.dart';
+import 'package:wanderplan/shared/infrastructure/secrets/keychain_secret_store.dart';
 import 'package:wanderplan/shared/infrastructure/uuid_id_generator.dart';
 
 /// Composition root: the only place that knows which adapters implement
@@ -51,6 +60,8 @@ class ServiceRegistry {
     required this.maps,
     required this.location,
     required this.links,
+    required this.reminders,
+    required this.flightUpdates,
     required this.packages,
     required this.data,
     required this.settings,
@@ -67,7 +78,11 @@ class ServiceRegistry {
     RouteService? routeService,
     LocationService? locationService,
     LinkExpander? linkExpander,
+    ReminderScheduler? reminderScheduler,
+    FlightServer? flightServer,
+    SecretStore? secretStore,
     String amapWebKey = '',
+    String serverUrl = '',
   }) {
     final uow = DriftUnitOfWork(db);
     final tripRepo = DriftTripRepository(db);
@@ -78,6 +93,7 @@ class ServiceRegistry {
     final savedPlaces = SavedPlaceService(places: DriftSavedPlaceRepository(db), ids: ids, clock: clock);
     // Amap's web services are used only when a key is configured.
     final amap = amapWebKey.isEmpty ? null : AmapWebService(amapWebKey);
+    final notifications = reminderScheduler ?? LocalNotificationScheduler();
     final maps = MapServices(
       osmSearch: placeSearch ?? OsmPlaceSearch(),
       osmRouting: routeService ?? OsrmRouteService(),
@@ -87,7 +103,13 @@ class ServiceRegistry {
 
     final gallery = GalleryService(photos: photoRepo, trips: tripRepo, media: media, uow: uow, ids: ids, clock: clock);
     final checklist = ChecklistService(items: checklistRepo, uow: uow, ids: ids, clock: clock);
-    final itinerary = ItineraryService(activities: activityRepo, uow: uow, ids: ids, clock: clock);
+    final itinerary = ItineraryService(
+      activities: activityRepo,
+      days: DriftDaySettingsRepository(db),
+      uow: uow,
+      ids: ids,
+      clock: clock,
+    );
     final budget = BudgetService(
       expenses: DriftExpenseRepository(db),
       rates: DriftExchangeRateRepository(db),
@@ -117,6 +139,22 @@ class ServiceRegistry {
       budget: budget,
       savedPlaces: savedPlaces,
       maps: maps,
+      reminders: BookingReminderService(
+        activities: activityRepo,
+        trips: tripRepo,
+        scheduler: notifications,
+        clock: clock,
+      ),
+      flightUpdates: FlightUpdateService(
+        server: flightServer ?? BackendFlightServer(),
+        secrets: secretStore ?? const KeychainSecretStore(),
+        statuses: DriftFlightStatusRepository(db),
+        activities: activityRepo,
+        trips: tripRepo,
+        notifications: notifications,
+        clock: clock,
+        serverUrl: serverUrl,
+      ),
       links: LocationLinkService(
         expander: linkExpander ?? HttpLinkExpander(),
         search: () => maps.searchFor(MapProviderId.openStreetMap),
@@ -150,6 +188,8 @@ class ServiceRegistry {
   final MapServices maps;
   final LocationService location;
   final LocationLinkService links;
+  final BookingReminderService reminders;
+  final FlightUpdateService flightUpdates;
   final TripPackageService packages;
   final DataManagementService data;
   final SettingsStore settings;

@@ -7,6 +7,7 @@ import 'package:wanderplan/contexts/budget/domain/expense.dart';
 import 'package:wanderplan/contexts/checklist/application/checklist_service.dart';
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/shared/domain/geo_point.dart';
 import 'package:wanderplan/contexts/checklist/domain/checklist_item.dart';
 import 'package:wanderplan/contexts/sharing/application/trip_package_service.dart';
@@ -154,7 +155,7 @@ void main() {
     expect(t.banner.imagePath, isNull);
   });
 
-  test('the documented template in Example/ imports correctly (schema v2)', () async {
+  test('the documented template in Example/ imports correctly (schema v3)', () async {
     final id = await friend.app.packages.importFile(File('../Example/trip_template.json'));
     final t = (await friend.app.trips.getTrip(id))!;
     expect(t.title, 'Autumn in Chengdu & Chongqing');
@@ -179,6 +180,20 @@ void main() {
     // 9000 THB*0.2 + 2400 + 300 + 110 + 300 + 2000 CNY + 1200 THB*0.2 + 15 USD*7.1 + 1000 CNY
     expect(report.planned, closeTo(1800 + 2400 + 300 + 110 + 300 + 2000 + 240 + 106.5 + 1000, 1e-6));
     expect((await friend.app.budget.ratesOf(id)).every((r) => r.isManual), isTrue);
+
+    // Day-planning fields: travel modes, opening hours, reservation reminder.
+    final panda = acts.firstWhere((a) => a.title == 'Giant Panda Breeding Base');
+    expect((panda.openingHours?.opens, panda.openingHours?.closes), (450, 1080));
+    expect((panda.reservationRequired, panda.bookAheadDays, panda.remindToBook), (true, 3, true));
+    expect(panda.bookBy, const LocalDate(2026, 11, 18));
+    expect(acts.firstWhere((a) => a.kind == ActivityKind.train).arrivalMode, TravelMode.transit);
+    expect(acts.firstWhere((a) => a.title == 'Hotpot dinner').arrivalMode, TravelMode.walking);
+    final day = (await friend.app.itinerary.daySettingsOf(id)).single;
+    expect((day.date, day.endArrivalMode, day.endArrivalMinutes), (const LocalDate(2026, 11, 21), TravelMode.transit, 30));
+    // Saved places carry real (OpenStreetMap) coordinates.
+    final places = await friend.app.savedPlaces.placesOf(id);
+    expect(places.map((p) => p.name), contains('Hongyadong'));
+    expect(places.every((p) => p.source == 'import'), isTrue);
   });
 
   test('itinerary, expenses and rates round-trip; booking references stay private by default', () async {
@@ -240,5 +255,26 @@ void main() {
       throwsA(isA<TripPackageException>().having((e) => e.detail, 'detail', contains('Backwards'))),
     );
     expect(await friend.app.tripQueries.watchSummaries().first, isEmpty);
+  });
+
+  test('the real-trip example in Example/ imports with flights, coordinates, reservations and places', () async {
+    final id = await friend.app.packages.importFile(File('../Example/china_winter_trip_2026.json'));
+    final acts = await friend.app.itinerary.activitiesOf(id);
+    expect(acts, hasLength(33));
+    final alts = acts.where((a) => a.title.startsWith('ALT:')).toList();
+    expect(alts, hasLength(2));
+    expect(alts.every((a) => a.isOptional && a.cost == null && a.bookingStatus == BookingStatus.notBooked), isTrue);
+    final leg1 = acts.firstWhere((a) => a.title.startsWith('Flight: Kunming → Xiamen'));
+    expect((leg1.startMinute, leg1.endMinute, leg1.cost, leg1.remindToBook), (955, 1105, 7610.0, true));
+    expect(leg1.location.point, isNotNull, reason: 'airport coordinates from OpenStreetMap');
+    final leg2 = acts.firstWhere((a) => a.title.startsWith('Flight: Xiamen → Bangkok'));
+    expect((leg2.startMinute, leg2.endMinute), (16 * 60 + 20, 19 * 60 + 45), reason: '18:45 Bangkok = 19:45 China time');
+    expect(acts.where((a) => a.location.point != null || a.destination.point != null), hasLength(18));
+    expect(acts.firstWhere((a) => a.title == 'Jiuzhaigou National Park').reservationRequired, isTrue);
+    expect(await friend.app.savedPlaces.placesOf(id), hasLength(4));
+    expect(await friend.app.itinerary.daySettingsOf(id), hasLength(2));
+    final report = await friend.app.budget.watchReport(id).first;
+    // Planned = itemised return ticket + planned expenses (no double count, alternatives excluded).
+    expect(report.planned, closeTo(7610 + (22000 - 7610) + 5000 + 10300 + 3000 + 1600 + 1500 + 1500 + 2600 + 1000 + 1000, 1e-6));
   });
 }

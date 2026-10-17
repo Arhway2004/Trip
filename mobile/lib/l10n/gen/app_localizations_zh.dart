@@ -1481,6 +1481,404 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pasteLink => '粘贴链接';
 
   @override
+  String get modeTransit => '火车 / 地铁 / 公交';
+
+  @override
+  String get dayStart => '起点';
+
+  @override
+  String get dayEnd => '终点';
+
+  @override
+  String get dayStartTitle => '这一天从哪里出发？';
+
+  @override
+  String get dayEndTitle => '这一天在哪里结束？';
+
+  @override
+  String get dayAnchorNotSet => '未设置（当晚没有酒店）';
+
+  @override
+  String get dayAnchorHotel => '酒店';
+
+  @override
+  String get dayAnchorUseHotel => '使用酒店（默认）';
+
+  @override
+  String get dayLegs => '各站之间的交通';
+
+  @override
+  String get legTitle => '怎么过去？';
+
+  @override
+  String legDefault(String mode) {
+    return '当天默认（$mode）';
+  }
+
+  @override
+  String get legMinutes => '你的预计交通时间（可选）';
+
+  @override
+  String get legMinutesHelp => '留空则使用路线的一般用时。';
+
+  @override
+  String get legTransitHelp => '火车、地铁和公交的时间不会自动计算（没有时刻表数据）。请填写时刻表或地图应用中的时间。';
+
+  @override
+  String get legTransitNoTime => '火车/地铁/公交 · 请填写时间';
+
+  @override
+  String get legUndecided => '交通方式未定';
+
+  @override
+  String get legNoRoute => '无路线（未验证）';
+
+  @override
+  String get legYourEstimate => '你的估计';
+
+  @override
+  String legTooShort(int minutes) {
+    return '距下一项开始还差 $minutes 分钟';
+  }
+
+  @override
+  String get routeTransitNote => '蓝色虚线为火车/地铁/公交段：直线示意，时间为你填写的。';
+
+  @override
+  String get optimizeOrder => '优化顺序';
+
+  @override
+  String get optimizeNeedsTwo => '需要至少 2 个有位置、未锁定且未预订的地点。';
+
+  @override
+  String get optimizeTitle => '建议顺序';
+
+  @override
+  String optimizeSaves(String before, String after, String saved) {
+    return '交通 $before → $after（节省 $saved）';
+  }
+
+  @override
+  String optimizeAlreadyBest(String travel) {
+    return '你的顺序已经是最短的（交通共 $travel）。';
+  }
+
+  @override
+  String optimizeRouted(String mode) {
+    return '基于$mode路线；为一般用时，不含实时路况。';
+  }
+
+  @override
+  String optimizeEstimated(String mode) {
+    return '无路线数据：按直线距离估算（$mode）。';
+  }
+
+  @override
+  String get optimizeDayStart => '当天开始时间';
+
+  @override
+  String optimizeTravel(String time) {
+    return '交通 $time';
+  }
+
+  @override
+  String optimizeWait(String time) {
+    return '等待开门 $time';
+  }
+
+  @override
+  String get optimizeFixed => '固定';
+
+  @override
+  String get optimizeAssumed => '未设时间：按 1 小时计';
+
+  @override
+  String get optimizeClosed => '当天不开放';
+
+  @override
+  String get optimizeOutsideHours => '不在开放时间内';
+
+  @override
+  String optimizeLate(int minutes) {
+    return '晚到 $minutes 分钟';
+  }
+
+  @override
+  String get optimizeKeepsFixed => '已锁定、已预订和交通项目保持原时间，只移动未预订的地点。';
+
+  @override
+  String get optimizeApply => '应用';
+
+  @override
+  String optimizeApplied(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '已更新 $count 项活动',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gettingHere => '如何到达';
+
+  @override
+  String get gettingHereDefault => '当天默认';
+
+  @override
+  String get openingHours => '开放时间';
+
+  @override
+  String get openingHoursKnown => '有开放时间';
+
+  @override
+  String get openingHoursHelp => '请以官方信息为准；WanderPlan 会据此提醒并安排顺序。';
+
+  @override
+  String get opens => '开门';
+
+  @override
+  String get closes => '关门';
+
+  @override
+  String get closesNextDay => '次日关门';
+
+  @override
+  String get closedOn => '休息日';
+
+  @override
+  String get closedThatDay => '这一天不开放！';
+
+  @override
+  String get reservation => '预约';
+
+  @override
+  String get reservationRequired => '需要提前预约或购票';
+
+  @override
+  String get reservationVia => '在哪里 / 如何预约';
+
+  @override
+  String get reservationViaHint => '如：官方微信公众号、携程 App、官网';
+
+  @override
+  String get bookAheadDays => '提前几天预约？';
+
+  @override
+  String get daysUnit => '天';
+
+  @override
+  String bookByDate(String date) {
+    return '请在 $date 前预约';
+  }
+
+  @override
+  String get remindToBook => '当天提醒我';
+
+  @override
+  String get remindToBookHelp => '在预约截止日（旅行当地时间）09:00 发送通知。';
+
+  @override
+  String get remindPermissionDenied => 'WanderPlan 的通知已关闭。请在系统设置中允许以接收提醒。';
+
+  @override
+  String get reminderTitle => '该预约了';
+
+  @override
+  String reminderBody(String title, String date, String via) {
+    return '请预约“$title”（$date）。$via';
+  }
+
+  @override
+  String issueTightTravelOwn(String a, String b, int minutes, int needed) {
+    return '“$a”→“$b”：只有 $minutes 分钟，但你预计需要 $needed 分钟';
+  }
+
+  @override
+  String issueClosedOnDay(String title) {
+    return '“$title”这一天不开放';
+  }
+
+  @override
+  String issueOutsideOpeningHours(String title) {
+    return '“$title”的安排不在开放时间内';
+  }
+
+  @override
+  String issueBookingNeeded(String title) {
+    return '“$title”仍需预约';
+  }
+
+  @override
+  String issueBookBy(String title, String date) {
+    return '请在 $date 前预约“$title”';
+  }
+
+  @override
+  String get flightUpdates => '航班动态';
+
+  @override
+  String get flightUpdatesSubtitle => '来自你的 WanderPlan 服务器的实时动态';
+
+  @override
+  String get flightPrivacyTitle => '隐私';
+
+  @override
+  String get actionRetry => '重试';
+
+  @override
+  String get flightUpdatesOff => '暂时无法使用';
+
+  @override
+  String get flightServerChecking => '正在连接…';
+
+  @override
+  String get flightServerIntro =>
+      '航班实时动态来自 WanderPlan 服务器。服务器为所有人统一检查每个航班并保管数据 Key；手机只读取结果，无需任何设置。';
+
+  @override
+  String get flightServerTitle => '状态';
+
+  @override
+  String flightServerConnectedAs(String who) {
+    return '已开启 · 登录为 $who';
+  }
+
+  @override
+  String get flightServerPrivacy =>
+      '手机上不保存任何航班数据 API Key。应用会自动登录 WanderPlan 服务器，登录信息保存在钥匙串中（仅限本机）。';
+
+  @override
+  String get flightNotConnected => '此版本的应用暂不提供航班实时动态。';
+
+  @override
+  String get flightSignInRejected => 'WanderPlan 服务器未接受登录，请稍后再试。';
+
+  @override
+  String get flightServerNoKey => 'WanderPlan 服务器尚未开启航班实时数据。';
+
+  @override
+  String get flightNoDataYet => '暂无数据。服务器会按计划检查此航班（实时数据通常在航班当天前后出现）。';
+
+  @override
+  String get flightStale => '上次检查失败，显示最后一次的数据';
+
+  @override
+  String get flightNeedsNumber => '填写航班号（如 MU5103）即可获取实时动态。';
+
+  @override
+  String get flightCheckNow => '立即检查';
+
+  @override
+  String get flightNoChanges => '与上次检查相比没有变化';
+
+  @override
+  String get flightQuotaReached => '服务器的航班数据方案本月请求已用完。';
+
+  @override
+  String get flightNetwork => '暂时无法连接 WanderPlan 服务器，请检查网络后重试。';
+
+  @override
+  String get flightUnknownError => '服务器返回异常，请稍后再试。';
+
+  @override
+  String get flightScheduled => '计划中';
+
+  @override
+  String get flightInAir => '飞行中';
+
+  @override
+  String get flightLanded => '已到达';
+
+  @override
+  String get flightCancelled => '已取消';
+
+  @override
+  String get flightIncident => '异常';
+
+  @override
+  String get flightDiverted => '备降';
+
+  @override
+  String get flightStatusUnknown => '状态未知';
+
+  @override
+  String flightDelayed(int minutes) {
+    return '延误 $minutes 分钟';
+  }
+
+  @override
+  String get flightDep => '起飞';
+
+  @override
+  String get flightArr => '到达';
+
+  @override
+  String flightTerminal(String t) {
+    return 'T$t';
+  }
+
+  @override
+  String flightGate(String g) {
+    return '登机口 $g';
+  }
+
+  @override
+  String flightBelt(String b) {
+    return '转盘 $b';
+  }
+
+  @override
+  String flightChecked(String time) {
+    return '检查于 $time · 时间为各机场当地时间';
+  }
+
+  @override
+  String flightNotifyTitle(String flight) {
+    return '$flight：航班动态';
+  }
+
+  @override
+  String flightChangeStatus(String status) {
+    return '现在：$status';
+  }
+
+  @override
+  String flightChangeDeparture(String from, String to) {
+    return '起飞 $from → $to';
+  }
+
+  @override
+  String flightChangeArrival(String from, String to) {
+    return '到达 $from → $to';
+  }
+
+  @override
+  String flightChangeDepTerminal(String t) {
+    return '出发航站楼 $t';
+  }
+
+  @override
+  String flightChangeDepGate(String g) {
+    return '登机口 $g';
+  }
+
+  @override
+  String flightChangeArrTerminal(String t) {
+    return '到达航站楼 $t';
+  }
+
+  @override
+  String flightChangeArrGate(String g) {
+    return '到达登机口 $g';
+  }
+
+  @override
+  String flightChangeBaggage(String b) {
+    return '行李转盘 $b';
+  }
+
+  @override
   String get navigateWith => '使用以下应用导航';
 
   @override

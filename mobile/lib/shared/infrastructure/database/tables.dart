@@ -167,11 +167,51 @@ class Activities extends Table {
   BoolColumn get isLocked => boolean().withDefault(const Constant(false))();
   BoolColumn get isOptional => boolean().withDefault(const Constant(false))();
   TextColumn get notes => text().nullable()();
+
+  // --- Added in v6 ---------------------------------------------------------
+  /// How the traveller gets here from the previous stop (`TravelMode` name).
+  TextColumn get arrivalMode => text().nullable()();
+
+  /// The traveller's own travel-time estimate for that leg, minutes.
+  IntColumn get arrivalMinutes => integer().nullable()();
+
+  /// Opening hours (minutes after midnight) and closed weekdays ("1,7").
+  IntColumn get opensAt => integer().nullable()();
+  IntColumn get closesAt => integer().nullable()();
+  TextColumn get closedWeekdays => text().nullable()();
+  BoolColumn get reservationRequired => boolean().withDefault(const Constant(false))();
+  TextColumn get reservationVia => text().nullable()();
+  IntColumn get bookAheadDays => integer().nullable()();
+  BoolColumn get remindToBook => boolean().withDefault(const Constant(false))();
+
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
   @override
   Set<Column> get primaryKey => {id};
+}
+
+/// Where each day starts and ends when not at the hotel, and how the
+/// traveller reaches the end point. Added in schema v6.
+@DataClassName('DayPlanRow')
+class DayPlans extends Table {
+  TextColumn get tripId => text().references(Trips, #id, onDelete: KeyAction.cascade)();
+
+  /// `yyyy-MM-dd`, local to the trip.
+  TextColumn get date => text()();
+  TextColumn get startName => text().nullable()();
+  RealColumn get startLat => real().nullable()();
+  RealColumn get startLng => real().nullable()();
+  TextColumn get startSource => text().nullable()();
+  TextColumn get endName => text().nullable()();
+  RealColumn get endLat => real().nullable()();
+  RealColumn get endLng => real().nullable()();
+  TextColumn get endSource => text().nullable()();
+  TextColumn get endArrivalMode => text().nullable()();
+  IntColumn get endArrivalMinutes => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {tripId, date};
 }
 
 /// Planned and actual expenses. Added in schema v3.
@@ -238,4 +278,36 @@ class SavedPlaces extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
+}
+
+/// Last live status received for a flight activity. Added in schema v7.
+@DataClassName('FlightStatusRow')
+class FlightStatuses extends Table {
+  TextColumn get activityId => text().references(Activities, #id, onDelete: KeyAction.cascade)();
+  TextColumn get tripId => text().references(Trips, #id, onDelete: KeyAction.cascade)();
+
+  /// `FlightStatus.toJson()`.
+  TextColumn get json => text()();
+  DateTimeColumn get fetchedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {activityId};
+}
+
+/// Which server booking follows which planned flight. No foreign key on the
+/// activity on purpose: when an activity is deleted the link remains so the
+/// app can remove the server booking it created. Added in schema v8.
+@DataClassName('FlightLinkRow')
+class FlightLinks extends Table {
+  TextColumn get activityId => text()();
+  TextColumn get tripId => text()();
+  TextColumn get bookingId => text()();
+  TextColumn get flightId => text()();
+  TextColumn get code => text()();
+
+  /// `yyyy-MM-dd`.
+  TextColumn get flightDate => text()();
+
+  @override
+  Set<Column> get primaryKey => {activityId};
 }

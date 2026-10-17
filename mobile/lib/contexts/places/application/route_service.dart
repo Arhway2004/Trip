@@ -10,6 +10,10 @@ abstract interface class RouteService {
   /// Throws [RoutingException] when the provider has no route; callers then
   /// show a straight line labelled as unverified, never a made-up road.
   Future<RouteResult> route(List<GeoPoint> waypoints, TravelMode mode);
+
+  /// Travel times between every pair of [points]. Throws [RoutingException]
+  /// when the provider can't (callers then fall back to labelled estimates).
+  Future<TravelMatrix> matrix(List<GeoPoint> points, TravelMode mode);
 }
 
 class RoutingException implements Exception {

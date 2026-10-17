@@ -1,3 +1,5 @@
+import 'package:wanderplan/contexts/itinerary/domain/opening_hours.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/shared/domain/domain_exception.dart';
 import 'package:wanderplan/shared/domain/geo_point.dart';
 import 'package:wanderplan/shared/domain/local_date.dart';
@@ -89,6 +91,13 @@ class Activity {
     this.isLocked = false,
     this.isOptional = false,
     this.notes,
+    this.arrivalMode,
+    this.arrivalMinutes,
+    this.openingHours,
+    this.reservationRequired = false,
+    this.reservationVia,
+    this.bookAheadDays,
+    this.remindToBook = false,
     required this.createdAt,
     required this.updatedAt,
   }) : title = title.trim(),
@@ -106,6 +115,12 @@ class Activity {
       throw const DomainException('An activity must end after it starts');
     }
     if (cost != null && cost! < 0) throw const DomainException('Cost cannot be negative');
+    if (arrivalMinutes != null && (arrivalMinutes! < 0 || arrivalMinutes! > 48 * 60)) {
+      throw const DomainException('Travel time must be between 0 and 48 hours');
+    }
+    if (bookAheadDays != null && (bookAheadDays! < 0 || bookAheadDays! > 365)) {
+      throw const DomainException('Book-ahead days must be between 0 and 365');
+    }
   }
 
   static const _day = 24 * 60;
@@ -138,8 +153,37 @@ class Activity {
   final bool isLocked;
   final bool isOptional;
   final String? notes;
+
+  /// How the traveller gets here from the previous stop of the day (null =
+  /// the day's default mode).
+  final TravelMode? arrivalMode;
+
+  /// The traveller's own travel-time estimate for that leg, in minutes.
+  /// Required in practice for [TravelMode.transit], which is never calculated.
+  final int? arrivalMinutes;
+
+  /// Regular opening hours, if the place has them (entered by the traveller).
+  final OpeningHours? openingHours;
+
+  /// Needs a reservation or ticket bought in advance.
+  final bool reservationRequired;
+
+  /// Where/how to book: an app, a website, a phone number, a WeChat account…
+  final String? reservationVia;
+
+  /// Book this many days before the visit.
+  final int? bookAheadDays;
+
+  /// Send a phone reminder on the book-by date.
+  final bool remindToBook;
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  /// The last day to book ([bookAheadDays] before the visit), if set.
+  LocalDate? get bookBy => reservationRequired && bookAheadDays != null ? date.addDays(-bookAheadDays!) : null;
+
+  /// Still to book: required, not booked yet, not cancelled.
+  bool get needsBooking => reservationRequired && bookingStatus == BookingStatus.notBooked;
 
   LocalDate get lastDate => endDate ?? date;
   bool get hasTime => startMinute != null;
@@ -189,6 +233,9 @@ class Activity {
     bool clearBookingReference = false,
     bool? isLocked,
     bool? isOptional,
+    TravelMode? arrivalMode,
+    bool clearArrival = false,
+    int? arrivalMinutes,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => Activity(
@@ -212,6 +259,13 @@ class Activity {
     isLocked: isLocked ?? this.isLocked,
     isOptional: isOptional ?? this.isOptional,
     notes: notes,
+    arrivalMode: clearArrival ? null : (arrivalMode ?? this.arrivalMode),
+    arrivalMinutes: clearArrival ? null : (arrivalMinutes ?? this.arrivalMinutes),
+    openingHours: openingHours,
+    reservationRequired: reservationRequired,
+    reservationVia: reservationVia,
+    bookAheadDays: bookAheadDays,
+    remindToBook: remindToBook,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );

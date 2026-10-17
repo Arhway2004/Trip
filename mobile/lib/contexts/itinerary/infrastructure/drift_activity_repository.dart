@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity_repository.dart';
+import 'package:wanderplan/contexts/itinerary/domain/opening_hours.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/shared/domain/enum_by_name.dart';
 import 'package:wanderplan/shared/domain/geo_point.dart';
 import 'package:wanderplan/shared/domain/local_date.dart';
@@ -68,6 +70,13 @@ class DriftActivityRepository implements ActivityRepository {
         isLocked: r.isLocked,
         isOptional: r.isOptional,
         notes: r.notes,
+        arrivalMode: enumByName(TravelMode.values, r.arrivalMode),
+        arrivalMinutes: r.arrivalMinutes,
+        openingHours: _hours(r),
+        reservationRequired: r.reservationRequired,
+        reservationVia: r.reservationVia,
+        bookAheadDays: r.bookAheadDays,
+        remindToBook: r.remindToBook,
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,
       );
@@ -103,7 +112,31 @@ class DriftActivityRepository implements ActivityRepository {
     isLocked: a.isLocked,
     isOptional: a.isOptional,
     notes: a.notes,
+    arrivalMode: a.arrivalMode?.name,
+    arrivalMinutes: a.arrivalMinutes,
+    opensAt: a.openingHours?.opens,
+    closesAt: a.openingHours?.closes,
+    closedWeekdays: a.openingHours == null ? null : (a.openingHours!.closedWeekdays.toList()..sort()).join(','),
+    reservationRequired: a.reservationRequired,
+    reservationVia: a.reservationVia,
+    bookAheadDays: a.bookAheadDays,
+    remindToBook: a.remindToBook,
     createdAt: a.createdAt,
     updatedAt: a.updatedAt,
   );
+
+  static OpeningHours? _hours(ActivityRow r) {
+    if (r.opensAt == null || r.closesAt == null) return null;
+    try {
+      return OpeningHours(
+        opens: r.opensAt!,
+        closes: r.closesAt!,
+        closedWeekdays: {
+          for (final d in (r.closedWeekdays ?? '').split(',')) ?int.tryParse(d),
+        },
+      );
+    } catch (_) {
+      return null;
+    }
+  }
 }

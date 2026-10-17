@@ -8,9 +8,19 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	goredis "github.com/redis/go-redis/v9"
+
+	"wanderplan/backend/internal/flight/adapters/aerodatabox"
+	"wanderplan/backend/internal/flight/adapters/aviationstack"
+	flighthttp "wanderplan/backend/internal/flight/adapters/httpapi"
+	flightmem "wanderplan/backend/internal/flight/adapters/memory"
+	flightpg "wanderplan/backend/internal/flight/adapters/postgres"
+	flightredis "wanderplan/backend/internal/flight/adapters/redis"
+	flightapp "wanderplan/backend/internal/flight/app"
 
 	identityhttp "wanderplan/backend/internal/identity/adapters/httpapi"
 	identitymem "wanderplan/backend/internal/identity/adapters/memory"
@@ -35,12 +45,15 @@ type Deps struct {
 	DB       *database.DB // nil = in-memory storage (dev/test only)
 	Verifier auth.Verifier
 	Clock    kernel.Clock
+	// FlightProvider overrides the provider chosen from Config (tests).
+	FlightProvider flightapp.Provider
 }
 
 // Services exposes the application services (handy for tests and workers).
 type Services struct {
 	Identity *identityapp.Service
 	Trips    *tripapp.Service
+	Flights  *flightapp.Service
 }
 
 func NewServices(d Deps) Services {
@@ -48,17 +61,94 @@ func NewServices(d Deps) Services {
 	if clock == nil {
 		clock = kernel.SystemClock
 	}
+	log := d.Logger
+	if log == nil {
+		log = slog.Default()
+	}
 	if d.DB != nil {
 		tr := trippg.New(d.DB)
+		st := flightpg.New(d.DB)
 		return Services{
 			Identity: identityapp.NewService(identitypg.New(d.DB), clock),
 			Trips:    tripapp.NewService(tr, d.DB, clock),
+			Flights: newFlights(d, clock, log, flightpg.Flights{Store: st}, flightpg.Bookings{Store: st},
+				flightpg.Usage{Store: st}, d.DB),
 		}
 	}
 	tr := tripmem.New()
 	return Services{
 		Identity: identityapp.NewService(identitymem.New(), clock),
 		Trips:    tripapp.NewService(tr, tr, clock),
+		Flights: newFlights(d, clock, log, flightmem.NewFlights(), flightmem.NewBookings(),
+			flightmem.NewUsage(), flightmem.NoTx{}),
+	}
+}
+
+func newFlights(d Deps, clock kernel.Clock, log *slog.Logger, f flightapp.FlightRepository, b flightapp.BookingRepository, u flightapp.Usage, tx flightapp.TxRunner) *flightapp.Service {
+	fc := d.Config.Flights
+	cfg := flightapp.DefaultConfig
+	if fc.RefreshInterval > 0 {
+		cfg.Cadence.Interval = fc.RefreshInterval
+	}
+	cfg.Cadence.DayOf = fc.DayOfInterval
+	if fc.ManualCooldown > 0 {
+		cfg.Cadence.ManualCooldown = fc.ManualCooldown
+	}
+	cfg.MonthlyBudget = fc.MonthlyBudget
+	cfg.CacheTTL = cfg.Cadence.Interval
+
+	var cache flightapp.Cache = flightmem.NewCache(clock)
+	var locks flightapp.Locker = flightmem.NewLocker(clock)
+	if url := fc.RedisURL.Reveal(); url != "" {
+		if opts, err := goredis.ParseURL(url); err == nil {
+			rdb := goredis.NewClient(opts)
+			cache, locks = flightredis.NewCache(rdb, log), flightredis.NewLocker(rdb)
+		} else {
+			log.Error("REDIS_URL is not valid; using the in-process cache")
+		}
+	}
+	return flightapp.NewService(flightProvider(d), f, b, cache, locks, u, tx, cfg, clock, log)
+}
+
+// flightProvider picks the configured provider; nil when no key is set.
+func flightProvider(d Deps) flightapp.Provider {
+	if d.FlightProvider != nil {
+		return d.FlightProvider
+	}
+	fc := d.Config.Flights
+	adb, avs := fc.AeroDataBoxKey.Reveal(), fc.AviationstackKey.Reveal()
+	switch {
+	case (fc.Provider == "aerodatabox" || fc.Provider == "") && adb != "":
+		return aerodatabox.New(adb, aerodatabox.Marketplace(fc.AeroDataBoxVia), nil)
+	case (fc.Provider == "aviationstack" || fc.Provider == "") && avs != "":
+		return aviationstack.New(avs, nil)
+	}
+	return nil
+}
+
+// RunFlightWorker refreshes due flights every interval until ctx ends (the
+// daily scheduler; due-ness is decided per flight by its cadence).
+func RunFlightWorker(ctx context.Context, s Services, interval time.Duration, log *slog.Logger) {
+	if !s.Flights.Configured() {
+		log.Info("flight monitoring off: no AVIATIONSTACK_API_KEY or AERODATABOX_API_KEY")
+		return
+	}
+	if interval <= 0 {
+		interval = 5 * time.Minute
+	}
+	t := time.NewTicker(interval)
+	defer t.Stop()
+	for {
+		if n, err := s.Flights.RunDue(ctx); err != nil {
+			log.Warn("flight worker", "error", err)
+		} else if n > 0 {
+			log.Info("flights refreshed", "count", n)
+		}
+		select {
+		case <-ctx.Done():
+			return
+		case <-t.C:
+		}
 	}
 }
 
@@ -109,9 +199,14 @@ func NewRouter(d Deps, s Services) *gin.Engine {
 		u, err := s.Identity.EnsureUser(ctx, identitydomain.ExternalIdentity{Subject: cl.Subject, Email: cl.Email, Name: cl.Name})
 		return u.ID, err
 	}
+	if d.Config.Auth == config.AuthDev && !d.Config.IsProduction() {
+		// Development only: the app signs in to the demo account by itself.
+		r.POST("/v1/auth/demo", identityhttp.DemoSignIn(d.Config.DevJWTSecret))
+	}
 	v1 := r.Group("/v1", auth.Required(d.Verifier, resolve))
 	identityhttp.New(s.Identity).Register(v1)
 	triphttp.New(s.Trips).Register(v1)
+	flighthttp.New(s.Flights).Register(v1)
 	return r
 }
 

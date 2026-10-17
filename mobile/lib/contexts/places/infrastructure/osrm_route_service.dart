@@ -32,21 +32,57 @@ class OsrmRouteService implements RouteService {
     TravelMode.walking => 'routed-foot',
     TravelMode.cycling => 'routed-bike',
     TravelMode.driving => 'routed-car',
+    TravelMode.transit => throw const RoutingException('Public transport is not routed'),
   };
+
+  Future<void> _pace() async {
+    final wait = const Duration(milliseconds: 1100) - DateTime.now().difference(_last);
+    if (!wait.isNegative) await Future<void>.delayed(wait);
+    _last = DateTime.now();
+  }
+
+  static String _coords(List<GeoPoint> points) =>
+      points.map((p) => '${p.longitude.toStringAsFixed(6)},${p.latitude.toStringAsFixed(6)}').join(';');
+
+  @override
+  Future<TravelMatrix> matrix(List<GeoPoint> points, TravelMode mode) async {
+    if (points.length < 2) throw const RoutingException('At least two points are needed');
+    final profile = _profile(mode);
+    await _pace();
+    try {
+      final res = await _dio.get<Map<String, dynamic>>(
+        '/$profile/table/v1/driving/${_coords(points)}',
+        queryParameters: {'annotations': 'duration'},
+      );
+      return parseTable(res.data ?? const {});
+    } on DioException catch (e) {
+      throw RoutingException(e.message ?? 'Network error');
+    }
+  }
+
+  /// Parses an OSRM `table` response (public for tests).
+  static TravelMatrix parseTable(Map<String, dynamic> json) {
+    if (json['code'] != 'Ok') throw RoutingException('${json['code'] ?? 'No table'}');
+    final rows = (json['durations'] as List?) ?? const [];
+    return TravelMatrix(
+      [
+        for (final row in rows.cast<List<dynamic>>()) [for (final v in row) (v as num?)?.toDouble()],
+      ],
+      source: source,
+      estimated: false,
+    );
+  }
 
   @override
   Future<RouteResult> route(List<GeoPoint> waypoints, TravelMode mode) async {
     if (waypoints.length < 2) throw const RoutingException('At least two points are needed');
-    final wait = const Duration(milliseconds: 1100) - DateTime.now().difference(_last);
-    if (!wait.isNegative) await Future<void>.delayed(wait);
-    _last = DateTime.now();
-    final coords = waypoints
-        .map((p) => '${p.longitude.toStringAsFixed(6)},${p.latitude.toStringAsFixed(6)}')
-        .join(';');
+    final profile = _profile(mode);
+    await _pace();
+    final coords = _coords(waypoints);
     try {
       // FOSSGIS keeps OSRM's URL shape; the profile is chosen by the path prefix.
       final res = await _dio.get<Map<String, dynamic>>(
-        '/${_profile(mode)}/route/v1/driving/$coords',
+        '/$profile/route/v1/driving/$coords',
         queryParameters: {'overview': 'full', 'geometries': 'geojson', 'steps': 'false'},
       );
       return parse(res.data ?? const {}, mode);
@@ -74,6 +110,10 @@ class OsrmRouteService implements RouteService {
       durationSeconds: (r['duration'] as num).toDouble(),
       mode: mode,
       source: source,
+      legs: [
+        for (final l in ((r['legs'] as List?) ?? const []).cast<Map<String, dynamic>>())
+          ((l['distance'] as num).toDouble(), (l['duration'] as num).toDouble()),
+      ],
     );
   }
 }

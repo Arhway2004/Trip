@@ -1529,6 +1529,421 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pasteLink => 'Paste link';
 
   @override
+  String get modeTransit => 'Train / metro / bus';
+
+  @override
+  String get dayStart => 'Start';
+
+  @override
+  String get dayEnd => 'End';
+
+  @override
+  String get dayStartTitle => 'Where does this day start?';
+
+  @override
+  String get dayEndTitle => 'Where does this day end?';
+
+  @override
+  String get dayAnchorNotSet => 'not set (no hotel that night)';
+
+  @override
+  String get dayAnchorHotel => 'hotel';
+
+  @override
+  String get dayAnchorUseHotel => 'Use the hotel (default)';
+
+  @override
+  String get dayLegs => 'Getting between stops';
+
+  @override
+  String get legTitle => 'How do you get there?';
+
+  @override
+  String legDefault(String mode) {
+    return 'Day default ($mode)';
+  }
+
+  @override
+  String get legMinutes => 'Your travel time (optional)';
+
+  @override
+  String get legMinutesHelp => 'Leave empty to use the route’s typical time.';
+
+  @override
+  String get legTransitHelp =>
+      'Train, metro and bus times aren’t calculated (no timetable data). Enter the time from the timetable or a map app.';
+
+  @override
+  String get legTransitNoTime => 'Train/metro/bus · enter your time';
+
+  @override
+  String get legUndecided => 'Transport not decided yet';
+
+  @override
+  String get legNoRoute => 'No route (unverified)';
+
+  @override
+  String get legYourEstimate => 'your estimate';
+
+  @override
+  String legTooShort(int minutes) {
+    return '$minutes min short before the next start';
+  }
+
+  @override
+  String get routeTransitNote =>
+      'Dashed blue lines are train/metro/bus legs: straight lines with your own times.';
+
+  @override
+  String get optimizeOrder => 'Optimize order';
+
+  @override
+  String get optimizeNeedsTwo =>
+      'Needs at least 2 places with a location that aren’t locked or booked.';
+
+  @override
+  String get optimizeTitle => 'Suggested order';
+
+  @override
+  String optimizeSaves(String before, String after, String saved) {
+    return 'Travel $before → $after (saves $saved)';
+  }
+
+  @override
+  String optimizeAlreadyBest(String travel) {
+    return 'Your order is already the shortest ($travel of travel).';
+  }
+
+  @override
+  String optimizeRouted(String mode) {
+    return 'Based on $mode routes; typical times, not live traffic.';
+  }
+
+  @override
+  String optimizeEstimated(String mode) {
+    return 'No route data: estimated from straight-line distance for $mode.';
+  }
+
+  @override
+  String get optimizeDayStart => 'Day starts at';
+
+  @override
+  String optimizeTravel(String time) {
+    return '$time travel';
+  }
+
+  @override
+  String optimizeWait(String time) {
+    return 'wait $time for opening';
+  }
+
+  @override
+  String get optimizeFixed => 'Fixed';
+
+  @override
+  String get optimizeAssumed => 'No time set: 1 h assumed';
+
+  @override
+  String get optimizeClosed => 'Closed that day';
+
+  @override
+  String get optimizeOutsideHours => 'Outside opening hours';
+
+  @override
+  String optimizeLate(int minutes) {
+    return '$minutes min late';
+  }
+
+  @override
+  String get optimizeKeepsFixed =>
+      'Locked, booked and transport items keep their times. Only places you haven’t booked are moved.';
+
+  @override
+  String get optimizeApply => 'Apply';
+
+  @override
+  String optimizeApplied(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Updated $count activities',
+      one: 'Updated 1 activity',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gettingHere => 'Getting here';
+
+  @override
+  String get gettingHereDefault => 'Day default';
+
+  @override
+  String get openingHours => 'Opening hours';
+
+  @override
+  String get openingHoursKnown => 'Has opening hours';
+
+  @override
+  String get openingHoursHelp =>
+      'Check the official site; WanderPlan uses them to warn and to plan the order.';
+
+  @override
+  String get opens => 'Opens';
+
+  @override
+  String get closes => 'Closes';
+
+  @override
+  String get closesNextDay => 'closes after midnight';
+
+  @override
+  String get closedOn => 'Closed on';
+
+  @override
+  String get closedThatDay => 'Closed on this day!';
+
+  @override
+  String get reservation => 'Reservation';
+
+  @override
+  String get reservationRequired => 'Needs a reservation or ticket in advance';
+
+  @override
+  String get reservationVia => 'Where / how to book';
+
+  @override
+  String get reservationViaHint =>
+      'e.g. official WeChat account, Trip.com app, website';
+
+  @override
+  String get bookAheadDays => 'Book how many days before?';
+
+  @override
+  String get daysUnit => 'days';
+
+  @override
+  String bookByDate(String date) {
+    return 'Book by $date';
+  }
+
+  @override
+  String get remindToBook => 'Remind me on that day';
+
+  @override
+  String get remindToBookHelp =>
+      'A notification at 09:00 (trip time) on the book-by date.';
+
+  @override
+  String get remindPermissionDenied =>
+      'Notifications are off for WanderPlan. Allow them in system settings to get reminders.';
+
+  @override
+  String get reminderTitle => 'Time to book';
+
+  @override
+  String reminderBody(String title, String date, String via) {
+    return 'Book “$title” for $date. $via';
+  }
+
+  @override
+  String issueTightTravelOwn(String a, String b, int minutes, int needed) {
+    return '“$a” → “$b”: only $minutes min, but you allowed $needed min to get there';
+  }
+
+  @override
+  String issueClosedOnDay(String title) {
+    return '“$title” is closed on this day';
+  }
+
+  @override
+  String issueOutsideOpeningHours(String title) {
+    return '“$title” is planned outside its opening hours';
+  }
+
+  @override
+  String issueBookingNeeded(String title) {
+    return '“$title” still needs a reservation';
+  }
+
+  @override
+  String issueBookBy(String title, String date) {
+    return 'Book “$title” by $date';
+  }
+
+  @override
+  String get flightUpdates => 'Flight updates';
+
+  @override
+  String get flightUpdatesSubtitle => 'Live status from your WanderPlan server';
+
+  @override
+  String get flightPrivacyTitle => 'Privacy';
+
+  @override
+  String get actionRetry => 'Try again';
+
+  @override
+  String get flightUpdatesOff => 'Not working right now';
+
+  @override
+  String get flightServerChecking => 'Connecting…';
+
+  @override
+  String get flightServerIntro =>
+      'Live flight status comes from the WanderPlan server. It checks each flight once for everyone and holds the flight-data key; this phone only reads the results. Nothing to set up.';
+
+  @override
+  String get flightServerTitle => 'Status';
+
+  @override
+  String flightServerConnectedAs(String who) {
+    return 'On · signed in as $who';
+  }
+
+  @override
+  String get flightServerPrivacy =>
+      'No flight-data API key is stored on this phone. The app signs in to the WanderPlan server by itself and keeps that sign-in in the keychain (this device only).';
+
+  @override
+  String get flightNotConnected =>
+      'Live flight updates aren’t available in this version of the app.';
+
+  @override
+  String get flightSignInRejected =>
+      'The WanderPlan server didn’t accept the sign-in. Try again later.';
+
+  @override
+  String get flightServerNoKey =>
+      'Live flight data isn’t switched on at the WanderPlan server yet.';
+
+  @override
+  String get flightNoDataYet =>
+      'No data yet. Your server checks this flight on its schedule (live data appears around the flight day).';
+
+  @override
+  String get flightStale => 'Last check failed; showing the last known data';
+
+  @override
+  String get flightNeedsNumber =>
+      'Add the flight number (e.g. MU5103) to get live updates.';
+
+  @override
+  String get flightCheckNow => 'Check now';
+
+  @override
+  String get flightNoChanges => 'No changes since the last check';
+
+  @override
+  String get flightQuotaReached =>
+      'Your server’s flight-data plan is out of requests this month.';
+
+  @override
+  String get flightNetwork =>
+      'Can’t reach the WanderPlan server right now. Check your internet connection and try again.';
+
+  @override
+  String get flightUnknownError =>
+      'The server didn’t answer as expected. Try again later.';
+
+  @override
+  String get flightScheduled => 'Scheduled';
+
+  @override
+  String get flightInAir => 'In the air';
+
+  @override
+  String get flightLanded => 'Landed';
+
+  @override
+  String get flightCancelled => 'Cancelled';
+
+  @override
+  String get flightIncident => 'Incident';
+
+  @override
+  String get flightDiverted => 'Diverted';
+
+  @override
+  String get flightStatusUnknown => 'Status unknown';
+
+  @override
+  String flightDelayed(int minutes) {
+    return 'Delayed $minutes min';
+  }
+
+  @override
+  String get flightDep => 'Dep';
+
+  @override
+  String get flightArr => 'Arr';
+
+  @override
+  String flightTerminal(String t) {
+    return 'T$t';
+  }
+
+  @override
+  String flightGate(String g) {
+    return 'Gate $g';
+  }
+
+  @override
+  String flightBelt(String b) {
+    return 'Belt $b';
+  }
+
+  @override
+  String flightChecked(String time) {
+    return 'Checked $time · times are local at each airport';
+  }
+
+  @override
+  String flightNotifyTitle(String flight) {
+    return '$flight: flight update';
+  }
+
+  @override
+  String flightChangeStatus(String status) {
+    return 'Now $status';
+  }
+
+  @override
+  String flightChangeDeparture(String from, String to) {
+    return 'Departure $from → $to';
+  }
+
+  @override
+  String flightChangeArrival(String from, String to) {
+    return 'Arrival $from → $to';
+  }
+
+  @override
+  String flightChangeDepTerminal(String t) {
+    return 'Departure terminal $t';
+  }
+
+  @override
+  String flightChangeDepGate(String g) {
+    return 'Gate $g';
+  }
+
+  @override
+  String flightChangeArrTerminal(String t) {
+    return 'Arrival terminal $t';
+  }
+
+  @override
+  String flightChangeArrGate(String g) {
+    return 'Arrival gate $g';
+  }
+
+  @override
+  String flightChangeBaggage(String b) {
+    return 'Baggage belt $b';
+  }
+
+  @override
   String get navigateWith => 'Navigate with';
 
   @override

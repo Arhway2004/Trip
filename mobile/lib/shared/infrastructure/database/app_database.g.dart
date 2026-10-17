@@ -3566,6 +3566,112 @@ class $ActivitiesTable extends Activities
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _arrivalModeMeta = const VerificationMeta(
+    'arrivalMode',
+  );
+  @override
+  late final GeneratedColumn<String> arrivalMode = GeneratedColumn<String>(
+    'arrival_mode',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _arrivalMinutesMeta = const VerificationMeta(
+    'arrivalMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> arrivalMinutes = GeneratedColumn<int>(
+    'arrival_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _opensAtMeta = const VerificationMeta(
+    'opensAt',
+  );
+  @override
+  late final GeneratedColumn<int> opensAt = GeneratedColumn<int>(
+    'opens_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _closesAtMeta = const VerificationMeta(
+    'closesAt',
+  );
+  @override
+  late final GeneratedColumn<int> closesAt = GeneratedColumn<int>(
+    'closes_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _closedWeekdaysMeta = const VerificationMeta(
+    'closedWeekdays',
+  );
+  @override
+  late final GeneratedColumn<String> closedWeekdays = GeneratedColumn<String>(
+    'closed_weekdays',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reservationRequiredMeta =
+      const VerificationMeta('reservationRequired');
+  @override
+  late final GeneratedColumn<bool> reservationRequired = GeneratedColumn<bool>(
+    'reservation_required',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("reservation_required" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _reservationViaMeta = const VerificationMeta(
+    'reservationVia',
+  );
+  @override
+  late final GeneratedColumn<String> reservationVia = GeneratedColumn<String>(
+    'reservation_via',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bookAheadDaysMeta = const VerificationMeta(
+    'bookAheadDays',
+  );
+  @override
+  late final GeneratedColumn<int> bookAheadDays = GeneratedColumn<int>(
+    'book_ahead_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _remindToBookMeta = const VerificationMeta(
+    'remindToBook',
+  );
+  @override
+  late final GeneratedColumn<bool> remindToBook = GeneratedColumn<bool>(
+    'remind_to_book',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("remind_to_book" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -3616,6 +3722,15 @@ class $ActivitiesTable extends Activities
     isLocked,
     isOptional,
     notes,
+    arrivalMode,
+    arrivalMinutes,
+    opensAt,
+    closesAt,
+    closedWeekdays,
+    reservationRequired,
+    reservationVia,
+    bookAheadDays,
+    remindToBook,
     createdAt,
     updatedAt,
   ];
@@ -3823,6 +3938,81 @@ class $ActivitiesTable extends Activities
         notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
       );
     }
+    if (data.containsKey('arrival_mode')) {
+      context.handle(
+        _arrivalModeMeta,
+        arrivalMode.isAcceptableOrUnknown(
+          data['arrival_mode']!,
+          _arrivalModeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('arrival_minutes')) {
+      context.handle(
+        _arrivalMinutesMeta,
+        arrivalMinutes.isAcceptableOrUnknown(
+          data['arrival_minutes']!,
+          _arrivalMinutesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('opens_at')) {
+      context.handle(
+        _opensAtMeta,
+        opensAt.isAcceptableOrUnknown(data['opens_at']!, _opensAtMeta),
+      );
+    }
+    if (data.containsKey('closes_at')) {
+      context.handle(
+        _closesAtMeta,
+        closesAt.isAcceptableOrUnknown(data['closes_at']!, _closesAtMeta),
+      );
+    }
+    if (data.containsKey('closed_weekdays')) {
+      context.handle(
+        _closedWeekdaysMeta,
+        closedWeekdays.isAcceptableOrUnknown(
+          data['closed_weekdays']!,
+          _closedWeekdaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reservation_required')) {
+      context.handle(
+        _reservationRequiredMeta,
+        reservationRequired.isAcceptableOrUnknown(
+          data['reservation_required']!,
+          _reservationRequiredMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reservation_via')) {
+      context.handle(
+        _reservationViaMeta,
+        reservationVia.isAcceptableOrUnknown(
+          data['reservation_via']!,
+          _reservationViaMeta,
+        ),
+      );
+    }
+    if (data.containsKey('book_ahead_days')) {
+      context.handle(
+        _bookAheadDaysMeta,
+        bookAheadDays.isAcceptableOrUnknown(
+          data['book_ahead_days']!,
+          _bookAheadDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('remind_to_book')) {
+      context.handle(
+        _remindToBookMeta,
+        remindToBook.isAcceptableOrUnknown(
+          data['remind_to_book']!,
+          _remindToBookMeta,
+        ),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -3952,6 +4142,42 @@ class $ActivitiesTable extends Activities
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
       ),
+      arrivalMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}arrival_mode'],
+      ),
+      arrivalMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}arrival_minutes'],
+      ),
+      opensAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}opens_at'],
+      ),
+      closesAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}closes_at'],
+      ),
+      closedWeekdays: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}closed_weekdays'],
+      ),
+      reservationRequired: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}reservation_required'],
+      )!,
+      reservationVia: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reservation_via'],
+      ),
+      bookAheadDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}book_ahead_days'],
+      ),
+      remindToBook: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}remind_to_book'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -4006,6 +4232,21 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
   final bool isLocked;
   final bool isOptional;
   final String? notes;
+
+  /// How the traveller gets here from the previous stop (`TravelMode` name).
+  final String? arrivalMode;
+
+  /// The traveller's own travel-time estimate for that leg, minutes.
+  final int? arrivalMinutes;
+
+  /// Opening hours (minutes after midnight) and closed weekdays ("1,7").
+  final int? opensAt;
+  final int? closesAt;
+  final String? closedWeekdays;
+  final bool reservationRequired;
+  final String? reservationVia;
+  final int? bookAheadDays;
+  final bool remindToBook;
   final DateTime createdAt;
   final DateTime updatedAt;
   const ActivityRow({
@@ -4035,6 +4276,15 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
     required this.isLocked,
     required this.isOptional,
     this.notes,
+    this.arrivalMode,
+    this.arrivalMinutes,
+    this.opensAt,
+    this.closesAt,
+    this.closedWeekdays,
+    required this.reservationRequired,
+    this.reservationVia,
+    this.bookAheadDays,
+    required this.remindToBook,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -4097,6 +4347,29 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
     }
+    if (!nullToAbsent || arrivalMode != null) {
+      map['arrival_mode'] = Variable<String>(arrivalMode);
+    }
+    if (!nullToAbsent || arrivalMinutes != null) {
+      map['arrival_minutes'] = Variable<int>(arrivalMinutes);
+    }
+    if (!nullToAbsent || opensAt != null) {
+      map['opens_at'] = Variable<int>(opensAt);
+    }
+    if (!nullToAbsent || closesAt != null) {
+      map['closes_at'] = Variable<int>(closesAt);
+    }
+    if (!nullToAbsent || closedWeekdays != null) {
+      map['closed_weekdays'] = Variable<String>(closedWeekdays);
+    }
+    map['reservation_required'] = Variable<bool>(reservationRequired);
+    if (!nullToAbsent || reservationVia != null) {
+      map['reservation_via'] = Variable<String>(reservationVia);
+    }
+    if (!nullToAbsent || bookAheadDays != null) {
+      map['book_ahead_days'] = Variable<int>(bookAheadDays);
+    }
+    map['remind_to_book'] = Variable<bool>(remindToBook);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -4158,6 +4431,29 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
       notes: notes == null && nullToAbsent
           ? const Value.absent()
           : Value(notes),
+      arrivalMode: arrivalMode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(arrivalMode),
+      arrivalMinutes: arrivalMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(arrivalMinutes),
+      opensAt: opensAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(opensAt),
+      closesAt: closesAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(closesAt),
+      closedWeekdays: closedWeekdays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(closedWeekdays),
+      reservationRequired: Value(reservationRequired),
+      reservationVia: reservationVia == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reservationVia),
+      bookAheadDays: bookAheadDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bookAheadDays),
+      remindToBook: Value(remindToBook),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -4195,6 +4491,17 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
       isLocked: serializer.fromJson<bool>(json['isLocked']),
       isOptional: serializer.fromJson<bool>(json['isOptional']),
       notes: serializer.fromJson<String?>(json['notes']),
+      arrivalMode: serializer.fromJson<String?>(json['arrivalMode']),
+      arrivalMinutes: serializer.fromJson<int?>(json['arrivalMinutes']),
+      opensAt: serializer.fromJson<int?>(json['opensAt']),
+      closesAt: serializer.fromJson<int?>(json['closesAt']),
+      closedWeekdays: serializer.fromJson<String?>(json['closedWeekdays']),
+      reservationRequired: serializer.fromJson<bool>(
+        json['reservationRequired'],
+      ),
+      reservationVia: serializer.fromJson<String?>(json['reservationVia']),
+      bookAheadDays: serializer.fromJson<int?>(json['bookAheadDays']),
+      remindToBook: serializer.fromJson<bool>(json['remindToBook']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -4229,6 +4536,15 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
       'isLocked': serializer.toJson<bool>(isLocked),
       'isOptional': serializer.toJson<bool>(isOptional),
       'notes': serializer.toJson<String?>(notes),
+      'arrivalMode': serializer.toJson<String?>(arrivalMode),
+      'arrivalMinutes': serializer.toJson<int?>(arrivalMinutes),
+      'opensAt': serializer.toJson<int?>(opensAt),
+      'closesAt': serializer.toJson<int?>(closesAt),
+      'closedWeekdays': serializer.toJson<String?>(closedWeekdays),
+      'reservationRequired': serializer.toJson<bool>(reservationRequired),
+      'reservationVia': serializer.toJson<String?>(reservationVia),
+      'bookAheadDays': serializer.toJson<int?>(bookAheadDays),
+      'remindToBook': serializer.toJson<bool>(remindToBook),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -4261,6 +4577,15 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
     bool? isLocked,
     bool? isOptional,
     Value<String?> notes = const Value.absent(),
+    Value<String?> arrivalMode = const Value.absent(),
+    Value<int?> arrivalMinutes = const Value.absent(),
+    Value<int?> opensAt = const Value.absent(),
+    Value<int?> closesAt = const Value.absent(),
+    Value<String?> closedWeekdays = const Value.absent(),
+    bool? reservationRequired,
+    Value<String?> reservationVia = const Value.absent(),
+    Value<int?> bookAheadDays = const Value.absent(),
+    bool? remindToBook,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => ActivityRow(
@@ -4298,6 +4623,23 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
     isLocked: isLocked ?? this.isLocked,
     isOptional: isOptional ?? this.isOptional,
     notes: notes.present ? notes.value : this.notes,
+    arrivalMode: arrivalMode.present ? arrivalMode.value : this.arrivalMode,
+    arrivalMinutes: arrivalMinutes.present
+        ? arrivalMinutes.value
+        : this.arrivalMinutes,
+    opensAt: opensAt.present ? opensAt.value : this.opensAt,
+    closesAt: closesAt.present ? closesAt.value : this.closesAt,
+    closedWeekdays: closedWeekdays.present
+        ? closedWeekdays.value
+        : this.closedWeekdays,
+    reservationRequired: reservationRequired ?? this.reservationRequired,
+    reservationVia: reservationVia.present
+        ? reservationVia.value
+        : this.reservationVia,
+    bookAheadDays: bookAheadDays.present
+        ? bookAheadDays.value
+        : this.bookAheadDays,
+    remindToBook: remindToBook ?? this.remindToBook,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -4351,6 +4693,29 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
           ? data.isOptional.value
           : this.isOptional,
       notes: data.notes.present ? data.notes.value : this.notes,
+      arrivalMode: data.arrivalMode.present
+          ? data.arrivalMode.value
+          : this.arrivalMode,
+      arrivalMinutes: data.arrivalMinutes.present
+          ? data.arrivalMinutes.value
+          : this.arrivalMinutes,
+      opensAt: data.opensAt.present ? data.opensAt.value : this.opensAt,
+      closesAt: data.closesAt.present ? data.closesAt.value : this.closesAt,
+      closedWeekdays: data.closedWeekdays.present
+          ? data.closedWeekdays.value
+          : this.closedWeekdays,
+      reservationRequired: data.reservationRequired.present
+          ? data.reservationRequired.value
+          : this.reservationRequired,
+      reservationVia: data.reservationVia.present
+          ? data.reservationVia.value
+          : this.reservationVia,
+      bookAheadDays: data.bookAheadDays.present
+          ? data.bookAheadDays.value
+          : this.bookAheadDays,
+      remindToBook: data.remindToBook.present
+          ? data.remindToBook.value
+          : this.remindToBook,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -4385,6 +4750,15 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
           ..write('isLocked: $isLocked, ')
           ..write('isOptional: $isOptional, ')
           ..write('notes: $notes, ')
+          ..write('arrivalMode: $arrivalMode, ')
+          ..write('arrivalMinutes: $arrivalMinutes, ')
+          ..write('opensAt: $opensAt, ')
+          ..write('closesAt: $closesAt, ')
+          ..write('closedWeekdays: $closedWeekdays, ')
+          ..write('reservationRequired: $reservationRequired, ')
+          ..write('reservationVia: $reservationVia, ')
+          ..write('bookAheadDays: $bookAheadDays, ')
+          ..write('remindToBook: $remindToBook, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -4419,6 +4793,15 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
     isLocked,
     isOptional,
     notes,
+    arrivalMode,
+    arrivalMinutes,
+    opensAt,
+    closesAt,
+    closedWeekdays,
+    reservationRequired,
+    reservationVia,
+    bookAheadDays,
+    remindToBook,
     createdAt,
     updatedAt,
   ]);
@@ -4452,6 +4835,15 @@ class ActivityRow extends DataClass implements Insertable<ActivityRow> {
           other.isLocked == this.isLocked &&
           other.isOptional == this.isOptional &&
           other.notes == this.notes &&
+          other.arrivalMode == this.arrivalMode &&
+          other.arrivalMinutes == this.arrivalMinutes &&
+          other.opensAt == this.opensAt &&
+          other.closesAt == this.closesAt &&
+          other.closedWeekdays == this.closedWeekdays &&
+          other.reservationRequired == this.reservationRequired &&
+          other.reservationVia == this.reservationVia &&
+          other.bookAheadDays == this.bookAheadDays &&
+          other.remindToBook == this.remindToBook &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -4483,6 +4875,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
   final Value<bool> isLocked;
   final Value<bool> isOptional;
   final Value<String?> notes;
+  final Value<String?> arrivalMode;
+  final Value<int?> arrivalMinutes;
+  final Value<int?> opensAt;
+  final Value<int?> closesAt;
+  final Value<String?> closedWeekdays;
+  final Value<bool> reservationRequired;
+  final Value<String?> reservationVia;
+  final Value<int?> bookAheadDays;
+  final Value<bool> remindToBook;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<int> rowid;
@@ -4513,6 +4914,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
     this.isLocked = const Value.absent(),
     this.isOptional = const Value.absent(),
     this.notes = const Value.absent(),
+    this.arrivalMode = const Value.absent(),
+    this.arrivalMinutes = const Value.absent(),
+    this.opensAt = const Value.absent(),
+    this.closesAt = const Value.absent(),
+    this.closedWeekdays = const Value.absent(),
+    this.reservationRequired = const Value.absent(),
+    this.reservationVia = const Value.absent(),
+    this.bookAheadDays = const Value.absent(),
+    this.remindToBook = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -4544,6 +4954,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
     this.isLocked = const Value.absent(),
     this.isOptional = const Value.absent(),
     this.notes = const Value.absent(),
+    this.arrivalMode = const Value.absent(),
+    this.arrivalMinutes = const Value.absent(),
+    this.opensAt = const Value.absent(),
+    this.closesAt = const Value.absent(),
+    this.closedWeekdays = const Value.absent(),
+    this.reservationRequired = const Value.absent(),
+    this.reservationVia = const Value.absent(),
+    this.bookAheadDays = const Value.absent(),
+    this.remindToBook = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.rowid = const Value.absent(),
@@ -4582,6 +5001,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
     Expression<bool>? isLocked,
     Expression<bool>? isOptional,
     Expression<String>? notes,
+    Expression<String>? arrivalMode,
+    Expression<int>? arrivalMinutes,
+    Expression<int>? opensAt,
+    Expression<int>? closesAt,
+    Expression<String>? closedWeekdays,
+    Expression<bool>? reservationRequired,
+    Expression<String>? reservationVia,
+    Expression<int>? bookAheadDays,
+    Expression<bool>? remindToBook,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<int>? rowid,
@@ -4613,6 +5041,16 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
       if (isLocked != null) 'is_locked': isLocked,
       if (isOptional != null) 'is_optional': isOptional,
       if (notes != null) 'notes': notes,
+      if (arrivalMode != null) 'arrival_mode': arrivalMode,
+      if (arrivalMinutes != null) 'arrival_minutes': arrivalMinutes,
+      if (opensAt != null) 'opens_at': opensAt,
+      if (closesAt != null) 'closes_at': closesAt,
+      if (closedWeekdays != null) 'closed_weekdays': closedWeekdays,
+      if (reservationRequired != null)
+        'reservation_required': reservationRequired,
+      if (reservationVia != null) 'reservation_via': reservationVia,
+      if (bookAheadDays != null) 'book_ahead_days': bookAheadDays,
+      if (remindToBook != null) 'remind_to_book': remindToBook,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (rowid != null) 'rowid': rowid,
@@ -4646,6 +5084,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
     Value<bool>? isLocked,
     Value<bool>? isOptional,
     Value<String?>? notes,
+    Value<String?>? arrivalMode,
+    Value<int?>? arrivalMinutes,
+    Value<int?>? opensAt,
+    Value<int?>? closesAt,
+    Value<String?>? closedWeekdays,
+    Value<bool>? reservationRequired,
+    Value<String?>? reservationVia,
+    Value<int?>? bookAheadDays,
+    Value<bool>? remindToBook,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<int>? rowid,
@@ -4677,6 +5124,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
       isLocked: isLocked ?? this.isLocked,
       isOptional: isOptional ?? this.isOptional,
       notes: notes ?? this.notes,
+      arrivalMode: arrivalMode ?? this.arrivalMode,
+      arrivalMinutes: arrivalMinutes ?? this.arrivalMinutes,
+      opensAt: opensAt ?? this.opensAt,
+      closesAt: closesAt ?? this.closesAt,
+      closedWeekdays: closedWeekdays ?? this.closedWeekdays,
+      reservationRequired: reservationRequired ?? this.reservationRequired,
+      reservationVia: reservationVia ?? this.reservationVia,
+      bookAheadDays: bookAheadDays ?? this.bookAheadDays,
+      remindToBook: remindToBook ?? this.remindToBook,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       rowid: rowid ?? this.rowid,
@@ -4764,6 +5220,33 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (arrivalMode.present) {
+      map['arrival_mode'] = Variable<String>(arrivalMode.value);
+    }
+    if (arrivalMinutes.present) {
+      map['arrival_minutes'] = Variable<int>(arrivalMinutes.value);
+    }
+    if (opensAt.present) {
+      map['opens_at'] = Variable<int>(opensAt.value);
+    }
+    if (closesAt.present) {
+      map['closes_at'] = Variable<int>(closesAt.value);
+    }
+    if (closedWeekdays.present) {
+      map['closed_weekdays'] = Variable<String>(closedWeekdays.value);
+    }
+    if (reservationRequired.present) {
+      map['reservation_required'] = Variable<bool>(reservationRequired.value);
+    }
+    if (reservationVia.present) {
+      map['reservation_via'] = Variable<String>(reservationVia.value);
+    }
+    if (bookAheadDays.present) {
+      map['book_ahead_days'] = Variable<int>(bookAheadDays.value);
+    }
+    if (remindToBook.present) {
+      map['remind_to_book'] = Variable<bool>(remindToBook.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -4805,6 +5288,15 @@ class ActivitiesCompanion extends UpdateCompanion<ActivityRow> {
           ..write('isLocked: $isLocked, ')
           ..write('isOptional: $isOptional, ')
           ..write('notes: $notes, ')
+          ..write('arrivalMode: $arrivalMode, ')
+          ..write('arrivalMinutes: $arrivalMinutes, ')
+          ..write('opensAt: $opensAt, ')
+          ..write('closesAt: $closesAt, ')
+          ..write('closedWeekdays: $closedWeekdays, ')
+          ..write('reservationRequired: $reservationRequired, ')
+          ..write('reservationVia: $reservationVia, ')
+          ..write('bookAheadDays: $bookAheadDays, ')
+          ..write('remindToBook: $remindToBook, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('rowid: $rowid')
@@ -6593,6 +7085,1479 @@ class SavedPlacesCompanion extends UpdateCompanion<SavedPlaceRow> {
   }
 }
 
+class $DayPlansTable extends DayPlans
+    with TableInfo<$DayPlansTable, DayPlanRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DayPlansTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _tripIdMeta = const VerificationMeta('tripId');
+  @override
+  late final GeneratedColumn<String> tripId = GeneratedColumn<String>(
+    'trip_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES trips (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<String> date = GeneratedColumn<String>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startNameMeta = const VerificationMeta(
+    'startName',
+  );
+  @override
+  late final GeneratedColumn<String> startName = GeneratedColumn<String>(
+    'start_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startLatMeta = const VerificationMeta(
+    'startLat',
+  );
+  @override
+  late final GeneratedColumn<double> startLat = GeneratedColumn<double>(
+    'start_lat',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startLngMeta = const VerificationMeta(
+    'startLng',
+  );
+  @override
+  late final GeneratedColumn<double> startLng = GeneratedColumn<double>(
+    'start_lng',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startSourceMeta = const VerificationMeta(
+    'startSource',
+  );
+  @override
+  late final GeneratedColumn<String> startSource = GeneratedColumn<String>(
+    'start_source',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endNameMeta = const VerificationMeta(
+    'endName',
+  );
+  @override
+  late final GeneratedColumn<String> endName = GeneratedColumn<String>(
+    'end_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endLatMeta = const VerificationMeta('endLat');
+  @override
+  late final GeneratedColumn<double> endLat = GeneratedColumn<double>(
+    'end_lat',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endLngMeta = const VerificationMeta('endLng');
+  @override
+  late final GeneratedColumn<double> endLng = GeneratedColumn<double>(
+    'end_lng',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endSourceMeta = const VerificationMeta(
+    'endSource',
+  );
+  @override
+  late final GeneratedColumn<String> endSource = GeneratedColumn<String>(
+    'end_source',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endArrivalModeMeta = const VerificationMeta(
+    'endArrivalMode',
+  );
+  @override
+  late final GeneratedColumn<String> endArrivalMode = GeneratedColumn<String>(
+    'end_arrival_mode',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _endArrivalMinutesMeta = const VerificationMeta(
+    'endArrivalMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> endArrivalMinutes = GeneratedColumn<int>(
+    'end_arrival_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    tripId,
+    date,
+    startName,
+    startLat,
+    startLng,
+    startSource,
+    endName,
+    endLat,
+    endLng,
+    endSource,
+    endArrivalMode,
+    endArrivalMinutes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'day_plans';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DayPlanRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('trip_id')) {
+      context.handle(
+        _tripIdMeta,
+        tripId.isAcceptableOrUnknown(data['trip_id']!, _tripIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tripIdMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('start_name')) {
+      context.handle(
+        _startNameMeta,
+        startName.isAcceptableOrUnknown(data['start_name']!, _startNameMeta),
+      );
+    }
+    if (data.containsKey('start_lat')) {
+      context.handle(
+        _startLatMeta,
+        startLat.isAcceptableOrUnknown(data['start_lat']!, _startLatMeta),
+      );
+    }
+    if (data.containsKey('start_lng')) {
+      context.handle(
+        _startLngMeta,
+        startLng.isAcceptableOrUnknown(data['start_lng']!, _startLngMeta),
+      );
+    }
+    if (data.containsKey('start_source')) {
+      context.handle(
+        _startSourceMeta,
+        startSource.isAcceptableOrUnknown(
+          data['start_source']!,
+          _startSourceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('end_name')) {
+      context.handle(
+        _endNameMeta,
+        endName.isAcceptableOrUnknown(data['end_name']!, _endNameMeta),
+      );
+    }
+    if (data.containsKey('end_lat')) {
+      context.handle(
+        _endLatMeta,
+        endLat.isAcceptableOrUnknown(data['end_lat']!, _endLatMeta),
+      );
+    }
+    if (data.containsKey('end_lng')) {
+      context.handle(
+        _endLngMeta,
+        endLng.isAcceptableOrUnknown(data['end_lng']!, _endLngMeta),
+      );
+    }
+    if (data.containsKey('end_source')) {
+      context.handle(
+        _endSourceMeta,
+        endSource.isAcceptableOrUnknown(data['end_source']!, _endSourceMeta),
+      );
+    }
+    if (data.containsKey('end_arrival_mode')) {
+      context.handle(
+        _endArrivalModeMeta,
+        endArrivalMode.isAcceptableOrUnknown(
+          data['end_arrival_mode']!,
+          _endArrivalModeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('end_arrival_minutes')) {
+      context.handle(
+        _endArrivalMinutesMeta,
+        endArrivalMinutes.isAcceptableOrUnknown(
+          data['end_arrival_minutes']!,
+          _endArrivalMinutesMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {tripId, date};
+  @override
+  DayPlanRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DayPlanRow(
+      tripId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}trip_id'],
+      )!,
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}date'],
+      )!,
+      startName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_name'],
+      ),
+      startLat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}start_lat'],
+      ),
+      startLng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}start_lng'],
+      ),
+      startSource: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_source'],
+      ),
+      endName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_name'],
+      ),
+      endLat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}end_lat'],
+      ),
+      endLng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}end_lng'],
+      ),
+      endSource: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_source'],
+      ),
+      endArrivalMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_arrival_mode'],
+      ),
+      endArrivalMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}end_arrival_minutes'],
+      ),
+    );
+  }
+
+  @override
+  $DayPlansTable createAlias(String alias) {
+    return $DayPlansTable(attachedDatabase, alias);
+  }
+}
+
+class DayPlanRow extends DataClass implements Insertable<DayPlanRow> {
+  final String tripId;
+
+  /// `yyyy-MM-dd`, local to the trip.
+  final String date;
+  final String? startName;
+  final double? startLat;
+  final double? startLng;
+  final String? startSource;
+  final String? endName;
+  final double? endLat;
+  final double? endLng;
+  final String? endSource;
+  final String? endArrivalMode;
+  final int? endArrivalMinutes;
+  const DayPlanRow({
+    required this.tripId,
+    required this.date,
+    this.startName,
+    this.startLat,
+    this.startLng,
+    this.startSource,
+    this.endName,
+    this.endLat,
+    this.endLng,
+    this.endSource,
+    this.endArrivalMode,
+    this.endArrivalMinutes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['trip_id'] = Variable<String>(tripId);
+    map['date'] = Variable<String>(date);
+    if (!nullToAbsent || startName != null) {
+      map['start_name'] = Variable<String>(startName);
+    }
+    if (!nullToAbsent || startLat != null) {
+      map['start_lat'] = Variable<double>(startLat);
+    }
+    if (!nullToAbsent || startLng != null) {
+      map['start_lng'] = Variable<double>(startLng);
+    }
+    if (!nullToAbsent || startSource != null) {
+      map['start_source'] = Variable<String>(startSource);
+    }
+    if (!nullToAbsent || endName != null) {
+      map['end_name'] = Variable<String>(endName);
+    }
+    if (!nullToAbsent || endLat != null) {
+      map['end_lat'] = Variable<double>(endLat);
+    }
+    if (!nullToAbsent || endLng != null) {
+      map['end_lng'] = Variable<double>(endLng);
+    }
+    if (!nullToAbsent || endSource != null) {
+      map['end_source'] = Variable<String>(endSource);
+    }
+    if (!nullToAbsent || endArrivalMode != null) {
+      map['end_arrival_mode'] = Variable<String>(endArrivalMode);
+    }
+    if (!nullToAbsent || endArrivalMinutes != null) {
+      map['end_arrival_minutes'] = Variable<int>(endArrivalMinutes);
+    }
+    return map;
+  }
+
+  DayPlansCompanion toCompanion(bool nullToAbsent) {
+    return DayPlansCompanion(
+      tripId: Value(tripId),
+      date: Value(date),
+      startName: startName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startName),
+      startLat: startLat == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startLat),
+      startLng: startLng == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startLng),
+      startSource: startSource == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startSource),
+      endName: endName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endName),
+      endLat: endLat == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endLat),
+      endLng: endLng == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endLng),
+      endSource: endSource == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endSource),
+      endArrivalMode: endArrivalMode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endArrivalMode),
+      endArrivalMinutes: endArrivalMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endArrivalMinutes),
+    );
+  }
+
+  factory DayPlanRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DayPlanRow(
+      tripId: serializer.fromJson<String>(json['tripId']),
+      date: serializer.fromJson<String>(json['date']),
+      startName: serializer.fromJson<String?>(json['startName']),
+      startLat: serializer.fromJson<double?>(json['startLat']),
+      startLng: serializer.fromJson<double?>(json['startLng']),
+      startSource: serializer.fromJson<String?>(json['startSource']),
+      endName: serializer.fromJson<String?>(json['endName']),
+      endLat: serializer.fromJson<double?>(json['endLat']),
+      endLng: serializer.fromJson<double?>(json['endLng']),
+      endSource: serializer.fromJson<String?>(json['endSource']),
+      endArrivalMode: serializer.fromJson<String?>(json['endArrivalMode']),
+      endArrivalMinutes: serializer.fromJson<int?>(json['endArrivalMinutes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'tripId': serializer.toJson<String>(tripId),
+      'date': serializer.toJson<String>(date),
+      'startName': serializer.toJson<String?>(startName),
+      'startLat': serializer.toJson<double?>(startLat),
+      'startLng': serializer.toJson<double?>(startLng),
+      'startSource': serializer.toJson<String?>(startSource),
+      'endName': serializer.toJson<String?>(endName),
+      'endLat': serializer.toJson<double?>(endLat),
+      'endLng': serializer.toJson<double?>(endLng),
+      'endSource': serializer.toJson<String?>(endSource),
+      'endArrivalMode': serializer.toJson<String?>(endArrivalMode),
+      'endArrivalMinutes': serializer.toJson<int?>(endArrivalMinutes),
+    };
+  }
+
+  DayPlanRow copyWith({
+    String? tripId,
+    String? date,
+    Value<String?> startName = const Value.absent(),
+    Value<double?> startLat = const Value.absent(),
+    Value<double?> startLng = const Value.absent(),
+    Value<String?> startSource = const Value.absent(),
+    Value<String?> endName = const Value.absent(),
+    Value<double?> endLat = const Value.absent(),
+    Value<double?> endLng = const Value.absent(),
+    Value<String?> endSource = const Value.absent(),
+    Value<String?> endArrivalMode = const Value.absent(),
+    Value<int?> endArrivalMinutes = const Value.absent(),
+  }) => DayPlanRow(
+    tripId: tripId ?? this.tripId,
+    date: date ?? this.date,
+    startName: startName.present ? startName.value : this.startName,
+    startLat: startLat.present ? startLat.value : this.startLat,
+    startLng: startLng.present ? startLng.value : this.startLng,
+    startSource: startSource.present ? startSource.value : this.startSource,
+    endName: endName.present ? endName.value : this.endName,
+    endLat: endLat.present ? endLat.value : this.endLat,
+    endLng: endLng.present ? endLng.value : this.endLng,
+    endSource: endSource.present ? endSource.value : this.endSource,
+    endArrivalMode: endArrivalMode.present
+        ? endArrivalMode.value
+        : this.endArrivalMode,
+    endArrivalMinutes: endArrivalMinutes.present
+        ? endArrivalMinutes.value
+        : this.endArrivalMinutes,
+  );
+  DayPlanRow copyWithCompanion(DayPlansCompanion data) {
+    return DayPlanRow(
+      tripId: data.tripId.present ? data.tripId.value : this.tripId,
+      date: data.date.present ? data.date.value : this.date,
+      startName: data.startName.present ? data.startName.value : this.startName,
+      startLat: data.startLat.present ? data.startLat.value : this.startLat,
+      startLng: data.startLng.present ? data.startLng.value : this.startLng,
+      startSource: data.startSource.present
+          ? data.startSource.value
+          : this.startSource,
+      endName: data.endName.present ? data.endName.value : this.endName,
+      endLat: data.endLat.present ? data.endLat.value : this.endLat,
+      endLng: data.endLng.present ? data.endLng.value : this.endLng,
+      endSource: data.endSource.present ? data.endSource.value : this.endSource,
+      endArrivalMode: data.endArrivalMode.present
+          ? data.endArrivalMode.value
+          : this.endArrivalMode,
+      endArrivalMinutes: data.endArrivalMinutes.present
+          ? data.endArrivalMinutes.value
+          : this.endArrivalMinutes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DayPlanRow(')
+          ..write('tripId: $tripId, ')
+          ..write('date: $date, ')
+          ..write('startName: $startName, ')
+          ..write('startLat: $startLat, ')
+          ..write('startLng: $startLng, ')
+          ..write('startSource: $startSource, ')
+          ..write('endName: $endName, ')
+          ..write('endLat: $endLat, ')
+          ..write('endLng: $endLng, ')
+          ..write('endSource: $endSource, ')
+          ..write('endArrivalMode: $endArrivalMode, ')
+          ..write('endArrivalMinutes: $endArrivalMinutes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    tripId,
+    date,
+    startName,
+    startLat,
+    startLng,
+    startSource,
+    endName,
+    endLat,
+    endLng,
+    endSource,
+    endArrivalMode,
+    endArrivalMinutes,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DayPlanRow &&
+          other.tripId == this.tripId &&
+          other.date == this.date &&
+          other.startName == this.startName &&
+          other.startLat == this.startLat &&
+          other.startLng == this.startLng &&
+          other.startSource == this.startSource &&
+          other.endName == this.endName &&
+          other.endLat == this.endLat &&
+          other.endLng == this.endLng &&
+          other.endSource == this.endSource &&
+          other.endArrivalMode == this.endArrivalMode &&
+          other.endArrivalMinutes == this.endArrivalMinutes);
+}
+
+class DayPlansCompanion extends UpdateCompanion<DayPlanRow> {
+  final Value<String> tripId;
+  final Value<String> date;
+  final Value<String?> startName;
+  final Value<double?> startLat;
+  final Value<double?> startLng;
+  final Value<String?> startSource;
+  final Value<String?> endName;
+  final Value<double?> endLat;
+  final Value<double?> endLng;
+  final Value<String?> endSource;
+  final Value<String?> endArrivalMode;
+  final Value<int?> endArrivalMinutes;
+  final Value<int> rowid;
+  const DayPlansCompanion({
+    this.tripId = const Value.absent(),
+    this.date = const Value.absent(),
+    this.startName = const Value.absent(),
+    this.startLat = const Value.absent(),
+    this.startLng = const Value.absent(),
+    this.startSource = const Value.absent(),
+    this.endName = const Value.absent(),
+    this.endLat = const Value.absent(),
+    this.endLng = const Value.absent(),
+    this.endSource = const Value.absent(),
+    this.endArrivalMode = const Value.absent(),
+    this.endArrivalMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DayPlansCompanion.insert({
+    required String tripId,
+    required String date,
+    this.startName = const Value.absent(),
+    this.startLat = const Value.absent(),
+    this.startLng = const Value.absent(),
+    this.startSource = const Value.absent(),
+    this.endName = const Value.absent(),
+    this.endLat = const Value.absent(),
+    this.endLng = const Value.absent(),
+    this.endSource = const Value.absent(),
+    this.endArrivalMode = const Value.absent(),
+    this.endArrivalMinutes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : tripId = Value(tripId),
+       date = Value(date);
+  static Insertable<DayPlanRow> custom({
+    Expression<String>? tripId,
+    Expression<String>? date,
+    Expression<String>? startName,
+    Expression<double>? startLat,
+    Expression<double>? startLng,
+    Expression<String>? startSource,
+    Expression<String>? endName,
+    Expression<double>? endLat,
+    Expression<double>? endLng,
+    Expression<String>? endSource,
+    Expression<String>? endArrivalMode,
+    Expression<int>? endArrivalMinutes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (tripId != null) 'trip_id': tripId,
+      if (date != null) 'date': date,
+      if (startName != null) 'start_name': startName,
+      if (startLat != null) 'start_lat': startLat,
+      if (startLng != null) 'start_lng': startLng,
+      if (startSource != null) 'start_source': startSource,
+      if (endName != null) 'end_name': endName,
+      if (endLat != null) 'end_lat': endLat,
+      if (endLng != null) 'end_lng': endLng,
+      if (endSource != null) 'end_source': endSource,
+      if (endArrivalMode != null) 'end_arrival_mode': endArrivalMode,
+      if (endArrivalMinutes != null) 'end_arrival_minutes': endArrivalMinutes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DayPlansCompanion copyWith({
+    Value<String>? tripId,
+    Value<String>? date,
+    Value<String?>? startName,
+    Value<double?>? startLat,
+    Value<double?>? startLng,
+    Value<String?>? startSource,
+    Value<String?>? endName,
+    Value<double?>? endLat,
+    Value<double?>? endLng,
+    Value<String?>? endSource,
+    Value<String?>? endArrivalMode,
+    Value<int?>? endArrivalMinutes,
+    Value<int>? rowid,
+  }) {
+    return DayPlansCompanion(
+      tripId: tripId ?? this.tripId,
+      date: date ?? this.date,
+      startName: startName ?? this.startName,
+      startLat: startLat ?? this.startLat,
+      startLng: startLng ?? this.startLng,
+      startSource: startSource ?? this.startSource,
+      endName: endName ?? this.endName,
+      endLat: endLat ?? this.endLat,
+      endLng: endLng ?? this.endLng,
+      endSource: endSource ?? this.endSource,
+      endArrivalMode: endArrivalMode ?? this.endArrivalMode,
+      endArrivalMinutes: endArrivalMinutes ?? this.endArrivalMinutes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (tripId.present) {
+      map['trip_id'] = Variable<String>(tripId.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<String>(date.value);
+    }
+    if (startName.present) {
+      map['start_name'] = Variable<String>(startName.value);
+    }
+    if (startLat.present) {
+      map['start_lat'] = Variable<double>(startLat.value);
+    }
+    if (startLng.present) {
+      map['start_lng'] = Variable<double>(startLng.value);
+    }
+    if (startSource.present) {
+      map['start_source'] = Variable<String>(startSource.value);
+    }
+    if (endName.present) {
+      map['end_name'] = Variable<String>(endName.value);
+    }
+    if (endLat.present) {
+      map['end_lat'] = Variable<double>(endLat.value);
+    }
+    if (endLng.present) {
+      map['end_lng'] = Variable<double>(endLng.value);
+    }
+    if (endSource.present) {
+      map['end_source'] = Variable<String>(endSource.value);
+    }
+    if (endArrivalMode.present) {
+      map['end_arrival_mode'] = Variable<String>(endArrivalMode.value);
+    }
+    if (endArrivalMinutes.present) {
+      map['end_arrival_minutes'] = Variable<int>(endArrivalMinutes.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DayPlansCompanion(')
+          ..write('tripId: $tripId, ')
+          ..write('date: $date, ')
+          ..write('startName: $startName, ')
+          ..write('startLat: $startLat, ')
+          ..write('startLng: $startLng, ')
+          ..write('startSource: $startSource, ')
+          ..write('endName: $endName, ')
+          ..write('endLat: $endLat, ')
+          ..write('endLng: $endLng, ')
+          ..write('endSource: $endSource, ')
+          ..write('endArrivalMode: $endArrivalMode, ')
+          ..write('endArrivalMinutes: $endArrivalMinutes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FlightStatusesTable extends FlightStatuses
+    with TableInfo<$FlightStatusesTable, FlightStatusRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FlightStatusesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _activityIdMeta = const VerificationMeta(
+    'activityId',
+  );
+  @override
+  late final GeneratedColumn<String> activityId = GeneratedColumn<String>(
+    'activity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES activities (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _tripIdMeta = const VerificationMeta('tripId');
+  @override
+  late final GeneratedColumn<String> tripId = GeneratedColumn<String>(
+    'trip_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES trips (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fetchedAtMeta = const VerificationMeta(
+    'fetchedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> fetchedAt = GeneratedColumn<DateTime>(
+    'fetched_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [activityId, tripId, json, fetchedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'flight_statuses';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<FlightStatusRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('activity_id')) {
+      context.handle(
+        _activityIdMeta,
+        activityId.isAcceptableOrUnknown(data['activity_id']!, _activityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_activityIdMeta);
+    }
+    if (data.containsKey('trip_id')) {
+      context.handle(
+        _tripIdMeta,
+        tripId.isAcceptableOrUnknown(data['trip_id']!, _tripIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tripIdMeta);
+    }
+    if (data.containsKey('json')) {
+      context.handle(
+        _jsonMeta,
+        json.isAcceptableOrUnknown(data['json']!, _jsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    if (data.containsKey('fetched_at')) {
+      context.handle(
+        _fetchedAtMeta,
+        fetchedAt.isAcceptableOrUnknown(data['fetched_at']!, _fetchedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fetchedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {activityId};
+  @override
+  FlightStatusRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FlightStatusRow(
+      activityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}activity_id'],
+      )!,
+      tripId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}trip_id'],
+      )!,
+      json: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}json'],
+      )!,
+      fetchedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}fetched_at'],
+      )!,
+    );
+  }
+
+  @override
+  $FlightStatusesTable createAlias(String alias) {
+    return $FlightStatusesTable(attachedDatabase, alias);
+  }
+}
+
+class FlightStatusRow extends DataClass implements Insertable<FlightStatusRow> {
+  final String activityId;
+  final String tripId;
+
+  /// `FlightStatus.toJson()`.
+  final String json;
+  final DateTime fetchedAt;
+  const FlightStatusRow({
+    required this.activityId,
+    required this.tripId,
+    required this.json,
+    required this.fetchedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['activity_id'] = Variable<String>(activityId);
+    map['trip_id'] = Variable<String>(tripId);
+    map['json'] = Variable<String>(json);
+    map['fetched_at'] = Variable<DateTime>(fetchedAt);
+    return map;
+  }
+
+  FlightStatusesCompanion toCompanion(bool nullToAbsent) {
+    return FlightStatusesCompanion(
+      activityId: Value(activityId),
+      tripId: Value(tripId),
+      json: Value(json),
+      fetchedAt: Value(fetchedAt),
+    );
+  }
+
+  factory FlightStatusRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FlightStatusRow(
+      activityId: serializer.fromJson<String>(json['activityId']),
+      tripId: serializer.fromJson<String>(json['tripId']),
+      json: serializer.fromJson<String>(json['json']),
+      fetchedAt: serializer.fromJson<DateTime>(json['fetchedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'activityId': serializer.toJson<String>(activityId),
+      'tripId': serializer.toJson<String>(tripId),
+      'json': serializer.toJson<String>(json),
+      'fetchedAt': serializer.toJson<DateTime>(fetchedAt),
+    };
+  }
+
+  FlightStatusRow copyWith({
+    String? activityId,
+    String? tripId,
+    String? json,
+    DateTime? fetchedAt,
+  }) => FlightStatusRow(
+    activityId: activityId ?? this.activityId,
+    tripId: tripId ?? this.tripId,
+    json: json ?? this.json,
+    fetchedAt: fetchedAt ?? this.fetchedAt,
+  );
+  FlightStatusRow copyWithCompanion(FlightStatusesCompanion data) {
+    return FlightStatusRow(
+      activityId: data.activityId.present
+          ? data.activityId.value
+          : this.activityId,
+      tripId: data.tripId.present ? data.tripId.value : this.tripId,
+      json: data.json.present ? data.json.value : this.json,
+      fetchedAt: data.fetchedAt.present ? data.fetchedAt.value : this.fetchedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlightStatusRow(')
+          ..write('activityId: $activityId, ')
+          ..write('tripId: $tripId, ')
+          ..write('json: $json, ')
+          ..write('fetchedAt: $fetchedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(activityId, tripId, json, fetchedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FlightStatusRow &&
+          other.activityId == this.activityId &&
+          other.tripId == this.tripId &&
+          other.json == this.json &&
+          other.fetchedAt == this.fetchedAt);
+}
+
+class FlightStatusesCompanion extends UpdateCompanion<FlightStatusRow> {
+  final Value<String> activityId;
+  final Value<String> tripId;
+  final Value<String> json;
+  final Value<DateTime> fetchedAt;
+  final Value<int> rowid;
+  const FlightStatusesCompanion({
+    this.activityId = const Value.absent(),
+    this.tripId = const Value.absent(),
+    this.json = const Value.absent(),
+    this.fetchedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  FlightStatusesCompanion.insert({
+    required String activityId,
+    required String tripId,
+    required String json,
+    required DateTime fetchedAt,
+    this.rowid = const Value.absent(),
+  }) : activityId = Value(activityId),
+       tripId = Value(tripId),
+       json = Value(json),
+       fetchedAt = Value(fetchedAt);
+  static Insertable<FlightStatusRow> custom({
+    Expression<String>? activityId,
+    Expression<String>? tripId,
+    Expression<String>? json,
+    Expression<DateTime>? fetchedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (activityId != null) 'activity_id': activityId,
+      if (tripId != null) 'trip_id': tripId,
+      if (json != null) 'json': json,
+      if (fetchedAt != null) 'fetched_at': fetchedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  FlightStatusesCompanion copyWith({
+    Value<String>? activityId,
+    Value<String>? tripId,
+    Value<String>? json,
+    Value<DateTime>? fetchedAt,
+    Value<int>? rowid,
+  }) {
+    return FlightStatusesCompanion(
+      activityId: activityId ?? this.activityId,
+      tripId: tripId ?? this.tripId,
+      json: json ?? this.json,
+      fetchedAt: fetchedAt ?? this.fetchedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (activityId.present) {
+      map['activity_id'] = Variable<String>(activityId.value);
+    }
+    if (tripId.present) {
+      map['trip_id'] = Variable<String>(tripId.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (fetchedAt.present) {
+      map['fetched_at'] = Variable<DateTime>(fetchedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlightStatusesCompanion(')
+          ..write('activityId: $activityId, ')
+          ..write('tripId: $tripId, ')
+          ..write('json: $json, ')
+          ..write('fetchedAt: $fetchedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FlightLinksTable extends FlightLinks
+    with TableInfo<$FlightLinksTable, FlightLinkRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FlightLinksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _activityIdMeta = const VerificationMeta(
+    'activityId',
+  );
+  @override
+  late final GeneratedColumn<String> activityId = GeneratedColumn<String>(
+    'activity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tripIdMeta = const VerificationMeta('tripId');
+  @override
+  late final GeneratedColumn<String> tripId = GeneratedColumn<String>(
+    'trip_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _bookingIdMeta = const VerificationMeta(
+    'bookingId',
+  );
+  @override
+  late final GeneratedColumn<String> bookingId = GeneratedColumn<String>(
+    'booking_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _flightIdMeta = const VerificationMeta(
+    'flightId',
+  );
+  @override
+  late final GeneratedColumn<String> flightId = GeneratedColumn<String>(
+    'flight_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _flightDateMeta = const VerificationMeta(
+    'flightDate',
+  );
+  @override
+  late final GeneratedColumn<String> flightDate = GeneratedColumn<String>(
+    'flight_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    activityId,
+    tripId,
+    bookingId,
+    flightId,
+    code,
+    flightDate,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'flight_links';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<FlightLinkRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('activity_id')) {
+      context.handle(
+        _activityIdMeta,
+        activityId.isAcceptableOrUnknown(data['activity_id']!, _activityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_activityIdMeta);
+    }
+    if (data.containsKey('trip_id')) {
+      context.handle(
+        _tripIdMeta,
+        tripId.isAcceptableOrUnknown(data['trip_id']!, _tripIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tripIdMeta);
+    }
+    if (data.containsKey('booking_id')) {
+      context.handle(
+        _bookingIdMeta,
+        bookingId.isAcceptableOrUnknown(data['booking_id']!, _bookingIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bookingIdMeta);
+    }
+    if (data.containsKey('flight_id')) {
+      context.handle(
+        _flightIdMeta,
+        flightId.isAcceptableOrUnknown(data['flight_id']!, _flightIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_flightIdMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('flight_date')) {
+      context.handle(
+        _flightDateMeta,
+        flightDate.isAcceptableOrUnknown(data['flight_date']!, _flightDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_flightDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {activityId};
+  @override
+  FlightLinkRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FlightLinkRow(
+      activityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}activity_id'],
+      )!,
+      tripId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}trip_id'],
+      )!,
+      bookingId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}booking_id'],
+      )!,
+      flightId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}flight_id'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      flightDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}flight_date'],
+      )!,
+    );
+  }
+
+  @override
+  $FlightLinksTable createAlias(String alias) {
+    return $FlightLinksTable(attachedDatabase, alias);
+  }
+}
+
+class FlightLinkRow extends DataClass implements Insertable<FlightLinkRow> {
+  final String activityId;
+  final String tripId;
+  final String bookingId;
+  final String flightId;
+  final String code;
+
+  /// `yyyy-MM-dd`.
+  final String flightDate;
+  const FlightLinkRow({
+    required this.activityId,
+    required this.tripId,
+    required this.bookingId,
+    required this.flightId,
+    required this.code,
+    required this.flightDate,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['activity_id'] = Variable<String>(activityId);
+    map['trip_id'] = Variable<String>(tripId);
+    map['booking_id'] = Variable<String>(bookingId);
+    map['flight_id'] = Variable<String>(flightId);
+    map['code'] = Variable<String>(code);
+    map['flight_date'] = Variable<String>(flightDate);
+    return map;
+  }
+
+  FlightLinksCompanion toCompanion(bool nullToAbsent) {
+    return FlightLinksCompanion(
+      activityId: Value(activityId),
+      tripId: Value(tripId),
+      bookingId: Value(bookingId),
+      flightId: Value(flightId),
+      code: Value(code),
+      flightDate: Value(flightDate),
+    );
+  }
+
+  factory FlightLinkRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FlightLinkRow(
+      activityId: serializer.fromJson<String>(json['activityId']),
+      tripId: serializer.fromJson<String>(json['tripId']),
+      bookingId: serializer.fromJson<String>(json['bookingId']),
+      flightId: serializer.fromJson<String>(json['flightId']),
+      code: serializer.fromJson<String>(json['code']),
+      flightDate: serializer.fromJson<String>(json['flightDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'activityId': serializer.toJson<String>(activityId),
+      'tripId': serializer.toJson<String>(tripId),
+      'bookingId': serializer.toJson<String>(bookingId),
+      'flightId': serializer.toJson<String>(flightId),
+      'code': serializer.toJson<String>(code),
+      'flightDate': serializer.toJson<String>(flightDate),
+    };
+  }
+
+  FlightLinkRow copyWith({
+    String? activityId,
+    String? tripId,
+    String? bookingId,
+    String? flightId,
+    String? code,
+    String? flightDate,
+  }) => FlightLinkRow(
+    activityId: activityId ?? this.activityId,
+    tripId: tripId ?? this.tripId,
+    bookingId: bookingId ?? this.bookingId,
+    flightId: flightId ?? this.flightId,
+    code: code ?? this.code,
+    flightDate: flightDate ?? this.flightDate,
+  );
+  FlightLinkRow copyWithCompanion(FlightLinksCompanion data) {
+    return FlightLinkRow(
+      activityId: data.activityId.present
+          ? data.activityId.value
+          : this.activityId,
+      tripId: data.tripId.present ? data.tripId.value : this.tripId,
+      bookingId: data.bookingId.present ? data.bookingId.value : this.bookingId,
+      flightId: data.flightId.present ? data.flightId.value : this.flightId,
+      code: data.code.present ? data.code.value : this.code,
+      flightDate: data.flightDate.present
+          ? data.flightDate.value
+          : this.flightDate,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlightLinkRow(')
+          ..write('activityId: $activityId, ')
+          ..write('tripId: $tripId, ')
+          ..write('bookingId: $bookingId, ')
+          ..write('flightId: $flightId, ')
+          ..write('code: $code, ')
+          ..write('flightDate: $flightDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(activityId, tripId, bookingId, flightId, code, flightDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FlightLinkRow &&
+          other.activityId == this.activityId &&
+          other.tripId == this.tripId &&
+          other.bookingId == this.bookingId &&
+          other.flightId == this.flightId &&
+          other.code == this.code &&
+          other.flightDate == this.flightDate);
+}
+
+class FlightLinksCompanion extends UpdateCompanion<FlightLinkRow> {
+  final Value<String> activityId;
+  final Value<String> tripId;
+  final Value<String> bookingId;
+  final Value<String> flightId;
+  final Value<String> code;
+  final Value<String> flightDate;
+  final Value<int> rowid;
+  const FlightLinksCompanion({
+    this.activityId = const Value.absent(),
+    this.tripId = const Value.absent(),
+    this.bookingId = const Value.absent(),
+    this.flightId = const Value.absent(),
+    this.code = const Value.absent(),
+    this.flightDate = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  FlightLinksCompanion.insert({
+    required String activityId,
+    required String tripId,
+    required String bookingId,
+    required String flightId,
+    required String code,
+    required String flightDate,
+    this.rowid = const Value.absent(),
+  }) : activityId = Value(activityId),
+       tripId = Value(tripId),
+       bookingId = Value(bookingId),
+       flightId = Value(flightId),
+       code = Value(code),
+       flightDate = Value(flightDate);
+  static Insertable<FlightLinkRow> custom({
+    Expression<String>? activityId,
+    Expression<String>? tripId,
+    Expression<String>? bookingId,
+    Expression<String>? flightId,
+    Expression<String>? code,
+    Expression<String>? flightDate,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (activityId != null) 'activity_id': activityId,
+      if (tripId != null) 'trip_id': tripId,
+      if (bookingId != null) 'booking_id': bookingId,
+      if (flightId != null) 'flight_id': flightId,
+      if (code != null) 'code': code,
+      if (flightDate != null) 'flight_date': flightDate,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  FlightLinksCompanion copyWith({
+    Value<String>? activityId,
+    Value<String>? tripId,
+    Value<String>? bookingId,
+    Value<String>? flightId,
+    Value<String>? code,
+    Value<String>? flightDate,
+    Value<int>? rowid,
+  }) {
+    return FlightLinksCompanion(
+      activityId: activityId ?? this.activityId,
+      tripId: tripId ?? this.tripId,
+      bookingId: bookingId ?? this.bookingId,
+      flightId: flightId ?? this.flightId,
+      code: code ?? this.code,
+      flightDate: flightDate ?? this.flightDate,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (activityId.present) {
+      map['activity_id'] = Variable<String>(activityId.value);
+    }
+    if (tripId.present) {
+      map['trip_id'] = Variable<String>(tripId.value);
+    }
+    if (bookingId.present) {
+      map['booking_id'] = Variable<String>(bookingId.value);
+    }
+    if (flightId.present) {
+      map['flight_id'] = Variable<String>(flightId.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (flightDate.present) {
+      map['flight_date'] = Variable<String>(flightDate.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlightLinksCompanion(')
+          ..write('activityId: $activityId, ')
+          ..write('tripId: $tripId, ')
+          ..write('bookingId: $bookingId, ')
+          ..write('flightId: $flightId, ')
+          ..write('code: $code, ')
+          ..write('flightDate: $flightDate, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6608,6 +8573,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ExpensesTable expenses = $ExpensesTable(this);
   late final $ExchangeRatesTable exchangeRates = $ExchangeRatesTable(this);
   late final $SavedPlacesTable savedPlaces = $SavedPlacesTable(this);
+  late final $DayPlansTable dayPlans = $DayPlansTable(this);
+  late final $FlightStatusesTable flightStatuses = $FlightStatusesTable(this);
+  late final $FlightLinksTable flightLinks = $FlightLinksTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6623,6 +8591,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     expenses,
     exchangeRates,
     savedPlaces,
+    dayPlans,
+    flightStatuses,
+    flightLinks,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -6688,6 +8659,27 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('saved_places', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'trips',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('day_plans', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'activities',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('flight_statuses', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'trips',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('flight_statuses', kind: UpdateKind.delete)],
     ),
   ]);
 }
@@ -6880,6 +8872,42 @@ final class $$TripsTableReferences
     ).filter((f) => f.tripId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_savedPlacesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$DayPlansTable, List<DayPlanRow>>
+  _dayPlansRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.dayPlans,
+    aliasName: $_aliasNameGenerator(db.trips.id, db.dayPlans.tripId),
+  );
+
+  $$DayPlansTableProcessedTableManager get dayPlansRefs {
+    final manager = $$DayPlansTableTableManager(
+      $_db,
+      $_db.dayPlans,
+    ).filter((f) => f.tripId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_dayPlansRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$FlightStatusesTable, List<FlightStatusRow>>
+  _flightStatusesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.flightStatuses,
+    aliasName: $_aliasNameGenerator(db.trips.id, db.flightStatuses.tripId),
+  );
+
+  $$FlightStatusesTableProcessedTableManager get flightStatusesRefs {
+    final manager = $$FlightStatusesTableTableManager(
+      $_db,
+      $_db.flightStatuses,
+    ).filter((f) => f.tripId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_flightStatusesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -7170,6 +9198,56 @@ class $$TripsTableFilterComposer extends Composer<_$AppDatabase, $TripsTable> {
           }) => $$SavedPlacesTableFilterComposer(
             $db: $db,
             $table: $db.savedPlaces,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> dayPlansRefs(
+    Expression<bool> Function($$DayPlansTableFilterComposer f) f,
+  ) {
+    final $$DayPlansTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dayPlans,
+      getReferencedColumn: (t) => t.tripId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DayPlansTableFilterComposer(
+            $db: $db,
+            $table: $db.dayPlans,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> flightStatusesRefs(
+    Expression<bool> Function($$FlightStatusesTableFilterComposer f) f,
+  ) {
+    final $$FlightStatusesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.flightStatuses,
+      getReferencedColumn: (t) => t.tripId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightStatusesTableFilterComposer(
+            $db: $db,
+            $table: $db.flightStatuses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -7546,6 +9624,56 @@ class $$TripsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> dayPlansRefs<T extends Object>(
+    Expression<T> Function($$DayPlansTableAnnotationComposer a) f,
+  ) {
+    final $$DayPlansTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dayPlans,
+      getReferencedColumn: (t) => t.tripId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DayPlansTableAnnotationComposer(
+            $db: $db,
+            $table: $db.dayPlans,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> flightStatusesRefs<T extends Object>(
+    Expression<T> Function($$FlightStatusesTableAnnotationComposer a) f,
+  ) {
+    final $$FlightStatusesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.flightStatuses,
+      getReferencedColumn: (t) => t.tripId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightStatusesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.flightStatuses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$TripsTableTableManager
@@ -7570,6 +9698,8 @@ class $$TripsTableTableManager
             bool expensesRefs,
             bool exchangeRatesRefs,
             bool savedPlacesRefs,
+            bool dayPlansRefs,
+            bool flightStatusesRefs,
           })
         > {
   $$TripsTableTableManager(_$AppDatabase db, $TripsTable table)
@@ -7679,6 +9809,8 @@ class $$TripsTableTableManager
                 expensesRefs = false,
                 exchangeRatesRefs = false,
                 savedPlacesRefs = false,
+                dayPlansRefs = false,
+                flightStatusesRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -7691,6 +9823,8 @@ class $$TripsTableTableManager
                     if (expensesRefs) db.expenses,
                     if (exchangeRatesRefs) db.exchangeRates,
                     if (savedPlacesRefs) db.savedPlaces,
+                    if (dayPlansRefs) db.dayPlans,
+                    if (flightStatusesRefs) db.flightStatuses,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -7863,6 +9997,48 @@ class $$TripsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (dayPlansRefs)
+                        await $_getPrefetchedData<
+                          TripRow,
+                          $TripsTable,
+                          DayPlanRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$TripsTableReferences
+                              ._dayPlansRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$TripsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).dayPlansRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.tripId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (flightStatusesRefs)
+                        await $_getPrefetchedData<
+                          TripRow,
+                          $TripsTable,
+                          FlightStatusRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$TripsTableReferences
+                              ._flightStatusesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$TripsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).flightStatusesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.tripId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -7892,6 +10068,8 @@ typedef $$TripsTableProcessedTableManager =
         bool expensesRefs,
         bool exchangeRatesRefs,
         bool savedPlacesRefs,
+        bool dayPlansRefs,
+        bool flightStatusesRefs,
       })
     >;
 typedef $$TripDestinationsTableCreateCompanionBuilder =
@@ -9597,6 +11775,15 @@ typedef $$ActivitiesTableCreateCompanionBuilder =
       Value<bool> isLocked,
       Value<bool> isOptional,
       Value<String?> notes,
+      Value<String?> arrivalMode,
+      Value<int?> arrivalMinutes,
+      Value<int?> opensAt,
+      Value<int?> closesAt,
+      Value<String?> closedWeekdays,
+      Value<bool> reservationRequired,
+      Value<String?> reservationVia,
+      Value<int?> bookAheadDays,
+      Value<bool> remindToBook,
       required DateTime createdAt,
       required DateTime updatedAt,
       Value<int> rowid,
@@ -9629,6 +11816,15 @@ typedef $$ActivitiesTableUpdateCompanionBuilder =
       Value<bool> isLocked,
       Value<bool> isOptional,
       Value<String?> notes,
+      Value<String?> arrivalMode,
+      Value<int?> arrivalMinutes,
+      Value<int?> opensAt,
+      Value<int?> closesAt,
+      Value<String?> closedWeekdays,
+      Value<bool> reservationRequired,
+      Value<String?> reservationVia,
+      Value<int?> bookAheadDays,
+      Value<bool> remindToBook,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<int> rowid,
@@ -9669,6 +11865,27 @@ final class $$ActivitiesTableReferences
     ).filter((f) => f.activityId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_expensesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$FlightStatusesTable, List<FlightStatusRow>>
+  _flightStatusesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.flightStatuses,
+    aliasName: $_aliasNameGenerator(
+      db.activities.id,
+      db.flightStatuses.activityId,
+    ),
+  );
+
+  $$FlightStatusesTableProcessedTableManager get flightStatusesRefs {
+    final manager = $$FlightStatusesTableTableManager(
+      $_db,
+      $_db.flightStatuses,
+    ).filter((f) => f.activityId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_flightStatusesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -9809,6 +12026,51 @@ class $$ActivitiesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get arrivalMode => $composableBuilder(
+    column: $table.arrivalMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get arrivalMinutes => $composableBuilder(
+    column: $table.arrivalMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get opensAt => $composableBuilder(
+    column: $table.opensAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get closesAt => $composableBuilder(
+    column: $table.closesAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get closedWeekdays => $composableBuilder(
+    column: $table.closedWeekdays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get reservationRequired => $composableBuilder(
+    column: $table.reservationRequired,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reservationVia => $composableBuilder(
+    column: $table.reservationVia,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get bookAheadDays => $composableBuilder(
+    column: $table.bookAheadDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get remindToBook => $composableBuilder(
+    column: $table.remindToBook,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
@@ -9858,6 +12120,31 @@ class $$ActivitiesTableFilterComposer
           }) => $$ExpensesTableFilterComposer(
             $db: $db,
             $table: $db.expenses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> flightStatusesRefs(
+    Expression<bool> Function($$FlightStatusesTableFilterComposer f) f,
+  ) {
+    final $$FlightStatusesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.flightStatuses,
+      getReferencedColumn: (t) => t.activityId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightStatusesTableFilterComposer(
+            $db: $db,
+            $table: $db.flightStatuses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -10002,6 +12289,51 @@ class $$ActivitiesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get arrivalMode => $composableBuilder(
+    column: $table.arrivalMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get arrivalMinutes => $composableBuilder(
+    column: $table.arrivalMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get opensAt => $composableBuilder(
+    column: $table.opensAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get closesAt => $composableBuilder(
+    column: $table.closesAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get closedWeekdays => $composableBuilder(
+    column: $table.closedWeekdays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get reservationRequired => $composableBuilder(
+    column: $table.reservationRequired,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reservationVia => $composableBuilder(
+    column: $table.reservationVia,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get bookAheadDays => $composableBuilder(
+    column: $table.bookAheadDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get remindToBook => $composableBuilder(
+    column: $table.remindToBook,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -10142,6 +12474,47 @@ class $$ActivitiesTableAnnotationComposer
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
 
+  GeneratedColumn<String> get arrivalMode => $composableBuilder(
+    column: $table.arrivalMode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get arrivalMinutes => $composableBuilder(
+    column: $table.arrivalMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get opensAt =>
+      $composableBuilder(column: $table.opensAt, builder: (column) => column);
+
+  GeneratedColumn<int> get closesAt =>
+      $composableBuilder(column: $table.closesAt, builder: (column) => column);
+
+  GeneratedColumn<String> get closedWeekdays => $composableBuilder(
+    column: $table.closedWeekdays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get reservationRequired => $composableBuilder(
+    column: $table.reservationRequired,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reservationVia => $composableBuilder(
+    column: $table.reservationVia,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get bookAheadDays => $composableBuilder(
+    column: $table.bookAheadDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get remindToBook => $composableBuilder(
+    column: $table.remindToBook,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -10195,6 +12568,31 @@ class $$ActivitiesTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> flightStatusesRefs<T extends Object>(
+    Expression<T> Function($$FlightStatusesTableAnnotationComposer a) f,
+  ) {
+    final $$FlightStatusesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.flightStatuses,
+      getReferencedColumn: (t) => t.activityId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightStatusesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.flightStatuses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ActivitiesTableTableManager
@@ -10210,7 +12608,11 @@ class $$ActivitiesTableTableManager
           $$ActivitiesTableUpdateCompanionBuilder,
           (ActivityRow, $$ActivitiesTableReferences),
           ActivityRow,
-          PrefetchHooks Function({bool tripId, bool expensesRefs})
+          PrefetchHooks Function({
+            bool tripId,
+            bool expensesRefs,
+            bool flightStatusesRefs,
+          })
         > {
   $$ActivitiesTableTableManager(_$AppDatabase db, $ActivitiesTable table)
     : super(
@@ -10251,6 +12653,15 @@ class $$ActivitiesTableTableManager
                 Value<bool> isLocked = const Value.absent(),
                 Value<bool> isOptional = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
+                Value<String?> arrivalMode = const Value.absent(),
+                Value<int?> arrivalMinutes = const Value.absent(),
+                Value<int?> opensAt = const Value.absent(),
+                Value<int?> closesAt = const Value.absent(),
+                Value<String?> closedWeekdays = const Value.absent(),
+                Value<bool> reservationRequired = const Value.absent(),
+                Value<String?> reservationVia = const Value.absent(),
+                Value<int?> bookAheadDays = const Value.absent(),
+                Value<bool> remindToBook = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -10281,6 +12692,15 @@ class $$ActivitiesTableTableManager
                 isLocked: isLocked,
                 isOptional: isOptional,
                 notes: notes,
+                arrivalMode: arrivalMode,
+                arrivalMinutes: arrivalMinutes,
+                opensAt: opensAt,
+                closesAt: closesAt,
+                closedWeekdays: closedWeekdays,
+                reservationRequired: reservationRequired,
+                reservationVia: reservationVia,
+                bookAheadDays: bookAheadDays,
+                remindToBook: remindToBook,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 rowid: rowid,
@@ -10313,6 +12733,15 @@ class $$ActivitiesTableTableManager
                 Value<bool> isLocked = const Value.absent(),
                 Value<bool> isOptional = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
+                Value<String?> arrivalMode = const Value.absent(),
+                Value<int?> arrivalMinutes = const Value.absent(),
+                Value<int?> opensAt = const Value.absent(),
+                Value<int?> closesAt = const Value.absent(),
+                Value<String?> closedWeekdays = const Value.absent(),
+                Value<bool> reservationRequired = const Value.absent(),
+                Value<String?> reservationVia = const Value.absent(),
+                Value<int?> bookAheadDays = const Value.absent(),
+                Value<bool> remindToBook = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
                 Value<int> rowid = const Value.absent(),
@@ -10343,6 +12772,15 @@ class $$ActivitiesTableTableManager
                 isLocked: isLocked,
                 isOptional: isOptional,
                 notes: notes,
+                arrivalMode: arrivalMode,
+                arrivalMinutes: arrivalMinutes,
+                opensAt: opensAt,
+                closesAt: closesAt,
+                closedWeekdays: closedWeekdays,
+                reservationRequired: reservationRequired,
+                reservationVia: reservationVia,
+                bookAheadDays: bookAheadDays,
+                remindToBook: remindToBook,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 rowid: rowid,
@@ -10355,67 +12793,99 @@ class $$ActivitiesTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({tripId = false, expensesRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (expensesRefs) db.expenses],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (tripId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.tripId,
-                                referencedTable: $$ActivitiesTableReferences
-                                    ._tripIdTable(db),
-                                referencedColumn: $$ActivitiesTableReferences
-                                    ._tripIdTable(db)
-                                    .id,
-                              )
-                              as T;
-                    }
+          prefetchHooksCallback:
+              ({
+                tripId = false,
+                expensesRefs = false,
+                flightStatusesRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (expensesRefs) db.expenses,
+                    if (flightStatusesRefs) db.flightStatuses,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (tripId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.tripId,
+                                    referencedTable: $$ActivitiesTableReferences
+                                        ._tripIdTable(db),
+                                    referencedColumn:
+                                        $$ActivitiesTableReferences
+                                            ._tripIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
 
-                    return state;
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (expensesRefs)
+                        await $_getPrefetchedData<
+                          ActivityRow,
+                          $ActivitiesTable,
+                          ExpenseRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ActivitiesTableReferences
+                              ._expensesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ActivitiesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).expensesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.activityId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (flightStatusesRefs)
+                        await $_getPrefetchedData<
+                          ActivityRow,
+                          $ActivitiesTable,
+                          FlightStatusRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ActivitiesTableReferences
+                              ._flightStatusesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ActivitiesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).flightStatusesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.activityId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (expensesRefs)
-                    await $_getPrefetchedData<
-                      ActivityRow,
-                      $ActivitiesTable,
-                      ExpenseRow
-                    >(
-                      currentTable: table,
-                      referencedTable: $$ActivitiesTableReferences
-                          ._expensesRefsTable(db),
-                      managerFromTypedResult: (p0) =>
-                          $$ActivitiesTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).expensesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.activityId == item.id),
-                      typedResults: items,
-                    ),
-                ];
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -10432,7 +12902,11 @@ typedef $$ActivitiesTableProcessedTableManager =
       $$ActivitiesTableUpdateCompanionBuilder,
       (ActivityRow, $$ActivitiesTableReferences),
       ActivityRow,
-      PrefetchHooks Function({bool tripId, bool expensesRefs})
+      PrefetchHooks Function({
+        bool tripId,
+        bool expensesRefs,
+        bool flightStatusesRefs,
+      })
     >;
 typedef $$ExpensesTableCreateCompanionBuilder =
     ExpensesCompanion Function({
@@ -11749,6 +14223,1082 @@ typedef $$SavedPlacesTableProcessedTableManager =
       SavedPlaceRow,
       PrefetchHooks Function({bool tripId})
     >;
+typedef $$DayPlansTableCreateCompanionBuilder =
+    DayPlansCompanion Function({
+      required String tripId,
+      required String date,
+      Value<String?> startName,
+      Value<double?> startLat,
+      Value<double?> startLng,
+      Value<String?> startSource,
+      Value<String?> endName,
+      Value<double?> endLat,
+      Value<double?> endLng,
+      Value<String?> endSource,
+      Value<String?> endArrivalMode,
+      Value<int?> endArrivalMinutes,
+      Value<int> rowid,
+    });
+typedef $$DayPlansTableUpdateCompanionBuilder =
+    DayPlansCompanion Function({
+      Value<String> tripId,
+      Value<String> date,
+      Value<String?> startName,
+      Value<double?> startLat,
+      Value<double?> startLng,
+      Value<String?> startSource,
+      Value<String?> endName,
+      Value<double?> endLat,
+      Value<double?> endLng,
+      Value<String?> endSource,
+      Value<String?> endArrivalMode,
+      Value<int?> endArrivalMinutes,
+      Value<int> rowid,
+    });
+
+final class $$DayPlansTableReferences
+    extends BaseReferences<_$AppDatabase, $DayPlansTable, DayPlanRow> {
+  $$DayPlansTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $TripsTable _tripIdTable(_$AppDatabase db) => db.trips.createAlias(
+    $_aliasNameGenerator(db.dayPlans.tripId, db.trips.id),
+  );
+
+  $$TripsTableProcessedTableManager get tripId {
+    final $_column = $_itemColumn<String>('trip_id')!;
+
+    final manager = $$TripsTableTableManager(
+      $_db,
+      $_db.trips,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_tripIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$DayPlansTableFilterComposer
+    extends Composer<_$AppDatabase, $DayPlansTable> {
+  $$DayPlansTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startName => $composableBuilder(
+    column: $table.startName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get startLat => $composableBuilder(
+    column: $table.startLat,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get startLng => $composableBuilder(
+    column: $table.startLng,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startSource => $composableBuilder(
+    column: $table.startSource,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endName => $composableBuilder(
+    column: $table.endName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get endLat => $composableBuilder(
+    column: $table.endLat,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get endLng => $composableBuilder(
+    column: $table.endLng,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endSource => $composableBuilder(
+    column: $table.endSource,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endArrivalMode => $composableBuilder(
+    column: $table.endArrivalMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get endArrivalMinutes => $composableBuilder(
+    column: $table.endArrivalMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$TripsTableFilterComposer get tripId {
+    final $$TripsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tripId,
+      referencedTable: $db.trips,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TripsTableFilterComposer(
+            $db: $db,
+            $table: $db.trips,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DayPlansTableOrderingComposer
+    extends Composer<_$AppDatabase, $DayPlansTable> {
+  $$DayPlansTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startName => $composableBuilder(
+    column: $table.startName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get startLat => $composableBuilder(
+    column: $table.startLat,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get startLng => $composableBuilder(
+    column: $table.startLng,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startSource => $composableBuilder(
+    column: $table.startSource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endName => $composableBuilder(
+    column: $table.endName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get endLat => $composableBuilder(
+    column: $table.endLat,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get endLng => $composableBuilder(
+    column: $table.endLng,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endSource => $composableBuilder(
+    column: $table.endSource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endArrivalMode => $composableBuilder(
+    column: $table.endArrivalMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get endArrivalMinutes => $composableBuilder(
+    column: $table.endArrivalMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$TripsTableOrderingComposer get tripId {
+    final $$TripsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tripId,
+      referencedTable: $db.trips,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TripsTableOrderingComposer(
+            $db: $db,
+            $table: $db.trips,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DayPlansTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DayPlansTable> {
+  $$DayPlansTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<String> get startName =>
+      $composableBuilder(column: $table.startName, builder: (column) => column);
+
+  GeneratedColumn<double> get startLat =>
+      $composableBuilder(column: $table.startLat, builder: (column) => column);
+
+  GeneratedColumn<double> get startLng =>
+      $composableBuilder(column: $table.startLng, builder: (column) => column);
+
+  GeneratedColumn<String> get startSource => $composableBuilder(
+    column: $table.startSource,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get endName =>
+      $composableBuilder(column: $table.endName, builder: (column) => column);
+
+  GeneratedColumn<double> get endLat =>
+      $composableBuilder(column: $table.endLat, builder: (column) => column);
+
+  GeneratedColumn<double> get endLng =>
+      $composableBuilder(column: $table.endLng, builder: (column) => column);
+
+  GeneratedColumn<String> get endSource =>
+      $composableBuilder(column: $table.endSource, builder: (column) => column);
+
+  GeneratedColumn<String> get endArrivalMode => $composableBuilder(
+    column: $table.endArrivalMode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get endArrivalMinutes => $composableBuilder(
+    column: $table.endArrivalMinutes,
+    builder: (column) => column,
+  );
+
+  $$TripsTableAnnotationComposer get tripId {
+    final $$TripsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tripId,
+      referencedTable: $db.trips,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TripsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.trips,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DayPlansTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DayPlansTable,
+          DayPlanRow,
+          $$DayPlansTableFilterComposer,
+          $$DayPlansTableOrderingComposer,
+          $$DayPlansTableAnnotationComposer,
+          $$DayPlansTableCreateCompanionBuilder,
+          $$DayPlansTableUpdateCompanionBuilder,
+          (DayPlanRow, $$DayPlansTableReferences),
+          DayPlanRow,
+          PrefetchHooks Function({bool tripId})
+        > {
+  $$DayPlansTableTableManager(_$AppDatabase db, $DayPlansTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DayPlansTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DayPlansTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DayPlansTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> tripId = const Value.absent(),
+                Value<String> date = const Value.absent(),
+                Value<String?> startName = const Value.absent(),
+                Value<double?> startLat = const Value.absent(),
+                Value<double?> startLng = const Value.absent(),
+                Value<String?> startSource = const Value.absent(),
+                Value<String?> endName = const Value.absent(),
+                Value<double?> endLat = const Value.absent(),
+                Value<double?> endLng = const Value.absent(),
+                Value<String?> endSource = const Value.absent(),
+                Value<String?> endArrivalMode = const Value.absent(),
+                Value<int?> endArrivalMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DayPlansCompanion(
+                tripId: tripId,
+                date: date,
+                startName: startName,
+                startLat: startLat,
+                startLng: startLng,
+                startSource: startSource,
+                endName: endName,
+                endLat: endLat,
+                endLng: endLng,
+                endSource: endSource,
+                endArrivalMode: endArrivalMode,
+                endArrivalMinutes: endArrivalMinutes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String tripId,
+                required String date,
+                Value<String?> startName = const Value.absent(),
+                Value<double?> startLat = const Value.absent(),
+                Value<double?> startLng = const Value.absent(),
+                Value<String?> startSource = const Value.absent(),
+                Value<String?> endName = const Value.absent(),
+                Value<double?> endLat = const Value.absent(),
+                Value<double?> endLng = const Value.absent(),
+                Value<String?> endSource = const Value.absent(),
+                Value<String?> endArrivalMode = const Value.absent(),
+                Value<int?> endArrivalMinutes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DayPlansCompanion.insert(
+                tripId: tripId,
+                date: date,
+                startName: startName,
+                startLat: startLat,
+                startLng: startLng,
+                startSource: startSource,
+                endName: endName,
+                endLat: endLat,
+                endLng: endLng,
+                endSource: endSource,
+                endArrivalMode: endArrivalMode,
+                endArrivalMinutes: endArrivalMinutes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DayPlansTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({tripId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (tripId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.tripId,
+                                referencedTable: $$DayPlansTableReferences
+                                    ._tripIdTable(db),
+                                referencedColumn: $$DayPlansTableReferences
+                                    ._tripIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DayPlansTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DayPlansTable,
+      DayPlanRow,
+      $$DayPlansTableFilterComposer,
+      $$DayPlansTableOrderingComposer,
+      $$DayPlansTableAnnotationComposer,
+      $$DayPlansTableCreateCompanionBuilder,
+      $$DayPlansTableUpdateCompanionBuilder,
+      (DayPlanRow, $$DayPlansTableReferences),
+      DayPlanRow,
+      PrefetchHooks Function({bool tripId})
+    >;
+typedef $$FlightStatusesTableCreateCompanionBuilder =
+    FlightStatusesCompanion Function({
+      required String activityId,
+      required String tripId,
+      required String json,
+      required DateTime fetchedAt,
+      Value<int> rowid,
+    });
+typedef $$FlightStatusesTableUpdateCompanionBuilder =
+    FlightStatusesCompanion Function({
+      Value<String> activityId,
+      Value<String> tripId,
+      Value<String> json,
+      Value<DateTime> fetchedAt,
+      Value<int> rowid,
+    });
+
+final class $$FlightStatusesTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $FlightStatusesTable, FlightStatusRow> {
+  $$FlightStatusesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ActivitiesTable _activityIdTable(_$AppDatabase db) =>
+      db.activities.createAlias(
+        $_aliasNameGenerator(db.flightStatuses.activityId, db.activities.id),
+      );
+
+  $$ActivitiesTableProcessedTableManager get activityId {
+    final $_column = $_itemColumn<String>('activity_id')!;
+
+    final manager = $$ActivitiesTableTableManager(
+      $_db,
+      $_db.activities,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_activityIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $TripsTable _tripIdTable(_$AppDatabase db) => db.trips.createAlias(
+    $_aliasNameGenerator(db.flightStatuses.tripId, db.trips.id),
+  );
+
+  $$TripsTableProcessedTableManager get tripId {
+    final $_column = $_itemColumn<String>('trip_id')!;
+
+    final manager = $$TripsTableTableManager(
+      $_db,
+      $_db.trips,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_tripIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$FlightStatusesTableFilterComposer
+    extends Composer<_$AppDatabase, $FlightStatusesTable> {
+  $$FlightStatusesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get fetchedAt => $composableBuilder(
+    column: $table.fetchedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ActivitiesTableFilterComposer get activityId {
+    final $$ActivitiesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.activityId,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableFilterComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$TripsTableFilterComposer get tripId {
+    final $$TripsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tripId,
+      referencedTable: $db.trips,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TripsTableFilterComposer(
+            $db: $db,
+            $table: $db.trips,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$FlightStatusesTableOrderingComposer
+    extends Composer<_$AppDatabase, $FlightStatusesTable> {
+  $$FlightStatusesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get fetchedAt => $composableBuilder(
+    column: $table.fetchedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ActivitiesTableOrderingComposer get activityId {
+    final $$ActivitiesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.activityId,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableOrderingComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$TripsTableOrderingComposer get tripId {
+    final $$TripsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tripId,
+      referencedTable: $db.trips,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TripsTableOrderingComposer(
+            $db: $db,
+            $table: $db.trips,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$FlightStatusesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FlightStatusesTable> {
+  $$FlightStatusesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get fetchedAt =>
+      $composableBuilder(column: $table.fetchedAt, builder: (column) => column);
+
+  $$ActivitiesTableAnnotationComposer get activityId {
+    final $$ActivitiesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.activityId,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$TripsTableAnnotationComposer get tripId {
+    final $$TripsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tripId,
+      referencedTable: $db.trips,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TripsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.trips,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$FlightStatusesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FlightStatusesTable,
+          FlightStatusRow,
+          $$FlightStatusesTableFilterComposer,
+          $$FlightStatusesTableOrderingComposer,
+          $$FlightStatusesTableAnnotationComposer,
+          $$FlightStatusesTableCreateCompanionBuilder,
+          $$FlightStatusesTableUpdateCompanionBuilder,
+          (FlightStatusRow, $$FlightStatusesTableReferences),
+          FlightStatusRow,
+          PrefetchHooks Function({bool activityId, bool tripId})
+        > {
+  $$FlightStatusesTableTableManager(
+    _$AppDatabase db,
+    $FlightStatusesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FlightStatusesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FlightStatusesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FlightStatusesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> activityId = const Value.absent(),
+                Value<String> tripId = const Value.absent(),
+                Value<String> json = const Value.absent(),
+                Value<DateTime> fetchedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FlightStatusesCompanion(
+                activityId: activityId,
+                tripId: tripId,
+                json: json,
+                fetchedAt: fetchedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String activityId,
+                required String tripId,
+                required String json,
+                required DateTime fetchedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => FlightStatusesCompanion.insert(
+                activityId: activityId,
+                tripId: tripId,
+                json: json,
+                fetchedAt: fetchedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$FlightStatusesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({activityId = false, tripId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (activityId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.activityId,
+                                referencedTable: $$FlightStatusesTableReferences
+                                    ._activityIdTable(db),
+                                referencedColumn:
+                                    $$FlightStatusesTableReferences
+                                        ._activityIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (tripId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.tripId,
+                                referencedTable: $$FlightStatusesTableReferences
+                                    ._tripIdTable(db),
+                                referencedColumn:
+                                    $$FlightStatusesTableReferences
+                                        ._tripIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$FlightStatusesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FlightStatusesTable,
+      FlightStatusRow,
+      $$FlightStatusesTableFilterComposer,
+      $$FlightStatusesTableOrderingComposer,
+      $$FlightStatusesTableAnnotationComposer,
+      $$FlightStatusesTableCreateCompanionBuilder,
+      $$FlightStatusesTableUpdateCompanionBuilder,
+      (FlightStatusRow, $$FlightStatusesTableReferences),
+      FlightStatusRow,
+      PrefetchHooks Function({bool activityId, bool tripId})
+    >;
+typedef $$FlightLinksTableCreateCompanionBuilder =
+    FlightLinksCompanion Function({
+      required String activityId,
+      required String tripId,
+      required String bookingId,
+      required String flightId,
+      required String code,
+      required String flightDate,
+      Value<int> rowid,
+    });
+typedef $$FlightLinksTableUpdateCompanionBuilder =
+    FlightLinksCompanion Function({
+      Value<String> activityId,
+      Value<String> tripId,
+      Value<String> bookingId,
+      Value<String> flightId,
+      Value<String> code,
+      Value<String> flightDate,
+      Value<int> rowid,
+    });
+
+class $$FlightLinksTableFilterComposer
+    extends Composer<_$AppDatabase, $FlightLinksTable> {
+  $$FlightLinksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get activityId => $composableBuilder(
+    column: $table.activityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tripId => $composableBuilder(
+    column: $table.tripId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get bookingId => $composableBuilder(
+    column: $table.bookingId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get flightId => $composableBuilder(
+    column: $table.flightId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get flightDate => $composableBuilder(
+    column: $table.flightDate,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$FlightLinksTableOrderingComposer
+    extends Composer<_$AppDatabase, $FlightLinksTable> {
+  $$FlightLinksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get activityId => $composableBuilder(
+    column: $table.activityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tripId => $composableBuilder(
+    column: $table.tripId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get bookingId => $composableBuilder(
+    column: $table.bookingId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get flightId => $composableBuilder(
+    column: $table.flightId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get flightDate => $composableBuilder(
+    column: $table.flightDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$FlightLinksTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FlightLinksTable> {
+  $$FlightLinksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get activityId => $composableBuilder(
+    column: $table.activityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get tripId =>
+      $composableBuilder(column: $table.tripId, builder: (column) => column);
+
+  GeneratedColumn<String> get bookingId =>
+      $composableBuilder(column: $table.bookingId, builder: (column) => column);
+
+  GeneratedColumn<String> get flightId =>
+      $composableBuilder(column: $table.flightId, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get flightDate => $composableBuilder(
+    column: $table.flightDate,
+    builder: (column) => column,
+  );
+}
+
+class $$FlightLinksTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FlightLinksTable,
+          FlightLinkRow,
+          $$FlightLinksTableFilterComposer,
+          $$FlightLinksTableOrderingComposer,
+          $$FlightLinksTableAnnotationComposer,
+          $$FlightLinksTableCreateCompanionBuilder,
+          $$FlightLinksTableUpdateCompanionBuilder,
+          (
+            FlightLinkRow,
+            BaseReferences<_$AppDatabase, $FlightLinksTable, FlightLinkRow>,
+          ),
+          FlightLinkRow,
+          PrefetchHooks Function()
+        > {
+  $$FlightLinksTableTableManager(_$AppDatabase db, $FlightLinksTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FlightLinksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FlightLinksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FlightLinksTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> activityId = const Value.absent(),
+                Value<String> tripId = const Value.absent(),
+                Value<String> bookingId = const Value.absent(),
+                Value<String> flightId = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<String> flightDate = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FlightLinksCompanion(
+                activityId: activityId,
+                tripId: tripId,
+                bookingId: bookingId,
+                flightId: flightId,
+                code: code,
+                flightDate: flightDate,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String activityId,
+                required String tripId,
+                required String bookingId,
+                required String flightId,
+                required String code,
+                required String flightDate,
+                Value<int> rowid = const Value.absent(),
+              }) => FlightLinksCompanion.insert(
+                activityId: activityId,
+                tripId: tripId,
+                bookingId: bookingId,
+                flightId: flightId,
+                code: code,
+                flightDate: flightDate,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$FlightLinksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FlightLinksTable,
+      FlightLinkRow,
+      $$FlightLinksTableFilterComposer,
+      $$FlightLinksTableOrderingComposer,
+      $$FlightLinksTableAnnotationComposer,
+      $$FlightLinksTableCreateCompanionBuilder,
+      $$FlightLinksTableUpdateCompanionBuilder,
+      (
+        FlightLinkRow,
+        BaseReferences<_$AppDatabase, $FlightLinksTable, FlightLinkRow>,
+      ),
+      FlightLinkRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -11773,4 +15323,10 @@ class $AppDatabaseManager {
       $$ExchangeRatesTableTableManager(_db, _db.exchangeRates);
   $$SavedPlacesTableTableManager get savedPlaces =>
       $$SavedPlacesTableTableManager(_db, _db.savedPlaces);
+  $$DayPlansTableTableManager get dayPlans =>
+      $$DayPlansTableTableManager(_db, _db.dayPlans);
+  $$FlightStatusesTableTableManager get flightStatuses =>
+      $$FlightStatusesTableTableManager(_db, _db.flightStatuses);
+  $$FlightLinksTableTableManager get flightLinks =>
+      $$FlightLinksTableTableManager(_db, _db.flightLinks);
 }

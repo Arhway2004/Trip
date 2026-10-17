@@ -19,6 +19,7 @@ const (
 	KindConflict
 	KindPreconditionFailed
 	KindUnauthenticated
+	KindUnavailable // a dependency (e.g. an external API) is not available
 )
 
 // FieldError describes one invalid input field.
@@ -54,6 +55,7 @@ func NotFound(code, msg string) *Error        { return newErr(KindNotFound, code
 func Forbidden(code, msg string) *Error       { return newErr(KindForbidden, code, msg) }
 func Conflict(code, msg string) *Error        { return newErr(KindConflict, code, msg) }
 func Unauthenticated(code, msg string) *Error { return newErr(KindUnauthenticated, code, msg) }
+func Unavailable(code, msg string) *Error     { return newErr(KindUnavailable, code, msg) }
 func PreconditionFailed(code, msg string) *Error {
 	return newErr(KindPreconditionFailed, code, msg)
 }

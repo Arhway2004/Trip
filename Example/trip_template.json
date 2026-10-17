@@ -1,6 +1,6 @@
 {
   "format": "wanderplan.trip",
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "trip": {
     "title": "Autumn in Chengdu & Chongqing",
     "description": "First trip to Sichuan with family.",
@@ -16,8 +16,14 @@
     "stage": "planning"
   },
   "destinations": [
-    { "city": "Chengdu", "country": "China" },
-    { "city": "Chongqing", "country": "China" }
+    {
+      "city": "Chengdu",
+      "country": "China"
+    },
+    {
+      "city": "Chongqing",
+      "country": "China"
+    }
   ],
   "banner": {
     "kind": "gradient",
@@ -29,11 +35,29 @@
     "style": "classic"
   },
   "todos": [
-    { "title": "Check passport expiry date", "category": "documents", "dueDate": "2026-10-30" },
-    { "title": "Check visa and entry requirements", "category": "documents", "dueDate": "2026-10-25" },
-    { "title": "Arrange travel insurance", "category": "health" },
-    { "title": "Set up Alipay / WeChat Pay", "category": "money", "notes": "Link a foreign card" },
-    { "title": "Arrange eSIM or roaming", "category": "connectivity" }
+    {
+      "title": "Check passport expiry date",
+      "category": "documents",
+      "dueDate": "2026-10-30"
+    },
+    {
+      "title": "Check visa and entry requirements",
+      "category": "documents",
+      "dueDate": "2026-10-25"
+    },
+    {
+      "title": "Arrange travel insurance",
+      "category": "health"
+    },
+    {
+      "title": "Set up Alipay / WeChat Pay",
+      "category": "money",
+      "notes": "Link a foreign card"
+    },
+    {
+      "title": "Arrange eSIM or roaming",
+      "category": "connectivity"
+    }
   ],
   "activities": [
     {
@@ -43,12 +67,18 @@
       "date": "2026-11-20",
       "start": "08:30",
       "end": "12:45",
-      "location": { "name": "Departure airport" },
-      "destination": { "name": "Chengdu Tianfu International Airport" },
+      "location": {
+        "name": "Departure airport"
+      },
+      "destination": {
+        "name": "Chengdu Tianfu International Airport"
+      },
       "cost": 9000,
       "currency": "THB",
       "bookingStatus": "notBooked",
-      "notes": "Enter the real flight number and times once booked."
+      "notes": "Fill in the airline (provider) and real flight number (serviceNumber, e.g. 3U1234) once booked: WanderPlan then shows live status, delays and gates. travelMode = how you get to the departure airport.",
+      "travelMode": "driving",
+      "travelMinutes": 60
     },
     {
       "ref": "hotel-chengdu",
@@ -58,7 +88,9 @@
       "start": "15:00",
       "endDate": "2026-11-24",
       "end": "11:00",
-      "location": { "name": "Chengdu city centre" },
+      "location": {
+        "name": "Chengdu city centre"
+      },
       "cost": 2400,
       "currency": "CNY",
       "bookingStatus": "booked"
@@ -70,7 +102,8 @@
       "start": "18:30",
       "end": "20:00",
       "cost": 300,
-      "currency": "CNY"
+      "currency": "CNY",
+      "travelMode": "walking"
     },
     {
       "title": "Giant Panda Breeding Base",
@@ -78,10 +111,24 @@
       "date": "2026-11-21",
       "start": "07:30",
       "end": "11:30",
-      "location": { "name": "Chengdu Research Base of Giant Panda Breeding" },
+      "location": {
+        "name": "Chengdu Research Base of Giant Panda Breeding"
+      },
       "cost": 110,
       "currency": "CNY",
-      "notes": "Go early, pandas are most active in the morning."
+      "notes": "Go early, pandas are most active in the morning. Opening hours and booking rules here are examples: check the official site before you go.",
+      "openingHours": {
+        "opens": "07:30",
+        "closes": "18:00",
+        "closedDays": []
+      },
+      "reservation": {
+        "via": "Official WeChat account (real-name ticket booking)",
+        "bookAheadDays": 3,
+        "remind": true
+      },
+      "travelMode": "driving",
+      "travelMinutes": 45
     },
     {
       "title": "Lunch break",
@@ -96,8 +143,12 @@
       "date": "2026-11-21",
       "start": "14:00",
       "end": "17:00",
-      "location": { "name": "Kuanzhai Alley" },
-      "isOptional": true
+      "location": {
+        "name": "Kuanzhai Alley"
+      },
+      "isOptional": true,
+      "travelMode": "transit",
+      "travelMinutes": 50
     },
     {
       "ref": "train-cq",
@@ -106,12 +157,18 @@
       "date": "2026-11-24",
       "start": "12:00",
       "end": "13:30",
-      "location": { "name": "Chengdu East Railway Station" },
-      "destination": { "name": "Chongqing West Railway Station" },
+      "location": {
+        "name": "Chengdu East Railway Station"
+      },
+      "destination": {
+        "name": "Chongqing West Railway Station"
+      },
       "cost": 300,
       "currency": "CNY",
       "bookingStatus": "notBooked",
-      "notes": "Times are placeholders; check the real timetable before booking."
+      "notes": "Times are placeholders; check the real timetable before booking.",
+      "travelMode": "transit",
+      "travelMinutes": 40
     },
     {
       "title": "Hotel in Chongqing",
@@ -120,18 +177,80 @@
       "start": "15:00",
       "endDate": "2026-11-28",
       "end": "11:00",
-      "location": { "name": "Jiefangbei, Chongqing" },
+      "location": {
+        "name": "Jiefangbei, Chongqing"
+      },
       "cost": 2000,
       "currency": "CNY"
     }
   ],
   "expenses": [
-    { "title": "Travel insurance", "category": "insurance", "amount": 1200, "currency": "THB", "kind": "planned", "isPaid": false },
-    { "title": "eSIM 10 GB", "category": "internet", "amount": 15, "currency": "USD", "kind": "planned", "isPaid": false },
-    { "title": "Emergency fund", "category": "emergency", "amount": 1000, "currency": "CNY", "kind": "planned", "isPaid": false }
+    {
+      "title": "Travel insurance",
+      "category": "insurance",
+      "amount": 1200,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "eSIM 10 GB",
+      "category": "internet",
+      "amount": 15,
+      "currency": "USD",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Emergency fund",
+      "category": "emergency",
+      "amount": 1000,
+      "currency": "CNY",
+      "kind": "planned",
+      "isPaid": false
+    }
   ],
   "exchangeRates": [
-    { "currency": "THB", "rate": 0.2 },
-    { "currency": "USD", "rate": 7.1 }
+    {
+      "currency": "THB",
+      "rate": 0.2
+    },
+    {
+      "currency": "USD",
+      "rate": 7.1
+    }
+  ],
+  "days": [
+    {
+      "date": "2026-11-21",
+      "endTravelMode": "transit",
+      "endTravelMinutes": 30
+    }
+  ],
+  "places": [
+    {
+      "name": "Chengdu Research Base of Giant Panda Breeding",
+      "category": "attraction",
+      "lat": 30.7432278,
+      "lng": 104.1329312,
+      "address": "1375 Panda Avenue, Chenghua District, Chengdu",
+      "notes": "Coordinates from OpenStreetMap (WGS84)."
+    },
+    {
+      "name": "Hongyadong",
+      "category": "attraction",
+      "lat": 29.5650738,
+      "lng": 106.5753425,
+      "address": "Yuzhong District, Chongqing",
+      "notes": "Best after dark. Coordinates from OpenStreetMap (WGS84)."
+    },
+    {
+      "name": "Jiefangbei",
+      "category": "other",
+      "lat": 29.5601078,
+      "lng": 106.5733671,
+      "address": "Yuzhong District, Chongqing",
+      "notes": "Coordinates from OpenStreetMap (WGS84)."
+    }
   ]
 }

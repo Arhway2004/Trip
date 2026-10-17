@@ -3,11 +3,15 @@ export GOTOOLCHAIN ?= local
 
 .PHONY: run run-mem test test-integration lint fmt build docker up down token
 
-run:            ## Run against DATABASE_URL from .env
-	set -a; [ -f .env ] && . ./.env; set +a; $(GO) run ./cmd/api
+# Secrets (API keys) live in ../secrets/*.env, outside git; they are loaded
+# into the environment here and never printed.
+LOAD_SECRETS = for f in ../secrets/*.env; do [ -f "$$f" ] && . "$$f"; done
 
-run-mem:        ## Run with in-memory storage (no database needed)
-	DATABASE_URL= AUTH_MODE=dev DEV_JWT_SECRET=change-me-local-dev-secret-at-least-32-chars $(GO) run ./cmd/api
+run:            ## Run against DATABASE_URL from .env (+ API keys from ../secrets)
+	set -a; [ -f .env ] && . ./.env; $(LOAD_SECRETS); set +a; $(GO) run ./cmd/api
+
+run-mem:        ## Run with in-memory storage (no database needed; API keys from ../secrets)
+	set -a; $(LOAD_SECRETS); set +a; DATABASE_URL= AUTH_MODE=dev DEV_JWT_SECRET=change-me-local-dev-secret-at-least-32-chars $(GO) run ./cmd/api
 
 test:           ## Unit, HTTP, contract and architecture tests
 	$(GO) test -race -count=1 ./...
@@ -33,5 +37,5 @@ up:
 down:
 	docker compose down
 
-token:          ## Print a dev token: make token SUB=alice
-	DEV_JWT_SECRET=change-me-local-dev-secret-at-least-32-chars $(GO) run ./cmd/devtoken -sub $(or $(SUB),dev-user) -email $(or $(SUB),dev-user)@example.com
+token:          ## Print a dev sign-in token for the phone: make token SUB=alice TTL=720h
+	@DEV_JWT_SECRET=change-me-local-dev-secret-at-least-32-chars $(GO) run ./cmd/devtoken -sub $(or $(SUB),dev-user) -email $(or $(SUB),dev-user)@example.com -ttl $(or $(TTL),24h)

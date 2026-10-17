@@ -24,6 +24,25 @@ paths:
       responses:
         "200": { description: Ready }
         "503": { $ref: "#/components/responses/Problem" }
+  /v1/auth/demo:
+    post:
+      summary: Development only - token for the shared demo account
+      description: >
+        Lets the app sign in by itself when testing against a development
+        server (AUTH_MODE=dev). Not available in production.
+      security: []
+      responses:
+        "200":
+          description: Demo sign-in
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [token, email, expiresAt]
+                properties:
+                  token: { type: string }
+                  email: { type: string }
+                  expiresAt: { type: string, format: date-time }
   /v1/me:
     get:
       summary: The signed-in user (created on first sign-in)
@@ -231,6 +250,107 @@ paths:
                     type: array
                     items: { $ref: "#/components/schemas/Member" }
         "404": { $ref: "#/components/responses/Problem" }
+  /v1/bookings:
+    post:
+      summary: Book flights for a traveller; each segment watches a shared flight
+      description: |
+        Each segment points to one operating flight (flight number + departure
+        date) shared by every booking of it, so it is checked once for everyone.
+        Flights nobody has checked yet are looked up once right away.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BookingInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Booking" }
+        "422": { $ref: "#/components/responses/Problem" }
+    get:
+      summary: Your bookings with the latest known flight states (no provider calls)
+      responses:
+        "200":
+          description: Bookings
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Booking" }
+  /v1/bookings/{bookingId}:
+    parameters:
+      - $ref: "#/components/parameters/BookingId"
+    get:
+      summary: One booking
+      responses:
+        "200":
+          description: Booking
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Booking" }
+        "404": { $ref: "#/components/responses/Problem" }
+    delete:
+      summary: Delete a booking (its flights stay shared with other bookings)
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/Problem" }
+  /v1/flights/{flightId}:
+    parameters:
+      - $ref: "#/components/parameters/FlightId"
+    get:
+      summary: Latest known state of a flight in one of your bookings (cached; no provider call)
+      responses:
+        "200":
+          description: Flight
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MonitoredFlight" }
+        "404": { $ref: "#/components/responses/Problem" }
+  /v1/flights/{flightId}/refresh:
+    parameters:
+      - $ref: "#/components/parameters/FlightId"
+    post:
+      summary: Urgent refresh ("Check now"), shared by everyone watching the flight
+      description: |
+        The exception to the scheduled refresh. If anyone refreshed this flight
+        within the cooldown (default 30 min), that answer is returned without a
+        provider call. Provider failures return 503 and the last known data stays.
+      responses:
+        "200":
+          description: Flight
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MonitoredFlight" }
+        "404": { $ref: "#/components/responses/Problem" }
+        "503": { $ref: "#/components/responses/Problem" }
+  /v1/flight-changes:
+    get:
+      summary: Changes to flights in your bookings (for notifications and the staff dashboard)
+      parameters:
+        - in: query
+          name: since
+          required: false
+          description: Only changes detected after this time (RFC 3339).
+          schema: { type: string, format: date-time }
+      responses:
+        "200":
+          description: Changes, oldest first
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/FlightChange" }
+        "422": { $ref: "#/components/responses/Problem" }
 components:
   securitySchemes:
     bearerAuth:
@@ -238,6 +358,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
   parameters:
+    BookingId:
+      in: path
+      name: bookingId
+      required: true
+      schema: { type: string, format: uuid }
+    FlightId:
+      in: path
+      name: flightId
+      required: true
+      schema: { type: string, format: uuid }
     TripId:
       in: path
       name: tripId
@@ -327,6 +457,99 @@ components:
         userId: { type: string, format: uuid }
         role: { type: string, enum: [owner, editor, viewer] }
         createdAt: { type: string, format: date-time }
+    BookingInput:
+      type: object
+      required: [traveler, segments]
+      properties:
+        tripId: { type: string, format: uuid, nullable: true }
+        traveler: { type: string, minLength: 1, maxLength: 200 }
+        segments:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: object
+            required: [flight, date]
+            properties:
+              flight: { type: string, example: MU5103, description: IATA or ICAO flight number }
+              date: { type: string, format: date, description: Departure date (local) }
+    Booking:
+      type: object
+      required: [id, traveler, createdAt, flights]
+      properties:
+        id: { type: string, format: uuid }
+        tripId: { type: string, format: uuid, nullable: true }
+        traveler: { type: string }
+        createdAt: { type: string, format: date-time }
+        flights:
+          type: array
+          description: One per segment, in order.
+          items: { $ref: "#/components/schemas/MonitoredFlight" }
+    MonitoredFlight:
+      type: object
+      required: [id, flight, date, status, stale, changes]
+      properties:
+        id: { type: string, format: uuid }
+        flight: { type: string, example: MU5103 }
+        date: { type: string, format: date }
+        status:
+          nullable: true
+          description: Latest successful answer; null until the first one.
+          allOf: [{ $ref: "#/components/schemas/FlightStatus" }]
+        lastCheckedAt: { type: string, format: date-time, nullable: true }
+        lastSuccessAt: { type: string, format: date-time, nullable: true }
+        nextCheckAt: { type: string, format: date-time, nullable: true, description: null = no more checks }
+        stale: { type: boolean, description: The last check failed; status is the last known answer. }
+        changes:
+          type: array
+          items: { $ref: "#/components/schemas/Change" }
+    FlightStatus:
+      type: object
+      required: [flight, date, phase, departure, arrival, fetchedAt, provider]
+      properties:
+        flight: { type: string }
+        date: { type: string, format: date }
+        phase: { type: string, enum: [scheduled, active, landed, cancelled, incident, diverted, unknown] }
+        detail: { type: string, description: "Provider wording, e.g. Boarding" }
+        airline: { type: string }
+        departure: { $ref: "#/components/schemas/FlightEnd" }
+        arrival: { $ref: "#/components/schemas/FlightEnd" }
+        fetchedAt: { type: string, format: date-time }
+        provider: { type: string, example: aerodatabox }
+    FlightEnd:
+      type: object
+      description: Times are local wall-clock times at that airport (YYYY-MM-DDTHH:mm).
+      properties:
+        airport: { type: string }
+        iata: { type: string }
+        terminal: { type: string }
+        gate: { type: string }
+        baggage: { type: string }
+        delay: { type: integer, description: Minutes }
+        scheduled: { type: string }
+        estimated: { type: string }
+        actual: { type: string }
+    Change:
+      type: object
+      required: [kind, to, detectedAt]
+      properties:
+        kind:
+          type: string
+          enum: [status, departureTime, arrivalTime, departureTerminal, departureGate, arrivalTerminal, arrivalGate, baggageBelt]
+        from: { type: string }
+        to: { type: string }
+        detectedAt: { type: string, format: date-time }
+    FlightChange:
+      type: object
+      required: [flightId, flight, date, kind, to, detectedAt]
+      properties:
+        flightId: { type: string, format: uuid }
+        flight: { type: string }
+        date: { type: string, format: date }
+        kind: { type: string }
+        from: { type: string }
+        to: { type: string }
+        detectedAt: { type: string, format: date-time }
     Problem:
       type: object
       required: [type, title, status, code]

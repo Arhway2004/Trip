@@ -47,4 +47,25 @@ class MapServices {
     if (_routeCache.length > 200) _routeCache.remove(_routeCache.keys.first);
     return _routeCache[key] = r;
   }
+
+  /// Travel times between all [points]. Transit, failures and offline use
+  /// straight-line estimates, flagged as such in the result.
+  Future<TravelMatrix> matrix(MapProviderId provider, List<GeoPoint> points, TravelMode mode) async {
+    if (!mode.isRouted || points.length < 2) return estimateMatrix(points, mode);
+    try {
+      final m = await routingFor(provider).matrix(points, mode);
+      // Fill gaps (no route between two points) with estimates.
+      final est = estimateMatrix(points, mode);
+      return TravelMatrix(
+        [
+          for (var i = 0; i < points.length; i++)
+            [for (var j = 0; j < points.length; j++) m.seconds[i][j] ?? est.seconds[i][j]],
+        ],
+        source: m.source,
+        estimated: false,
+      );
+    } catch (_) {
+      return estimateMatrix(points, mode);
+    }
+  }
 }

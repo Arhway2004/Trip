@@ -1509,6 +1509,418 @@ class AppLocalizationsTh extends AppLocalizations {
   String get pasteLink => 'วางลิงก์';
 
   @override
+  String get modeTransit => 'รถไฟ / รถไฟฟ้า / รถบัส';
+
+  @override
+  String get dayStart => 'จุดเริ่ม';
+
+  @override
+  String get dayEnd => 'จุดสิ้นสุด';
+
+  @override
+  String get dayStartTitle => 'วันนี้เริ่มที่ไหน?';
+
+  @override
+  String get dayEndTitle => 'วันนี้จบที่ไหน?';
+
+  @override
+  String get dayAnchorNotSet => 'ยังไม่กำหนด (คืนนั้นไม่มีโรงแรม)';
+
+  @override
+  String get dayAnchorHotel => 'โรงแรม';
+
+  @override
+  String get dayAnchorUseHotel => 'ใช้โรงแรม (ค่าเริ่มต้น)';
+
+  @override
+  String get dayLegs => 'การเดินทางระหว่างจุด';
+
+  @override
+  String get legTitle => 'ไปอย่างไร?';
+
+  @override
+  String legDefault(String mode) {
+    return 'ค่าเริ่มต้นของวัน ($mode)';
+  }
+
+  @override
+  String get legMinutes => 'เวลาเดินทางของคุณ (ไม่บังคับ)';
+
+  @override
+  String get legMinutesHelp => 'เว้นว่างเพื่อใช้เวลาโดยทั่วไปของเส้นทาง';
+
+  @override
+  String get legTransitHelp =>
+      'ไม่คำนวณเวลารถไฟ รถไฟฟ้า และรถบัส (ไม่มีข้อมูลตารางเวลา) ใส่เวลาจากตารางหรือแอปแผนที่';
+
+  @override
+  String get legTransitNoTime => 'รถไฟ/รถไฟฟ้า/รถบัส · ใส่เวลาของคุณ';
+
+  @override
+  String get legUndecided => 'ยังไม่ได้เลือกการเดินทาง';
+
+  @override
+  String get legNoRoute => 'ไม่มีเส้นทาง (ยังไม่ยืนยัน)';
+
+  @override
+  String get legYourEstimate => 'ค่าประมาณของคุณ';
+
+  @override
+  String legTooShort(int minutes) {
+    return 'ขาดอีก $minutes นาทีก่อนกิจกรรมถัดไป';
+  }
+
+  @override
+  String get routeTransitNote =>
+      'เส้นประสีน้ำเงินคือช่วงรถไฟ/รถไฟฟ้า/รถบัส: เส้นตรง ใช้เวลาที่คุณใส่';
+
+  @override
+  String get optimizeOrder => 'จัดลำดับให้ดีที่สุด';
+
+  @override
+  String get optimizeNeedsTwo =>
+      'ต้องมีอย่างน้อย 2 สถานที่ที่มีตำแหน่ง ไม่ล็อก และยังไม่จอง';
+
+  @override
+  String get optimizeTitle => 'ลำดับที่แนะนำ';
+
+  @override
+  String optimizeSaves(String before, String after, String saved) {
+    return 'เดินทาง $before → $after (ประหยัด $saved)';
+  }
+
+  @override
+  String optimizeAlreadyBest(String travel) {
+    return 'ลำดับของคุณสั้นที่สุดแล้ว (เดินทาง $travel)';
+  }
+
+  @override
+  String optimizeRouted(String mode) {
+    return 'อิงเส้นทาง$mode เวลาโดยทั่วไป ไม่ใช่สภาพจราจรจริง';
+  }
+
+  @override
+  String optimizeEstimated(String mode) {
+    return 'ไม่มีข้อมูลเส้นทาง: ประมาณจากระยะทางเส้นตรง ($mode)';
+  }
+
+  @override
+  String get optimizeDayStart => 'วันเริ่มเวลา';
+
+  @override
+  String optimizeTravel(String time) {
+    return 'เดินทาง $time';
+  }
+
+  @override
+  String optimizeWait(String time) {
+    return 'รอเปิด $time';
+  }
+
+  @override
+  String get optimizeFixed => 'คงที่';
+
+  @override
+  String get optimizeAssumed => 'ไม่มีเวลา: ถือว่า 1 ชม.';
+
+  @override
+  String get optimizeClosed => 'ปิดวันนั้น';
+
+  @override
+  String get optimizeOutsideHours => 'นอกเวลาทำการ';
+
+  @override
+  String optimizeLate(int minutes) {
+    return 'สาย $minutes นาที';
+  }
+
+  @override
+  String get optimizeKeepsFixed =>
+      'รายการที่ล็อก จองแล้ว และการเดินทางคงเวลาเดิม จะย้ายเฉพาะสถานที่ที่ยังไม่จอง';
+
+  @override
+  String get optimizeApply => 'ใช้';
+
+  @override
+  String optimizeApplied(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'อัปเดต $count กิจกรรมแล้ว',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get gettingHere => 'การเดินทางมาที่นี่';
+
+  @override
+  String get gettingHereDefault => 'ค่าเริ่มต้นของวัน';
+
+  @override
+  String get openingHours => 'เวลาทำการ';
+
+  @override
+  String get openingHoursKnown => 'มีเวลาทำการ';
+
+  @override
+  String get openingHoursHelp =>
+      'ตรวจสอบจากเว็บไซต์ทางการ WanderPlan ใช้เพื่อเตือนและจัดลำดับ';
+
+  @override
+  String get opens => 'เปิด';
+
+  @override
+  String get closes => 'ปิด';
+
+  @override
+  String get closesNextDay => 'ปิดหลังเที่ยงคืน';
+
+  @override
+  String get closedOn => 'ปิดทุกวัน';
+
+  @override
+  String get closedThatDay => 'วันนี้ปิด!';
+
+  @override
+  String get reservation => 'การจอง';
+
+  @override
+  String get reservationRequired => 'ต้องจองหรือซื้อตั๋วล่วงหน้า';
+
+  @override
+  String get reservationVia => 'จองที่ไหน / อย่างไร';
+
+  @override
+  String get reservationViaHint =>
+      'เช่น บัญชี WeChat ทางการ, แอป Trip.com, เว็บไซต์';
+
+  @override
+  String get bookAheadDays => 'จองล่วงหน้ากี่วัน?';
+
+  @override
+  String get daysUnit => 'วัน';
+
+  @override
+  String bookByDate(String date) {
+    return 'จองภายใน $date';
+  }
+
+  @override
+  String get remindToBook => 'เตือนฉันในวันนั้น';
+
+  @override
+  String get remindToBookHelp =>
+      'แจ้งเตือนเวลา 09:00 (เวลาทริป) ในวันที่ต้องจอง';
+
+  @override
+  String get remindPermissionDenied =>
+      'การแจ้งเตือนของ WanderPlan ปิดอยู่ อนุญาตในการตั้งค่าระบบเพื่อรับการเตือน';
+
+  @override
+  String get reminderTitle => 'ถึงเวลาจองแล้ว';
+
+  @override
+  String reminderBody(String title, String date, String via) {
+    return 'จอง “$title” สำหรับ $date $via';
+  }
+
+  @override
+  String issueTightTravelOwn(String a, String b, int minutes, int needed) {
+    return '“$a” → “$b”: มีแค่ $minutes นาที แต่คุณเผื่อไว้ $needed นาที';
+  }
+
+  @override
+  String issueClosedOnDay(String title) {
+    return '“$title” ปิดในวันนี้';
+  }
+
+  @override
+  String issueOutsideOpeningHours(String title) {
+    return '“$title” อยู่นอกเวลาทำการ';
+  }
+
+  @override
+  String issueBookingNeeded(String title) {
+    return '“$title” ยังต้องจอง';
+  }
+
+  @override
+  String issueBookBy(String title, String date) {
+    return 'จอง “$title” ภายใน $date';
+  }
+
+  @override
+  String get flightUpdates => 'อัปเดตเที่ยวบิน';
+
+  @override
+  String get flightUpdatesSubtitle => 'สถานะสดจากเซิร์ฟเวอร์ WanderPlan ของคุณ';
+
+  @override
+  String get flightPrivacyTitle => 'ความเป็นส่วนตัว';
+
+  @override
+  String get actionRetry => 'ลองอีกครั้ง';
+
+  @override
+  String get flightUpdatesOff => 'ใช้งานไม่ได้ในตอนนี้';
+
+  @override
+  String get flightServerChecking => 'กำลังเชื่อมต่อ…';
+
+  @override
+  String get flightServerIntro =>
+      'สถานะเที่ยวบินสดมาจากเซิร์ฟเวอร์ WanderPlan ซึ่งตรวจแต่ละเที่ยวบินครั้งเดียวสำหรับทุกคนและเก็บคีย์ข้อมูลไว้ โทรศัพท์แค่อ่านผล ไม่ต้องตั้งค่าอะไร';
+
+  @override
+  String get flightServerTitle => 'สถานะ';
+
+  @override
+  String flightServerConnectedAs(String who) {
+    return 'เปิดอยู่ · ลงชื่อเข้าใช้เป็น $who';
+  }
+
+  @override
+  String get flightServerPrivacy =>
+      'ไม่มีคีย์ API ข้อมูลเที่ยวบินเก็บในโทรศัพท์ แอปลงชื่อเข้าใช้เซิร์ฟเวอร์ WanderPlan เองและเก็บการเข้าสู่ระบบไว้ในพวงกุญแจ (เฉพาะเครื่องนี้)';
+
+  @override
+  String get flightNotConnected => 'แอปเวอร์ชันนี้ยังไม่มีอัปเดตเที่ยวบินสด';
+
+  @override
+  String get flightSignInRejected =>
+      'เซิร์ฟเวอร์ WanderPlan ไม่ยอมรับการลงชื่อเข้าใช้ ลองใหม่ภายหลัง';
+
+  @override
+  String get flightServerNoKey =>
+      'เซิร์ฟเวอร์ WanderPlan ยังไม่ได้เปิดข้อมูลเที่ยวบินสด';
+
+  @override
+  String get flightNoDataYet =>
+      'ยังไม่มีข้อมูล เซิร์ฟเวอร์จะตรวจเที่ยวบินนี้ตามกำหนด (ข้อมูลสดมีช่วงวันบิน)';
+
+  @override
+  String get flightStale => 'ตรวจครั้งล่าสุดไม่สำเร็จ แสดงข้อมูลล่าสุดที่มี';
+
+  @override
+  String get flightNeedsNumber =>
+      'ใส่หมายเลขเที่ยวบิน (เช่น MU5103) เพื่อรับการอัปเดตสด';
+
+  @override
+  String get flightCheckNow => 'ตรวจเลย';
+
+  @override
+  String get flightNoChanges => 'ไม่มีการเปลี่ยนแปลงตั้งแต่ครั้งก่อน';
+
+  @override
+  String get flightQuotaReached =>
+      'แผนข้อมูลเที่ยวบินของเซิร์ฟเวอร์ใช้คำขอเดือนนี้หมดแล้ว';
+
+  @override
+  String get flightNetwork =>
+      'ตอนนี้เชื่อมต่อเซิร์ฟเวอร์ WanderPlan ไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่';
+
+  @override
+  String get flightUnknownError => 'เซิร์ฟเวอร์ตอบกลับผิดปกติ ลองใหม่ภายหลัง';
+
+  @override
+  String get flightScheduled => 'ตามกำหนด';
+
+  @override
+  String get flightInAir => 'กำลังบิน';
+
+  @override
+  String get flightLanded => 'ลงจอดแล้ว';
+
+  @override
+  String get flightCancelled => 'ยกเลิก';
+
+  @override
+  String get flightIncident => 'เหตุขัดข้อง';
+
+  @override
+  String get flightDiverted => 'เปลี่ยนเส้นทาง';
+
+  @override
+  String get flightStatusUnknown => 'ไม่ทราบสถานะ';
+
+  @override
+  String flightDelayed(int minutes) {
+    return 'ล่าช้า $minutes นาที';
+  }
+
+  @override
+  String get flightDep => 'ออก';
+
+  @override
+  String get flightArr => 'ถึง';
+
+  @override
+  String flightTerminal(String t) {
+    return 'อาคาร $t';
+  }
+
+  @override
+  String flightGate(String g) {
+    return 'ประตู $g';
+  }
+
+  @override
+  String flightBelt(String b) {
+    return 'สายพาน $b';
+  }
+
+  @override
+  String flightChecked(String time) {
+    return 'ตรวจเมื่อ $time · เวลาท้องถิ่นของแต่ละสนามบิน';
+  }
+
+  @override
+  String flightNotifyTitle(String flight) {
+    return '$flight: อัปเดตเที่ยวบิน';
+  }
+
+  @override
+  String flightChangeStatus(String status) {
+    return 'ตอนนี้: $status';
+  }
+
+  @override
+  String flightChangeDeparture(String from, String to) {
+    return 'ออก $from → $to';
+  }
+
+  @override
+  String flightChangeArrival(String from, String to) {
+    return 'ถึง $from → $to';
+  }
+
+  @override
+  String flightChangeDepTerminal(String t) {
+    return 'อาคารขาออก $t';
+  }
+
+  @override
+  String flightChangeDepGate(String g) {
+    return 'ประตู $g';
+  }
+
+  @override
+  String flightChangeArrTerminal(String t) {
+    return 'อาคารขาเข้า $t';
+  }
+
+  @override
+  String flightChangeArrGate(String g) {
+    return 'ประตูขาเข้า $g';
+  }
+
+  @override
+  String flightChangeBaggage(String b) {
+    return 'สายพานกระเป๋า $b';
+  }
+
+  @override
   String get navigateWith => 'นำทางด้วย';
 
   @override

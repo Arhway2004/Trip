@@ -8,7 +8,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:wanderplan/app/service_registry.dart';
 import 'package:wanderplan/contexts/budget/application/budget_service.dart';
 import 'package:wanderplan/contexts/checklist/application/checklist_service.dart';
+import 'package:wanderplan/contexts/flight_status/application/flight_update_service.dart';
 import 'package:wanderplan/contexts/gallery/application/gallery_service.dart';
+import 'package:wanderplan/contexts/itinerary/application/booking_reminders.dart';
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
 import 'package:wanderplan/contexts/places/application/location_link_service.dart';
 import 'package:wanderplan/contexts/places/application/location_service.dart';
@@ -34,6 +36,11 @@ final deviceTimeZoneProvider = Provider<String>((ref) => 'UTC');
 /// Amap Web Service key, from `--dart-define=AMAP_WEB_KEY=…` (empty = not configured).
 final amapWebKeyProvider = Provider<String>((ref) => const String.fromEnvironment('AMAP_WEB_KEY'));
 
+/// WanderPlan server address, part of the build (not a secret):
+/// `--dart-define=WANDERPLAN_API_URL=…` (tool/run_phone.sh sets it for testing).
+/// Empty = this build has no server, so live flight updates are off.
+final serverUrlProvider = Provider<String>((ref) => const String.fromEnvironment('WANDERPLAN_API_URL'));
+
 /// Source of "now"; tests override it with a fixed time.
 final clockProvider = Provider<Clock>((ref) => DateTime.now);
 
@@ -46,6 +53,7 @@ final serviceRegistryProvider = Provider<ServiceRegistry>(
     tempDir: ref.watch(tempDirProvider),
     clock: ref.watch(clockProvider),
     amapWebKey: ref.watch(amapWebKeyProvider),
+    serverUrl: ref.watch(serverUrlProvider),
   ),
 );
 
@@ -57,6 +65,12 @@ final itineraryServiceProvider = Provider<ItineraryService>((ref) => ref.watch(s
 final budgetServiceProvider = Provider<BudgetService>((ref) => ref.watch(serviceRegistryProvider).budget);
 final savedPlaceServiceProvider = Provider<SavedPlaceService>((ref) => ref.watch(serviceRegistryProvider).savedPlaces);
 final mapServicesProvider = Provider<MapServices>((ref) => ref.watch(serviceRegistryProvider).maps);
+final bookingReminderServiceProvider = Provider<BookingReminderService>(
+  (ref) => ref.watch(serviceRegistryProvider).reminders,
+);
+/// Automatic flight checks on app start/resume (tests turn them off).
+final flightAutoCheckProvider = Provider<bool>((ref) => true);
+final flightUpdateServiceProvider = Provider<FlightUpdateService>((ref) => ref.watch(serviceRegistryProvider).flightUpdates);
 final locationLinkServiceProvider = Provider<LocationLinkService>((ref) => ref.watch(serviceRegistryProvider).links);
 final locationServiceProvider = Provider<LocationService>((ref) => ref.watch(serviceRegistryProvider).location);
 final tripPackageServiceProvider = Provider<TripPackageService>((ref) => ref.watch(serviceRegistryProvider).packages);

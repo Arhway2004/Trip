@@ -20,6 +20,9 @@ enum IssueCode {
   transportNotBooked,
   outsideTripDates,
   timeNotSet,
+  closedOnDay,
+  outsideOpeningHours,
+  bookingNeeded,
 }
 
 /// A specific finding with the data needed to explain it.
@@ -32,6 +35,7 @@ class ScheduleIssue {
     this.minutes,
     this.requiredMinutes,
     this.distanceKm,
+    this.date,
   });
 
   final IssueCode code;
@@ -43,6 +47,9 @@ class ScheduleIssue {
   final int? minutes;
   final int? requiredMinutes;
   final double? distanceKm;
+
+  /// A related date (e.g. the book-by date).
+  final LocalDate? date;
 }
 
 class DayAssessment {
@@ -172,7 +179,21 @@ DayAssessment _assessDay(
 
     final from = a.endPlace, to = b.location;
     if (from.isEmpty || to.isEmpty || from.sameAs(to) || a.kind.isTransport && b.kind.isTransport) continue;
-    if (from.point != null && to.point != null) {
+    if (b.arrivalMinutes != null) {
+      // The traveller's own estimate for this leg wins over any rule of thumb.
+      if (gap < b.arrivalMinutes!) {
+        issues.add(
+          ScheduleIssue(
+            gap == 0 ? IssueCode.noTravelTime : IssueCode.tightTravel,
+            IssueSeverity.warning,
+            activityIds: [a.id, b.id],
+            titles: [a.title, b.title],
+            minutes: gap,
+            requiredMinutes: b.arrivalMinutes,
+          ),
+        );
+      }
+    } else if (from.point != null && to.point != null) {
       final km = from.point!.distanceKmTo(to.point!);
       final needed = (km / FeasibilityRules.assumedSpeedKmh * 60).round() + FeasibilityRules.transferOverheadMinutes;
       if (gap < needed && !b.kind.isTransport) {
@@ -199,6 +220,25 @@ DayAssessment _assessDay(
         ),
       );
     }
+  }
+
+  // Opening hours the traveller entered.
+  for (final a in scheduled.where((a) => a.openingHours != null && a.date == day)) {
+    final h = a.openingHours!;
+    if (h.isClosedOn(day)) {
+      issues.add(ScheduleIssue(IssueCode.closedOnDay, IssueSeverity.error, activityIds: [a.id], titles: [a.title]));
+    } else if (a.spanOn(day) case (final s, final e) when !h.covers(day, s, e)) {
+      issues.add(
+        ScheduleIssue(IssueCode.outsideOpeningHours, IssueSeverity.warning, activityIds: [a.id], titles: [a.title]),
+      );
+    }
+  }
+
+  // Reservations still to make.
+  for (final a in dayActs.where((a) => a.date == day && a.needsBooking)) {
+    issues.add(
+      ScheduleIssue(IssueCode.bookingNeeded, IssueSeverity.info, activityIds: [a.id], titles: [a.title], date: a.bookBy),
+    );
   }
 
   // Day load.

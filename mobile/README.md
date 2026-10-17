@@ -41,8 +41,12 @@ The app is being built in the six phases defined in the product spec. **Only Pha
   - **Saved places:** save, recategorize, remove (with undo) or **Add to day**, which creates an untimed activity. Long-press the map to pin your own place. Saved places are in trip files (schema v3), are copied when a trip is duplicated, and are listed under Saved places.
   - **Find locations:** for plans imported with only place names (e.g. from ChatGPT), the map offers *Find locations*. Each distinct name is searched once, and matches near the trip's destination cities rank first; far ones are flagged (a 中山路步行街 in another city). Generic names such as "Kunming hotel" are never pre-selected. Nothing changes until you accept, and one accepted place updates every activity that uses that name.
   - **Paste a link:** anywhere a location is chosen (map search box, location picker, Find locations), paste a Google Maps link, `maps.app.goo.gl` short link, embed `<iframe>`, Amap/Apple Maps link, "lat, lng" or a Plus Code ("RP63+XW2, Shangri-La"). Google, Amap and Apple Maps coordinates in mainland China are GCJ-02 and are converted to GPS. An embed link only carries the map centre, which is flagged.
+  - **Day planning:** every day has a **start and end point** (last night's / tonight's hotel by default; change it to any saved place, a map pin or a pasted link). Under the map, each **leg** shows its time and distance; tap it to choose walk / bike / car-taxi / train-metro-bus and optionally your own time. Train, metro and bus times are never calculated (no timetable data), so they use yours. A leg that doesn't fit before the next timed item is flagged.
+  - **Optimize order:** proposes the day order with the least travel from the start to the end point, using a real travel-time table (OSRM, or Amap with a key; straight-line estimates when offline, and labelled). It tries every order up to 7 places, then uses a 2-opt heuristic. Locked, booked and transport items never move. It waits for opening times, flags closed days, and shows "travel 1 h 40 → 1 h 05". Nothing changes until you tap **Apply**.
+  - **Opening hours and reservations (activity editor):** hours plus closed weekdays, and warnings if a visit falls outside them. "Needs reservation": where/how to book, "book N days before", and an optional phone reminder at 09:00 trip time on the book-by date (local notification; asks permission when you turn it on).
   - **Other:** marker filters by activity kind and place category, *My location* (asked on tap, foreground only, never stored), and handoff to Google Maps, Apple Maps or Amap.
   - **Online:** tiles, search and routing need the internet. Viewed tiles are cached as the tile servers allow.
+- **Flight updates (live):** come from the WanderPlan backend, and there is nothing to set up on the phone. The server address is part of the build (`--dart-define=WANDERPLAN_API_URL=…`; it's not a secret). The app signs in by itself: on a development server it uses the shared demo account (`demo@wanderplan.test`, via `POST /v1/auth/demo`); production will use a real login. The flight-data API key stays on the server. When the app opens (at most every 10 minutes), each planned flight with a flight number is booked on the server, once per flight. The app reads the server's cached status, which uses no provider requests, and sends a notification when something changed. **Check now** in Bookings asks the server for an urgent refresh (once per 30 minutes per flight). Settings → Flight updates only shows the status. **To test on a phone:** run `mobile/tool/run_phone.sh`. It starts the backend on your Mac (with the key from `secrets/`) and runs the app with the Mac's Wi-Fi address built in.
 - **Budget:** planned (itinerary costs + planned expenses) vs spent (actual expenses), remaining, per person, by category (paired bars, colors checked for color-blind safety) and by day. Multiple currencies with per-trip exchange rates, entered by hand or fetched live from frankfurter.app (ECB rates); amounts without a rate are flagged, not guessed. Expenses can be linked to activities, marked paid/unpaid, and shared or personal.
 - **Languages:** English (default), Simplified Chinese, and Thai, switchable in Settings. Dates and currency use locale-aware formatting.
 - **Privacy:** Settings → Delete all data wipes the database and all stored media.
@@ -176,7 +180,7 @@ lib/
 
 See also: [`docs/IMPORT_FORMAT.md`](../docs/IMPORT_FORMAT.md) (trip file format) and [`docs/REQUEST_TRACKER.md`](../docs/REQUEST_TRACKER.md) (every request mapped to the plan).
 
-## Database (schema v5)
+## Database (schema v7)
 
 All IDs are client-generated UUIDv4. Foreign keys are enforced (`PRAGMA foreign_keys = ON`), and child rows cascade on trip deletion. Multi-table writes run in transactions.
 
@@ -186,9 +190,12 @@ All IDs are client-generated UUIDv4. Foreign keys are enforced (`PRAGMA foreign_
 | `trip_destinations` | `trip_id` → trips, `country`, `city`, `sort_order` (first = main destination) |
 | `trip_banners` | 1:1 with trips: `kind` (photo/gradient/solid), `image_path` (relative), `scale`, `align_x`, `align_y`, `color_a`, `color_b`, `show_title`, `title_placement`, `text_color`, `style` |
 | `trip_photos` | `trip_id` → trips, `rel_path`, `caption`, `is_favorite`, `created_at` |
-| `activities` *(v3)* | `trip_id` → trips, kind, date/start/end (+ end date), `has_time` *(v4: false = time not decided)*, location/destination name + optional WGS84 lat/lng + source, cost, currency, booking status/provider/number/reference/url, locked, optional, notes |
+| `activities` *(v3)* | `trip_id` → trips, kind, date/start/end (+ end date), `has_time` *(v4: false = time not decided)*, location/destination name + optional WGS84 lat/lng + source, cost, currency, booking status/provider/number/reference/url, locked, optional, notes; *(v6)* arrival mode/minutes, opening hours + closed weekdays, reservation required/via/book-ahead days/remind |
 | `expenses` *(v3)* | `trip_id` → trips, title, category, amount, currency, kind (planned/actual), paid, date, `activity_id` → activities (set null on delete), shared, notes |
 | `exchange_rates` *(v3)* | (`trip_id`, currency) → rate into the trip currency, source, updated at |
+| `flight_statuses` *(v7)* | `activity_id` → activities, last live flight status (JSON) + fetched at |
+| `flight_links` *(v8)* | `activity_id` → server booking id + flight id, flight code and date (which server booking follows that flight) |
+| `day_plans` *(v6)* | (`trip_id`, date) → start/end name + WGS84 point + source, end-leg travel mode/minutes |
 | `saved_places` *(v5)* | `trip_id` → trips, name, category, **required** WGS84 lat/lng, address, coordinate source, notes, timestamps |
 | `trip_todos` *(v2)* | `trip_id` → trips, `title`, `notes`, `category`, `due_date`, `is_done`, `done_at`, `sort_order` |
 | `app_settings` | key/value (language, map provider, selected trip) |

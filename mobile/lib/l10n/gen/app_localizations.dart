@@ -2602,6 +2602,660 @@ abstract class AppLocalizations {
   /// **'Paste link'**
   String get pasteLink;
 
+  /// No description provided for @modeTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'Train / metro / bus'**
+  String get modeTransit;
+
+  /// No description provided for @dayStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get dayStart;
+
+  /// No description provided for @dayEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get dayEnd;
+
+  /// No description provided for @dayStartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where does this day start?'**
+  String get dayStartTitle;
+
+  /// No description provided for @dayEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where does this day end?'**
+  String get dayEndTitle;
+
+  /// No description provided for @dayAnchorNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'not set (no hotel that night)'**
+  String get dayAnchorNotSet;
+
+  /// No description provided for @dayAnchorHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'hotel'**
+  String get dayAnchorHotel;
+
+  /// No description provided for @dayAnchorUseHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the hotel (default)'**
+  String get dayAnchorUseHotel;
+
+  /// No description provided for @dayLegs.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting between stops'**
+  String get dayLegs;
+
+  /// No description provided for @legTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you get there?'**
+  String get legTitle;
+
+  /// No description provided for @legDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Day default ({mode})'**
+  String legDefault(String mode);
+
+  /// No description provided for @legMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Your travel time (optional)'**
+  String get legMinutes;
+
+  /// No description provided for @legMinutesHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to use the route’s typical time.'**
+  String get legMinutesHelp;
+
+  /// No description provided for @legTransitHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Train, metro and bus times aren’t calculated (no timetable data). Enter the time from the timetable or a map app.'**
+  String get legTransitHelp;
+
+  /// No description provided for @legTransitNoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Train/metro/bus · enter your time'**
+  String get legTransitNoTime;
+
+  /// No description provided for @legUndecided.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport not decided yet'**
+  String get legUndecided;
+
+  /// No description provided for @legNoRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'No route (unverified)'**
+  String get legNoRoute;
+
+  /// No description provided for @legYourEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'your estimate'**
+  String get legYourEstimate;
+
+  /// No description provided for @legTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min short before the next start'**
+  String legTooShort(int minutes);
+
+  /// No description provided for @routeTransitNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashed blue lines are train/metro/bus legs: straight lines with your own times.'**
+  String get routeTransitNote;
+
+  /// No description provided for @optimizeOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimize order'**
+  String get optimizeOrder;
+
+  /// No description provided for @optimizeNeedsTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs at least 2 places with a location that aren’t locked or booked.'**
+  String get optimizeNeedsTwo;
+
+  /// No description provided for @optimizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested order'**
+  String get optimizeTitle;
+
+  /// No description provided for @optimizeSaves.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel {before} → {after} (saves {saved})'**
+  String optimizeSaves(String before, String after, String saved);
+
+  /// No description provided for @optimizeAlreadyBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Your order is already the shortest ({travel} of travel).'**
+  String optimizeAlreadyBest(String travel);
+
+  /// No description provided for @optimizeRouted.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on {mode} routes; typical times, not live traffic.'**
+  String optimizeRouted(String mode);
+
+  /// No description provided for @optimizeEstimated.
+  ///
+  /// In en, this message translates to:
+  /// **'No route data: estimated from straight-line distance for {mode}.'**
+  String optimizeEstimated(String mode);
+
+  /// No description provided for @optimizeDayStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Day starts at'**
+  String get optimizeDayStart;
+
+  /// No description provided for @optimizeTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} travel'**
+  String optimizeTravel(String time);
+
+  /// No description provided for @optimizeWait.
+  ///
+  /// In en, this message translates to:
+  /// **'wait {time} for opening'**
+  String optimizeWait(String time);
+
+  /// No description provided for @optimizeFixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed'**
+  String get optimizeFixed;
+
+  /// No description provided for @optimizeAssumed.
+  ///
+  /// In en, this message translates to:
+  /// **'No time set: 1 h assumed'**
+  String get optimizeAssumed;
+
+  /// No description provided for @optimizeClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed that day'**
+  String get optimizeClosed;
+
+  /// No description provided for @optimizeOutsideHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside opening hours'**
+  String get optimizeOutsideHours;
+
+  /// No description provided for @optimizeLate.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min late'**
+  String optimizeLate(int minutes);
+
+  /// No description provided for @optimizeKeepsFixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked, booked and transport items keep their times. Only places you haven’t booked are moved.'**
+  String get optimizeKeepsFixed;
+
+  /// No description provided for @optimizeApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get optimizeApply;
+
+  /// No description provided for @optimizeApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Updated 1 activity} other{Updated {count} activities}}'**
+  String optimizeApplied(int count);
+
+  /// No description provided for @gettingHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting here'**
+  String get gettingHere;
+
+  /// No description provided for @gettingHereDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Day default'**
+  String get gettingHereDefault;
+
+  /// No description provided for @openingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours'**
+  String get openingHours;
+
+  /// No description provided for @openingHoursKnown.
+  ///
+  /// In en, this message translates to:
+  /// **'Has opening hours'**
+  String get openingHoursKnown;
+
+  /// No description provided for @openingHoursHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the official site; WanderPlan uses them to warn and to plan the order.'**
+  String get openingHoursHelp;
+
+  /// No description provided for @opens.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens'**
+  String get opens;
+
+  /// No description provided for @closes.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes'**
+  String get closes;
+
+  /// No description provided for @closesNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'closes after midnight'**
+  String get closesNextDay;
+
+  /// No description provided for @closedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed on'**
+  String get closedOn;
+
+  /// No description provided for @closedThatDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed on this day!'**
+  String get closedThatDay;
+
+  /// No description provided for @reservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation'**
+  String get reservation;
+
+  /// No description provided for @reservationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a reservation or ticket in advance'**
+  String get reservationRequired;
+
+  /// No description provided for @reservationVia.
+  ///
+  /// In en, this message translates to:
+  /// **'Where / how to book'**
+  String get reservationVia;
+
+  /// No description provided for @reservationViaHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. official WeChat account, Trip.com app, website'**
+  String get reservationViaHint;
+
+  /// No description provided for @bookAheadDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Book how many days before?'**
+  String get bookAheadDays;
+
+  /// No description provided for @daysUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get daysUnit;
+
+  /// No description provided for @bookByDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Book by {date}'**
+  String bookByDate(String date);
+
+  /// No description provided for @remindToBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me on that day'**
+  String get remindToBook;
+
+  /// No description provided for @remindToBookHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A notification at 09:00 (trip time) on the book-by date.'**
+  String get remindToBookHelp;
+
+  /// No description provided for @remindPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for WanderPlan. Allow them in system settings to get reminders.'**
+  String get remindPermissionDenied;
+
+  /// No description provided for @reminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to book'**
+  String get reminderTitle;
+
+  /// No description provided for @reminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Book “{title}” for {date}. {via}'**
+  String reminderBody(String title, String date, String via);
+
+  /// No description provided for @issueTightTravelOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'“{a}” → “{b}”: only {minutes} min, but you allowed {needed} min to get there'**
+  String issueTightTravelOwn(String a, String b, int minutes, int needed);
+
+  /// No description provided for @issueClosedOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'“{title}” is closed on this day'**
+  String issueClosedOnDay(String title);
+
+  /// No description provided for @issueOutsideOpeningHours.
+  ///
+  /// In en, this message translates to:
+  /// **'“{title}” is planned outside its opening hours'**
+  String issueOutsideOpeningHours(String title);
+
+  /// No description provided for @issueBookingNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'“{title}” still needs a reservation'**
+  String issueBookingNeeded(String title);
+
+  /// No description provided for @issueBookBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Book “{title}” by {date}'**
+  String issueBookBy(String title, String date);
+
+  /// No description provided for @flightUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight updates'**
+  String get flightUpdates;
+
+  /// No description provided for @flightUpdatesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live status from your WanderPlan server'**
+  String get flightUpdatesSubtitle;
+
+  /// No description provided for @flightPrivacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get flightPrivacyTitle;
+
+  /// No description provided for @actionRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get actionRetry;
+
+  /// No description provided for @flightUpdatesOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Not working right now'**
+  String get flightUpdatesOff;
+
+  /// No description provided for @flightServerChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting…'**
+  String get flightServerChecking;
+
+  /// No description provided for @flightServerIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Live flight status comes from the WanderPlan server. It checks each flight once for everyone and holds the flight-data key; this phone only reads the results. Nothing to set up.'**
+  String get flightServerIntro;
+
+  /// No description provided for @flightServerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get flightServerTitle;
+
+  /// No description provided for @flightServerConnectedAs.
+  ///
+  /// In en, this message translates to:
+  /// **'On · signed in as {who}'**
+  String flightServerConnectedAs(String who);
+
+  /// No description provided for @flightServerPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'No flight-data API key is stored on this phone. The app signs in to the WanderPlan server by itself and keeps that sign-in in the keychain (this device only).'**
+  String get flightServerPrivacy;
+
+  /// No description provided for @flightNotConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Live flight updates aren’t available in this version of the app.'**
+  String get flightNotConnected;
+
+  /// No description provided for @flightSignInRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The WanderPlan server didn’t accept the sign-in. Try again later.'**
+  String get flightSignInRejected;
+
+  /// No description provided for @flightServerNoKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Live flight data isn’t switched on at the WanderPlan server yet.'**
+  String get flightServerNoKey;
+
+  /// No description provided for @flightNoDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No data yet. Your server checks this flight on its schedule (live data appears around the flight day).'**
+  String get flightNoDataYet;
+
+  /// No description provided for @flightStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Last check failed; showing the last known data'**
+  String get flightStale;
+
+  /// No description provided for @flightNeedsNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the flight number (e.g. MU5103) to get live updates.'**
+  String get flightNeedsNumber;
+
+  /// No description provided for @flightCheckNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Check now'**
+  String get flightCheckNow;
+
+  /// No description provided for @flightNoChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes since the last check'**
+  String get flightNoChanges;
+
+  /// No description provided for @flightQuotaReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Your server’s flight-data plan is out of requests this month.'**
+  String get flightQuotaReached;
+
+  /// No description provided for @flightNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Can’t reach the WanderPlan server right now. Check your internet connection and try again.'**
+  String get flightNetwork;
+
+  /// No description provided for @flightUnknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'The server didn’t answer as expected. Try again later.'**
+  String get flightUnknownError;
+
+  /// No description provided for @flightScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get flightScheduled;
+
+  /// No description provided for @flightInAir.
+  ///
+  /// In en, this message translates to:
+  /// **'In the air'**
+  String get flightInAir;
+
+  /// No description provided for @flightLanded.
+  ///
+  /// In en, this message translates to:
+  /// **'Landed'**
+  String get flightLanded;
+
+  /// No description provided for @flightCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get flightCancelled;
+
+  /// No description provided for @flightIncident.
+  ///
+  /// In en, this message translates to:
+  /// **'Incident'**
+  String get flightIncident;
+
+  /// No description provided for @flightDiverted.
+  ///
+  /// In en, this message translates to:
+  /// **'Diverted'**
+  String get flightDiverted;
+
+  /// No description provided for @flightStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Status unknown'**
+  String get flightStatusUnknown;
+
+  /// No description provided for @flightDelayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delayed {minutes} min'**
+  String flightDelayed(int minutes);
+
+  /// No description provided for @flightDep.
+  ///
+  /// In en, this message translates to:
+  /// **'Dep'**
+  String get flightDep;
+
+  /// No description provided for @flightArr.
+  ///
+  /// In en, this message translates to:
+  /// **'Arr'**
+  String get flightArr;
+
+  /// No description provided for @flightTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'T{t}'**
+  String flightTerminal(String t);
+
+  /// No description provided for @flightGate.
+  ///
+  /// In en, this message translates to:
+  /// **'Gate {g}'**
+  String flightGate(String g);
+
+  /// No description provided for @flightBelt.
+  ///
+  /// In en, this message translates to:
+  /// **'Belt {b}'**
+  String flightBelt(String b);
+
+  /// No description provided for @flightChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked {time} · times are local at each airport'**
+  String flightChecked(String time);
+
+  /// No description provided for @flightNotifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{flight}: flight update'**
+  String flightNotifyTitle(String flight);
+
+  /// No description provided for @flightChangeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Now {status}'**
+  String flightChangeStatus(String status);
+
+  /// No description provided for @flightChangeDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure {from} → {to}'**
+  String flightChangeDeparture(String from, String to);
+
+  /// No description provided for @flightChangeArrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival {from} → {to}'**
+  String flightChangeArrival(String from, String to);
+
+  /// No description provided for @flightChangeDepTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure terminal {t}'**
+  String flightChangeDepTerminal(String t);
+
+  /// No description provided for @flightChangeDepGate.
+  ///
+  /// In en, this message translates to:
+  /// **'Gate {g}'**
+  String flightChangeDepGate(String g);
+
+  /// No description provided for @flightChangeArrTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival terminal {t}'**
+  String flightChangeArrTerminal(String t);
+
+  /// No description provided for @flightChangeArrGate.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival gate {g}'**
+  String flightChangeArrGate(String g);
+
+  /// No description provided for @flightChangeBaggage.
+  ///
+  /// In en, this message translates to:
+  /// **'Baggage belt {b}'**
+  String flightChangeBaggage(String b);
+
   /// No description provided for @navigateWith.
   ///
   /// In en, this message translates to:

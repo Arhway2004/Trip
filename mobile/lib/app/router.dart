@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:wanderplan/contexts/trip/presentation/banner/banner_editor_screen.dart';
 import 'package:wanderplan/contexts/gallery/presentation/gallery_screen.dart';
+import 'package:wanderplan/contexts/flight_status/presentation/flight_updates_settings_screen.dart';
 import 'package:wanderplan/contexts/settings/presentation/settings_screen.dart';
 import 'package:wanderplan/contexts/budget/presentation/budget_screen.dart';
 import 'package:wanderplan/contexts/checklist/presentation/checklist_screen.dart';
@@ -23,6 +24,7 @@ abstract final class Routes {
   static const trips = '/trips';
   static const newTrip = '/trips/new';
   static const settings = '/settings';
+  static const flightUpdates = '/settings/flight-updates';
   static String trip(String id) => '/trips/$id';
   static String editTrip(String id) => '/trips/$id/edit';
   static String banner(String id) => '/trips/$id/banner';
@@ -52,7 +54,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: Routes.trips,
     routes: [
       GoRoute(path: '/', redirect: (_, _) => Routes.trips),
-      GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
+      GoRoute(
+        path: Routes.settings,
+        builder: (_, _) => const SettingsScreen(),
+        routes: [GoRoute(path: 'flight-updates', builder: (_, _) => const FlightUpdatesSettingsScreen())],
+      ),
       GoRoute(
         path: Routes.trips,
         builder: (_, _) => const HomeScreen(),

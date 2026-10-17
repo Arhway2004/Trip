@@ -1,0 +1,760 @@
+{
+  "format": "wanderplan.trip",
+  "schemaVersion": 3,
+  "trip": {
+    "title": "China Winter Adventure 2026 — Detailed Flight Plan",
+    "description": "Dec 3–13 China winter trip for 2. Main route Bangkok–Kunming–Chengdu–Jiuzhaigou–Chengdu–Shangri-La–Lijiang–Dali–Kunming–Xiamen–Bangkok. Flight options from Trip.com screenshots are NOT booked; \"ALT\" flights are alternatives that conflict with the original plan (marked optional). All times are China time (UTC+8). Other transport times remain unconfirmed. Budget THB 50,000 for two is very tight.",
+    "startDate": "2026-12-03",
+    "endDate": "2026-12-13",
+    "datesConfirmed": false,
+    "timeZone": "Asia/Shanghai",
+    "travelerCount": 2,
+    "currency": "THB",
+    "totalBudget": 50000,
+    "travelStyle": "balanced",
+    "stage": "planning",
+    "departureTime": "20:30"
+  },
+  "destinations": [
+    {
+      "city": "Bangkok",
+      "country": "Thailand"
+    },
+    {
+      "city": "Kunming",
+      "country": "China"
+    },
+    {
+      "city": "Chengdu",
+      "country": "China"
+    },
+    {
+      "city": "Jiuzhaigou",
+      "country": "China"
+    },
+    {
+      "city": "Shangri-La",
+      "country": "China"
+    },
+    {
+      "city": "Lijiang",
+      "country": "China"
+    },
+    {
+      "city": "Dali",
+      "country": "China"
+    },
+    {
+      "city": "Xiamen",
+      "country": "China"
+    }
+  ],
+  "banner": {
+    "kind": "gradient",
+    "colorA": "#163B63",
+    "colorB": "#5CA9C9",
+    "showTitle": true,
+    "titlePlacement": "bottomLeft",
+    "textColor": "#FFFFFF",
+    "style": "classic"
+  },
+  "todos": [
+    {
+      "title": "Confirm travel dates and leave approval",
+      "category": "documents",
+      "dueDate": "2026-10-25"
+    },
+    {
+      "title": "Check passports and China entry requirements",
+      "category": "documents",
+      "dueDate": "2026-10-25"
+    },
+    {
+      "title": "Compare and book all flight legs",
+      "category": "transport",
+      "dueDate": "2026-10-30"
+    },
+    {
+      "title": "Verify Chengdu–Jiuzhaigou round-trip feasibility and rail/shuttle times",
+      "category": "transport",
+      "dueDate": "2026-11-05"
+    },
+    {
+      "title": "Check Chengdu–Shangri-La flight options and altitude adjustment",
+      "category": "transport",
+      "dueDate": "2026-11-05"
+    },
+    {
+      "title": "Book intercity trains and airport transfers",
+      "category": "transport",
+      "dueDate": "2026-11-15"
+    },
+    {
+      "title": "Book hotels for all ten nights",
+      "category": "accommodation",
+      "dueDate": "2026-11-15"
+    },
+    {
+      "title": "Check Jade Dragon Snow Mountain cableway ticket reservations",
+      "category": "tickets",
+      "dueDate": "2026-11-20"
+    },
+    {
+      "title": "Check Jiuzhaigou winter entry and park shuttle availability",
+      "category": "tickets",
+      "dueDate": "2026-11-20"
+    },
+    {
+      "title": "Arrange insurance and winter clothing",
+      "category": "health",
+      "dueDate": "2026-11-20"
+    },
+    {
+      "title": "Set up Alipay or WeChat Pay",
+      "category": "money",
+      "dueDate": "2026-11-25"
+    },
+    {
+      "title": "Arrange roaming or eSIM",
+      "category": "connectivity",
+      "dueDate": "2026-11-25"
+    }
+  ],
+  "activities": [
+    {
+      "title": "Flight: Bangkok → Kunming",
+      "kind": "flight",
+      "date": "2026-12-03",
+      "ref": "flight-bkk-kmg",
+      "location": {
+        "name": "Bangkok airport (confirm BKK or DMK)"
+      },
+      "destination": {
+        "name": "Kunming Changshui International Airport",
+        "lat": 25.108779,
+        "lng": 102.939725
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Unconfirmed: proposed time only. Verify schedule, availability, fare and transfer before booking."
+    },
+    {
+      "title": "Airport transfer and hotel check-in",
+      "kind": "transport",
+      "date": "2026-12-03",
+      "location": {
+        "name": "Kunming Changshui International Airport",
+        "lat": 25.108779,
+        "lng": 102.939725
+      },
+      "destination": {
+        "name": "Kunming hotel"
+      },
+      "notes": "Choose airport metro/bus/taxi after flight time is confirmed."
+    },
+    {
+      "title": "Kunming Old Street and Nanping Street",
+      "kind": "sightseeing",
+      "date": "2026-12-03",
+      "start": "17:00",
+      "end": "20:00",
+      "location": {
+        "name": "昆明老街 / 南屏街",
+        "lat": 25.042855,
+        "lng": 102.707512
+      },
+      "notes": "Flexible evening block; shift based on flight arrival.",
+      "isOptional": true
+    },
+    {
+      "title": "Kunming hotel — night 1",
+      "kind": "hotel",
+      "date": "2026-12-03",
+      "start": "15:00",
+      "endDate": "2026-12-04",
+      "end": "11:00",
+      "location": {
+        "name": "Kunming city centre"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Check-in/out placeholders; 1 room for 2 travelers."
+    },
+    {
+      "title": "Flight or train: Kunming → Chengdu",
+      "kind": "transport",
+      "date": "2026-12-04",
+      "ref": "kmg-ctu",
+      "location": {
+        "name": "Kunming"
+      },
+      "destination": {
+        "name": "Chengdu"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Original plan assumes afternoon arrival in Chengdu. Choose and confirm actual flight or train; no timetable verified."
+    },
+    {
+      "title": "Chunxi Road and Taikoo Li",
+      "kind": "sightseeing",
+      "date": "2026-12-04",
+      "start": "17:00",
+      "end": "20:00",
+      "location": {
+        "name": "春熙路 / 太古里",
+        "lat": 30.659187,
+        "lng": 104.075298
+      },
+      "notes": "Evening walk if arrival permits.",
+      "isOptional": true
+    },
+    {
+      "title": "Chengdu hotel — nights 2–4",
+      "kind": "hotel",
+      "date": "2026-12-04",
+      "start": "15:00",
+      "endDate": "2026-12-07",
+      "end": "11:00",
+      "location": {
+        "name": "Chengdu city centre"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Three nights, December 4, 5 and 6. Check-in/out times placeholders."
+    },
+    {
+      "title": "Travel Chengdu → Jiuzhaigou",
+      "kind": "transport",
+      "date": "2026-12-05",
+      "ref": "cd-jzg-out",
+      "location": {
+        "name": "Chengdu hotel"
+      },
+      "destination": {
+        "name": "九寨沟景区"
+      },
+      "notes": "Very demanding day-trip plan. Verify train, shuttle, park opening hours and return connections before committing; otherwise stay overnight near Jiuzhaigou."
+    },
+    {
+      "title": "Jiuzhaigou National Park",
+      "kind": "sightseeing",
+      "date": "2026-12-05",
+      "start": "10:00",
+      "end": "16:00",
+      "location": {
+        "name": "九寨沟风景名胜区"
+      },
+      "notes": "Indicative visit block only. Potential sights: Five Flower Lake, Five-Color Pond, Nuorilang Waterfall, Shuzheng Lakes; actual routing and seasonal access must be checked.",
+      "reservation": {
+        "via": "Official Jiuzhaigou ticket channel (real-name, daily visitor limit)",
+        "bookAheadDays": 7,
+        "remind": true
+      }
+    },
+    {
+      "title": "Return Jiuzhaigou → Chengdu",
+      "kind": "transport",
+      "date": "2026-12-05",
+      "ref": "cd-jzg-return",
+      "location": {
+        "name": "九寨沟景区"
+      },
+      "destination": {
+        "name": "Chengdu hotel"
+      },
+      "notes": "CRITICAL: Same-day return is not verified and may be infeasible. Do not book subsequent plans until confirmed."
+    },
+    {
+      "title": "Chengdu relaxed sightseeing / recovery",
+      "kind": "sightseeing",
+      "date": "2026-12-06",
+      "start": "10:00",
+      "end": "16:00",
+      "location": {
+        "name": "人民公园 / 宽窄巷子",
+        "lat": 30.659719,
+        "lng": 104.054821
+      },
+      "notes": "Recovery day after Jiuzhaigou. Optional panda base in morning if energy permits.",
+      "isOptional": true
+    },
+    {
+      "title": "Flight or transfer: Chengdu → Shangri-La",
+      "kind": "flight",
+      "date": "2026-12-07",
+      "ref": "cd-dig",
+      "location": {
+        "name": "Chengdu airport (verify)"
+      },
+      "destination": {
+        "name": "Diqing Shangri-La Airport",
+        "lat": 27.792328,
+        "lng": 99.679073
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Unconfirmed connection; direct flight may not operate on this date. Allow full-day travel or connections. Consider altitude acclimatization."
+    },
+    {
+      "title": "Shangri-La hotel — nights 5–6",
+      "kind": "hotel",
+      "date": "2026-12-07",
+      "start": "15:00",
+      "endDate": "2026-12-09",
+      "end": "11:00",
+      "location": {
+        "name": "独克宗古城, Shangri-La"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Two nights; confirm heating and altitude comfort."
+    },
+    {
+      "title": "Dukezong Ancient Town easy evening",
+      "kind": "sightseeing",
+      "date": "2026-12-07",
+      "start": "17:00",
+      "end": "19:00",
+      "location": {
+        "name": "独克宗古城",
+        "lat": 27.810513,
+        "lng": 99.707585
+      },
+      "notes": "Only if arrival and acclimatization allow.",
+      "isOptional": true,
+      "travelMode": "walking"
+    },
+    {
+      "title": "Songzanlin Monastery",
+      "kind": "sightseeing",
+      "date": "2026-12-08",
+      "start": "09:30",
+      "end": "12:00",
+      "location": {
+        "name": "松赞林寺",
+        "lat": 27.863593,
+        "lng": 99.704216
+      },
+      "notes": "Check opening hours, ticket and local transport.",
+      "travelMode": "driving"
+    },
+    {
+      "title": "Dukezong Old Town and Giant Prayer Wheel",
+      "kind": "sightseeing",
+      "date": "2026-12-08",
+      "start": "14:00",
+      "end": "17:00",
+      "location": {
+        "name": "独克宗古城 / 大转经筒",
+        "lat": 27.810513,
+        "lng": 99.707585
+      },
+      "notes": "Keep flexible; allow rest at altitude.",
+      "travelMode": "walking"
+    },
+    {
+      "title": "Transfer Shangri-La → Lijiang",
+      "kind": "transport",
+      "date": "2026-12-09",
+      "ref": "dig-ljg",
+      "location": {
+        "name": "Shangri-La"
+      },
+      "destination": {
+        "name": "Lijiang"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Select real train/bus service and allow station transfers; no time assumed."
+    },
+    {
+      "title": "Lijiang Old Town / Baisha Ancient Town",
+      "kind": "sightseeing",
+      "date": "2026-12-09",
+      "start": "15:00",
+      "end": "19:00",
+      "location": {
+        "name": "丽江古城 / 白沙古镇",
+        "lat": 26.873904,
+        "lng": 100.235281
+      },
+      "notes": "Depends on arrival time; choose one or both.",
+      "isOptional": true
+    },
+    {
+      "title": "Lijiang hotel — nights 7–8",
+      "kind": "hotel",
+      "date": "2026-12-09",
+      "start": "15:00",
+      "endDate": "2026-12-11",
+      "end": "11:00",
+      "location": {
+        "name": "丽江古城"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Two nights; December 9 and 10."
+    },
+    {
+      "title": "Jade Dragon Snow Mountain cableway",
+      "kind": "sightseeing",
+      "date": "2026-12-10",
+      "start": "09:00",
+      "end": "12:00",
+      "location": {
+        "name": "玉龙雪山 / 冰川公园大索道"
+      },
+      "notes": "Book appropriate entry and cableway slots; actual access and altitude conditions subject to weather.",
+      "reservation": {
+        "via": "Official channel or Trip.com (real-name entry + cableway slot)",
+        "bookAheadDays": 7,
+        "remind": true
+      }
+    },
+    {
+      "title": "Blue Moon Valley",
+      "kind": "sightseeing",
+      "date": "2026-12-10",
+      "start": "13:00",
+      "end": "15:30",
+      "location": {
+        "name": "蓝月谷",
+        "lat": 27.129239,
+        "lng": 100.246737
+      },
+      "notes": "Allow shuttle and meal time. Verify operating conditions."
+    },
+    {
+      "title": "Return to Lijiang Old Town",
+      "kind": "transport",
+      "date": "2026-12-10",
+      "start": "16:00",
+      "end": "18:00",
+      "location": {
+        "name": "玉龙雪山"
+      },
+      "destination": {
+        "name": "丽江古城"
+      },
+      "notes": "Timing is a rough placeholder, not a verified road journey."
+    },
+    {
+      "title": "Train or bus: Lijiang → Dali",
+      "kind": "transport",
+      "date": "2026-12-11",
+      "ref": "ljg-dli",
+      "location": {
+        "name": "Lijiang"
+      },
+      "destination": {
+        "name": "Dali"
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Check actual departure, station transfer and arrival."
+    },
+    {
+      "title": "Dali Ancient Town and Erhai lakeside",
+      "kind": "sightseeing",
+      "date": "2026-12-11",
+      "start": "14:00",
+      "end": "19:00",
+      "location": {
+        "name": "大理古城 / 洱海",
+        "lat": 25.698269,
+        "lng": 100.162485
+      },
+      "notes": "Choose a compact section of lakeside route, not the whole lake.",
+      "isOptional": true,
+      "travelMode": "walking"
+    },
+    {
+      "title": "Dali hotel — night 9",
+      "kind": "hotel",
+      "date": "2026-12-11",
+      "start": "15:00",
+      "endDate": "2026-12-12",
+      "end": "11:00",
+      "location": {
+        "name": "大理古城"
+      },
+      "bookingStatus": "notBooked"
+    },
+    {
+      "title": "Train: Dali → Kunming",
+      "kind": "train",
+      "date": "2026-12-12",
+      "ref": "dli-kmg",
+      "location": {
+        "name": "Dali Railway Station",
+        "lat": 25.591945,
+        "lng": 100.248524
+      },
+      "destination": {
+        "name": "Kunming Railway Station",
+        "lat": 25.018662,
+        "lng": 102.720287
+      },
+      "bookingStatus": "notBooked",
+      "notes": "Check exact station, service and timing; allow transfer to airport. Must reach Kunming Changshui airport well before the 15:55 flight (option R1)."
+    },
+    {
+      "title": "Xiamen hotel — night 10",
+      "kind": "hotel",
+      "date": "2026-12-12",
+      "start": "15:00",
+      "endDate": "2026-12-13",
+      "end": "11:00",
+      "location": {
+        "name": "Xiamen city centre"
+      },
+      "bookingStatus": "notBooked"
+    },
+    {
+      "title": "Zhongshan Road evening stroll",
+      "kind": "sightseeing",
+      "date": "2026-12-12",
+      "start": "19:00",
+      "end": "21:00",
+      "location": {
+        "name": "中山路步行街"
+      },
+      "notes": "Only if flight arrival permits.",
+      "isOptional": true,
+      "travelMode": "walking"
+    },
+    {
+      "title": "Xiamen sightseeing: Shapowei or Eighth Market",
+      "kind": "sightseeing",
+      "date": "2026-12-13",
+      "start": "09:00",
+      "end": "11:00",
+      "location": {
+        "name": "沙坡尾 / 八市",
+        "lat": 24.43989,
+        "lng": 118.082943
+      },
+      "notes": "Skip if outbound flight requires early airport arrival.",
+      "isOptional": true
+    },
+    {
+      "title": "ALT: Flight Bangkok → Chengdu Tianfu (Kunming Airlines, 1 stop)",
+      "kind": "flight",
+      "date": "2026-12-03",
+      "start": "20:30",
+      "endDate": "2026-12-04",
+      "end": "11:10",
+      "location": {
+        "name": "Bangkok Suvarnabhumi Airport (BKK)",
+        "lat": 13.681877,
+        "lng": 100.74858
+      },
+      "destination": {
+        "name": "Chengdu Tianfu International Airport (TFU T2)",
+        "lat": 30.303551,
+        "lng": 104.445709
+      },
+      "bookingStatus": "notBooked",
+      "provider": "Kunming Airlines",
+      "isOptional": true,
+      "notes": "Flight option from Trip.com screenshots, NOT booked. Times are China time (UTC+8, the trip time zone); Bangkok is 1 hour behind. Add the flight number once booked to get live status. 19:30 Bangkok → 11:10 next day, 14h40m, 1 stop (city not shown: ask before booking). ฿3,815 × 2. ALTERNATIVE to the Kunming first night: it skips Kunming on Dec 3–4. Price is in this note (not in the budget) because it is an alternative."
+    },
+    {
+      "title": "ALT: Flight Chengdu Tianfu → Shangri-La (Sichuan Airlines A319)",
+      "kind": "flight",
+      "date": "2026-12-05",
+      "start": "10:05",
+      "end": "11:40",
+      "location": {
+        "name": "Chengdu Tianfu International Airport (TFU T2)",
+        "lat": 30.303551,
+        "lng": 104.445709
+      },
+      "destination": {
+        "name": "Diqing Shangri-La Airport (DIG)",
+        "lat": 27.792328,
+        "lng": 99.679073
+      },
+      "bookingStatus": "notBooked",
+      "provider": "Sichuan Airlines",
+      "isOptional": true,
+      "travelMode": "driving",
+      "notes": "Flight option from Trip.com screenshots, NOT booked. Times are China time (UTC+8, the trip time zone); Bangkok is 1 hour behind. Add the flight number once booked to get live status. Checked baggage 20 kg. ฿2,815 × 2. CONFLICTS with Jiuzhaigou on Dec 5 and the Chengdu hotel nights; only use it if you drop or move Jiuzhaigou. Price is in this note (not in the budget) because it is an alternative."
+    },
+    {
+      "ref": "return-1",
+      "title": "Flight: Kunming → Xiamen (return ticket, leg 1)",
+      "kind": "flight",
+      "date": "2026-12-12",
+      "start": "15:55",
+      "end": "18:25",
+      "location": {
+        "name": "Kunming Changshui International Airport",
+        "lat": 25.108779,
+        "lng": 102.939725
+      },
+      "destination": {
+        "name": "Xiamen Gaoqi International Airport",
+        "lat": 24.54383,
+        "lng": 118.132651
+      },
+      "cost": 7610,
+      "currency": "THB",
+      "bookingStatus": "notBooked",
+      "travelMode": "driving",
+      "reservation": {
+        "via": "Trip.com app (same ticket as leg 2)",
+        "bookAheadDays": 43,
+        "remind": true
+      },
+      "notes": "Flight option from Trip.com screenshots, NOT booked. Times are China time (UTC+8, the trip time zone); Bangkok is 1 hour behind. Add the flight number once booked to get live status. One ticket KMG → XMN → BKK, ฿3,805 × 2 (paid with PromptPay price). Checked bag goes through to Bangkok: pack the Xiamen night in your 8 kg carry-on."
+    },
+    {
+      "ref": "return-2",
+      "title": "Flight: Xiamen → Bangkok (return ticket, leg 2)",
+      "kind": "flight",
+      "date": "2026-12-13",
+      "start": "16:20",
+      "end": "19:45",
+      "location": {
+        "name": "Xiamen Gaoqi International Airport",
+        "lat": 24.54383,
+        "lng": 118.132651
+      },
+      "destination": {
+        "name": "Bangkok Suvarnabhumi Airport (BKK)",
+        "lat": 13.681877,
+        "lng": 100.74858
+      },
+      "bookingStatus": "notBooked",
+      "travelMode": "driving",
+      "notes": "Flight option from Trip.com screenshots, NOT booked. Times are China time (UTC+8, the trip time zone); Bangkok is 1 hour behind. Add the flight number once booked to get live status. Leg 2 of the same ticket (21h55m stop in Xiamen). Lands 18:45 Bangkok time (19:45 China time). No baggage recheck."
+    }
+  ],
+  "expenses": [
+    {
+      "title": "Other flight legs (estimate)",
+      "category": "flights",
+      "amount": 14390,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false,
+      "notes": "Outbound and domestic legs. The KMG → XMN → BKK return ticket (฿7,610) is itemised on its flight."
+    },
+    {
+      "title": "Hotels: 10 nights",
+      "category": "hotels",
+      "amount": 5000,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Food for two travelers",
+      "category": "food",
+      "amount": 10300,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Chengdu–Jiuzhaigou round-trip transport",
+      "category": "transport",
+      "amount": 3000,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Jiuzhaigou admission and sightseeing shuttle",
+      "category": "attractions",
+      "amount": 1600,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Yunnan intercity trains",
+      "category": "trains",
+      "amount": 1500,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Local transport and transfers",
+      "category": "transport",
+      "amount": 1500,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Jade Dragon Snow Mountain tickets",
+      "category": "attractions",
+      "amount": 2600,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Other attractions",
+      "category": "attractions",
+      "amount": 1000,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    },
+    {
+      "title": "Roaming / eSIM",
+      "category": "internet",
+      "amount": 1000,
+      "currency": "THB",
+      "kind": "planned",
+      "isPaid": false
+    }
+  ],
+  "exchangeRates": [
+    {
+      "currency": "CNY",
+      "rate": 5.0
+    },
+    {
+      "currency": "USD",
+      "rate": 35.0
+    }
+  ],
+  "days": [
+    {
+      "date": "2026-12-07",
+      "endTravelMode": "walking"
+    },
+    {
+      "date": "2026-12-11",
+      "endTravelMode": "walking"
+    }
+  ],
+  "places": [
+    {
+      "name": "Jiuzhai Valley National Park",
+      "category": "attraction",
+      "lat": 33.11836,
+      "lng": 103.883889,
+      "notes": "Centre of the park area from OpenStreetMap, not the entrance."
+    },
+    {
+      "name": "Songzanlin (Sumtseling) Monastery",
+      "category": "attraction",
+      "lat": 27.863593,
+      "lng": 99.704216,
+      "notes": "Coordinates from OpenStreetMap (WGS84)."
+    },
+    {
+      "name": "Blue Moon Valley",
+      "category": "attraction",
+      "lat": 27.129239,
+      "lng": 100.246737,
+      "notes": "Coordinates from OpenStreetMap (WGS84)."
+    },
+    {
+      "name": "Shapowei",
+      "category": "attraction",
+      "lat": 24.43989,
+      "lng": 118.082943,
+      "address": "Siming District, Xiamen",
+      "notes": "Coordinates from OpenStreetMap (WGS84)."
+    }
+  ]
+}

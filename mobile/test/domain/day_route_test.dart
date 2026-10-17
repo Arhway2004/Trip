@@ -47,7 +47,7 @@ void main() {
       _a('Palace', ActivityKind.sightseeing, d2, start: 9 * 60, end: 11 * 60, at: palace),
     ];
     final plan = planDayRoute(acts, d2);
-    expect(plan.stops.map((s) => s.activity.title), ['Hotel', 'Palace', 'Lunch', 'Hotel']);
+    expect(plan.stops.map((s) => s.activity?.title), ['Hotel', 'Palace', 'Lunch', 'Hotel']);
     expect(plan.legs, hasLength(3));
     expect(plan.legs.every((l) => l.kind == DayLegKind.road && l.fixedMode == null), isTrue);
   });
@@ -59,9 +59,9 @@ void main() {
       _a('No pin', ActivityKind.sightseeing, d2, start: 14 * 60, end: 15 * 60),
     ];
     final plan = planDayRoute(acts, d2);
-    expect(plan.stops.map((s) => s.activity.title), ['Palace']);
+    expect(plan.stops.map((s) => s.activity?.title), ['Palace']);
     expect(plan.legs, isEmpty);
-    expect(plan.unordered.single.activity.title, 'Maybe lunch');
+    expect(plan.unordered.single.activity?.title, 'Maybe lunch');
     expect(plan.missingLocation.single.title, 'No pin');
   });
 

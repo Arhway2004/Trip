@@ -32,6 +32,30 @@ type Config struct {
 	ShutdownTimeout time.Duration
 	MaxBodyBytes    int64
 	LogLevel        string
+	Flights         Flights
+}
+
+// Secret hides its value from logs and fmt output.
+type Secret string
+
+func (Secret) String() string               { return "[redacted]" }
+func (Secret) GoString() string             { return "[redacted]" }
+func (s Secret) Reveal() string             { return string(s) }
+func (Secret) MarshalJSON() ([]byte, error) { return []byte(`"[redacted]"`), nil }
+
+// Flights configures live flight monitoring. Keys come from the environment
+// (for local runs: ../secrets/*.env, loaded by `make run`), never from code.
+type Flights struct {
+	Provider         string // "aviationstack" | "aerodatabox" | "" (pick whichever key is set)
+	AviationstackKey Secret
+	AeroDataBoxKey   Secret
+	AeroDataBoxVia   string // "apimarket" | "rapidapi"
+	MonthlyBudget    int
+	RefreshInterval  time.Duration // once per flight per interval (agency design: 24h)
+	DayOfInterval    time.Duration // 0 = same as RefreshInterval
+	ManualCooldown   time.Duration
+	WorkerInterval   time.Duration
+	RedisURL         Secret // empty = in-process cache/lock (single instance)
 }
 
 func (c Config) IsProduction() bool { return c.Env == "production" }
@@ -53,6 +77,18 @@ func Load() (Config, error) {
 		ShutdownTimeout: envDuration("SHUTDOWN_TIMEOUT", 20*time.Second),
 		MaxBodyBytes:    int64(envInt("MAX_BODY_BYTES", 1<<20)),
 		LogLevel:        env("LOG_LEVEL", "info"),
+		Flights: Flights{
+			Provider:         env("FLIGHT_PROVIDER", ""),
+			AviationstackKey: Secret(strings.TrimSpace(os.Getenv("AVIATIONSTACK_API_KEY"))),
+			AeroDataBoxKey:   Secret(strings.TrimSpace(os.Getenv("AERODATABOX_API_KEY"))),
+			AeroDataBoxVia:   env("AERODATABOX_VIA", "apimarket"),
+			MonthlyBudget:    envInt("FLIGHT_MONTHLY_BUDGET", 100),
+			RefreshInterval:  envDuration("FLIGHT_REFRESH_INTERVAL", 24*time.Hour),
+			DayOfInterval:    envDuration("FLIGHT_DAY_OF_INTERVAL", 0),
+			ManualCooldown:   envDuration("FLIGHT_MANUAL_COOLDOWN", 30*time.Minute),
+			WorkerInterval:   envDuration("FLIGHT_WORKER_INTERVAL", 5*time.Minute),
+			RedisURL:         Secret(strings.TrimSpace(os.Getenv("REDIS_URL"))),
+		},
 	}
 	return c, c.Validate()
 }
@@ -73,6 +109,14 @@ func (c Config) Validate() error {
 		}
 	default:
 		errs = append(errs, fmt.Errorf("unknown AUTH_MODE %q", c.Auth))
+	}
+	switch c.Flights.Provider {
+	case "", "aviationstack", "aerodatabox":
+	default:
+		errs = append(errs, fmt.Errorf("unknown FLIGHT_PROVIDER %q", c.Flights.Provider))
+	}
+	if c.Flights.RefreshInterval != 0 && c.Flights.RefreshInterval < time.Hour {
+		errs = append(errs, errors.New("FLIGHT_REFRESH_INTERVAL must be at least 1h"))
 	}
 	if c.IsProduction() && c.DatabaseURL == "" {
 		errs = append(errs, errors.New("DATABASE_URL is required in production"))

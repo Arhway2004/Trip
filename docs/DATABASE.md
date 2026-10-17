@@ -7,6 +7,8 @@ The backend owns the database. Neither client connects to it directly. The schem
 | `00001_init.sql` | `users`, `trips`, `trip_members` |
 | `00002_domain_schema.sql` | Everything else: trip details, gallery, checklist, itinerary, budget, collaboration, sync, reliability, audit, reporting |
 | `00003_saved_places.sql` | `saved_places` (the map's saved places, mobile schema v5) |
+| `00007_flight_monitoring.sql` | Agency flight monitoring: `bookings`, `booking_segments`, shared `flights`, `flight_snapshots`, `flight_changes`, `flight_provider_usage` |
+| `00006_day_planning.sql` | Day planning (mobile schema v6): per-leg travel mode/time, opening hours, reservations and reminders on `activities`; `day_plans` (start/end point per day) |
 | `00004_imported_packages.sql` | Lossless mobile import snapshots with media, owned by newly created web trips |
 | `00005_trip_plans.sql` | Versioned editable web planning documents, including media, separate from the original import |
 
@@ -47,7 +49,12 @@ Plus the append-only tables `sync_changes`, `idempotency_keys`, `outbox_events` 
 | `media_objects` | Catalogue of files in object storage (S3/R2) | Allowed MIME types, ≤ 50 MB, SHA-256 |
 | `trip_photos` | Gallery entries | — |
 | `checklist_items` | "Before you go" tasks | `done_at` set ⇔ done |
-| `activities` | Itinerary: visits, meals, transport, hotel stays | 13 kinds incl. `transport` (mode TBD). **Times are optional**: both or neither (never guessed). Ends after it starts (overnight via `end_date`). Coordinates in pairs and in range. Booking reference stored **encrypted** (`booking_reference_ciphertext`) |
+| `activities` | Itinerary: visits, meals, transport, hotel stays | 13 kinds incl. `transport` (mode TBD). **Times are optional**: both or neither (never guessed). Ends after it starts (overnight via `end_date`). Coordinates in pairs and in range. Booking reference stored **encrypted** (`booking_reference_ciphertext`). *(00006)* travel mode ∈ walking/cycling/driving/transit, own travel time 0–48 h, opening hours both-or-neither, closed weekdays 1–7 (never all 7), a reminder needs a reservation and a lead time |
+| `bookings` / `booking_segments` | A traveller's flight booking and its segments; customer data never goes in the flight cache | Traveller 1–200 chars; up to 20 segments; a segment can't delete a shared flight (RESTRICT) |
+| `flights` | One row per operating flight and departure date, shared by all bookings | Unique (code, date); IATA/ICAO code format; `next_check_at` NULL once final |
+| `flight_snapshots` / `flight_changes` | Original answer + every answer that changed something; detected changes with `notified_at` | Change kinds limited to the 8 the app knows |
+| `flight_provider_usage` | Provider requests per month (budget) | `YYYY-MM` month |
+| `day_plans` | Where a day starts/ends when not at the hotel, and how the end point is reached | Coordinates in pairs; synced with the date as key |
 | `expenses` | Planned and actual spending | Amount ≥ 0; ISO currency; 14 categories. A linked activity must be in the **same trip**; deleting it unlinks the expense (`ON DELETE SET NULL (activity_id)`) |
 | `saved_places` | Places saved on the map (attractions, restaurants, hotels, airports, stations) | Name required; **coordinates required** and in range (never invented); known category |
 | `exchange_rates` | 1 unit of currency = `rate` × trip currency | Rate > 0; `source='manual'` means not verified |
@@ -74,7 +81,7 @@ The `trip_budget_summary` view computes each trip's **planned** total (activity 
 
 The schema was checked against a real PostgreSQL 16:
 - Migrations apply, roll back to zero and apply again.
-- 25 checks pass: every constraint above rejects bad data, triggers record changes with the acting user, the cross-trip expense link is refused, the budget view converts currencies, and trip deletion cascades and writes tombstones, and saved places need real coordinates and are synced.
+- 32 checks pass (all seven migrations, including the web's `00004`/`00005`): every constraint above rejects bad data, triggers record changes with the acting user, the cross-trip expense link is refused, the budget view converts currencies, and trip deletion cascades and writes tombstones, and saved places need real coordinates and are synced.
 - The backend's repository integration test passes against it.
 
 ## Web imports

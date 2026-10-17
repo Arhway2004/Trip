@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wanderplan/app/router.dart';
+import 'package:wanderplan/contexts/flight_status/presentation/flight_status_section.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
 import 'package:wanderplan/contexts/itinerary/presentation/itinerary_l10n.dart';
 import 'package:wanderplan/contexts/itinerary/presentation/itinerary_providers.dart';
@@ -131,6 +132,7 @@ class _BookingRow extends StatelessWidget {
                       if (a.bookingReference != null) Badge2(icon: Icons.lock_outline, label: a.bookingReference!),
                     ],
                   ),
+                  if (a.kind == ActivityKind.flight && !a.isCancelled) FlightStatusSection(activity: a),
                 ],
               ),
             ),

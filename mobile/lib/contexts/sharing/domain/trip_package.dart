@@ -6,7 +6,11 @@ const tripPackageFormat = 'wanderplan.trip';
 
 /// v1: trip, destinations, banner, photos, todos.
 /// v2: + activities, expenses, exchangeRates.
-/// v3: + places (saved places with coordinates).
+/// v3: + places (saved places with coordinates); later also the optional,
+/// additive activity fields travelMode/travelMinutes, openingHours and
+/// reservation, plus `days` (start/end points). Kept at 3 so the web app and
+/// API (which accept 1–3) and older app versions still read the file; readers
+/// ignore fields they don't know.
 const tripPackageSchemaVersion = 3;
 const tripPackageExtension = 'wanderplan';
 const tripPackageJsonEntry = 'trip.json';

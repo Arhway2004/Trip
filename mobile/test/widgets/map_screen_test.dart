@@ -7,6 +7,7 @@ import 'package:wanderplan/app/router.dart';
 import 'package:wanderplan/app/service_registry.dart';
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
+import 'package:wanderplan/contexts/itinerary/presentation/activity_editor_screen.dart';
 import 'package:wanderplan/contexts/places/application/saved_place_service.dart';
 import 'package:wanderplan/contexts/places/domain/place.dart';
 import 'package:wanderplan/contexts/places/domain/place_category.dart';
@@ -212,6 +213,83 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Louvre'), findsOneWidget);
     expect(find.text('Louvre again · Louvre'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('day panel: choose train/metro for a leg with your own time, then optimize and apply', (tester) async {
+    final (id, app) = await seed(tester, FakeRouteService());
+    await pumpMap(tester, id, app);
+    await tester.tap(find.text('Dec 20'));
+    await tester.pumpAndSettle();
+
+    // The leg Louvre → Lunch: switch to train/metro/bus with 30 minutes.
+    final panel = find.byType(Scrollable).last;
+    await tester.scrollUntilVisible(find.text('Louvre → Lunch'), 100, scrollable: panel);
+    await tester.tap(find.text('Louvre → Lunch'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Train / metro / bus'));
+    await tester.enterText(find.byType(TextField).last, '30');
+    await tester.pump();
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await tester.pumpAndSettle();
+    late Activity lunch;
+    await tester.runAsync(() async => lunch = (await app.itinerary.activitiesOf(id)).firstWhere((a) => a.title == 'Lunch'));
+    expect((lunch.arrivalMode, lunch.arrivalMinutes), (TravelMode.transit, 30));
+    await tester.scrollUntilVisible(find.textContaining('your estimate 30 min'), 100, scrollable: panel);
+
+    // Optimize: preview, then apply.
+    await tester.scrollUntilVisible(find.text('Optimize order'), 100, scrollable: panel);
+    await tester.tap(find.text('Optimize order'));
+    await tester.pumpAndSettle();
+    expect(find.text('Suggested order'), findsOneWidget);
+    await tester.tap(find.widgetWithText(FilledButton, 'Apply'));
+    await tester.pumpAndSettle();
+    expect(find.text('Updated 2 activities'), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('activity editor: opening hours, closed day and reservation with book-by date', (tester) async {
+    final (id, app) = await seed(tester, FakeRouteService());
+    late String louvreId;
+    await tester.runAsync(
+      () async => louvreId = (await app.itinerary.activitiesOf(id)).firstWhere((a) => a.title == 'Louvre').id,
+    );
+    await pumpMap(tester, id, app);
+    ProviderScope.containerOf(
+      tester.element(find.byType(WanderPlanApp)),
+    ).read(routerProvider).push(Routes.editActivity(id, louvreId));
+    await tester.pumpAndSettle();
+
+    final list = find.descendant(of: find.byType(ActivityEditorScreen), matching: find.byType(Scrollable)).first;
+    Future<void> show(Finder f) async {
+      await tester.scrollUntilVisible(f, 200, scrollable: list);
+      await tester.ensureVisible(f);
+      await tester.pumpAndSettle();
+    }
+
+    await show(find.text('Has opening hours'));
+    await tester.tap(find.text('Has opening hours'));
+    await tester.pumpAndSettle();
+    // Dec 20, 2026 is a Sunday: mark Sunday closed and see the warning.
+    await show(find.widgetWithText(FilterChip, 'Sun'));
+    await tester.tap(find.widgetWithText(FilterChip, 'Sun'));
+    await tester.pumpAndSettle();
+    expect(find.text('Closed on this day!'), findsOneWidget);
+
+    await show(find.text('Needs a reservation or ticket in advance'));
+    await tester.tap(find.text('Needs a reservation or ticket in advance'));
+    await tester.pumpAndSettle();
+    await show(find.widgetWithText(TextField, 'Book how many days before?'));
+    await tester.enterText(find.widgetWithText(TextField, 'Book how many days before?'), '5');
+    await tester.pumpAndSettle();
+    expect(find.text('Book by Dec 15, 2026'), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(TextButton, 'Save'));
+    await tester.pumpAndSettle();
+    late Activity a;
+    await tester.runAsync(() async => a = (await app.itinerary.getActivity(louvreId))!);
+    expect(a.openingHours!.closedWeekdays, {DateTime.sunday});
+    expect((a.reservationRequired, a.bookAheadDays, a.bookBy), (true, 5, const LocalDate(2026, 12, 15)));
     await unmount(tester);
   });
 }

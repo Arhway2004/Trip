@@ -19,6 +19,9 @@ part 'app_database.g.dart';
     Expenses,
     ExchangeRates,
     SavedPlaces,
+    DayPlans,
+    FlightStatuses,
+    FlightLinks,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -28,7 +31,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.open() => AppDatabase(driftDatabase(name: 'wanderplan'));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -43,6 +46,28 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from >= 3 && from < 4) await m.addColumn(activities, activities.hasTime);
       if (from < 5) await m.createTable(savedPlaces);
+      if (from >= 3 && from < 6) {
+        // Only add what's missing, so a partly upgraded file can't fail here.
+        final existing = {
+          for (final r in await customSelect('PRAGMA table_info(activities)').get()) r.read<String>('name'),
+        };
+        for (final c in [
+          activities.arrivalMode,
+          activities.arrivalMinutes,
+          activities.opensAt,
+          activities.closesAt,
+          activities.closedWeekdays,
+          activities.reservationRequired,
+          activities.reservationVia,
+          activities.bookAheadDays,
+          activities.remindToBook,
+        ]) {
+          if (!existing.contains(c.name)) await m.addColumn(activities, c);
+        }
+      }
+      if (from < 6) await m.createTable(dayPlans);
+      if (from < 7) await m.createTable(flightStatuses);
+      if (from < 8) await m.createTable(flightLinks);
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

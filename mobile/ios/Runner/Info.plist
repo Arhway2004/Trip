@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Plain http only to servers on the local network (a backend running on your Mac). Internet servers still need https. -->
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>WanderPlan connects to your own WanderPlan server on this network to get live flight updates.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>WanderPlan shows where you are on the trip map when you tap “My location”. Your location is not stored or shared.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

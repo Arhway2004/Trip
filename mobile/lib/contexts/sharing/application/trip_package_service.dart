@@ -9,6 +9,8 @@ import 'package:wanderplan/contexts/checklist/domain/checklist_item.dart';
 import 'package:wanderplan/contexts/gallery/application/gallery_service.dart';
 import 'package:wanderplan/contexts/itinerary/application/itinerary_service.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
+import 'package:wanderplan/contexts/itinerary/domain/opening_hours.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/contexts/places/application/saved_place_service.dart';
 import 'package:wanderplan/contexts/places/domain/place_category.dart';
 import 'package:wanderplan/contexts/sharing/domain/trip_package.dart';
@@ -79,6 +81,7 @@ class TripPackageService {
     final expenses = await _budget.expensesOf(tripId);
     final rates = await _budget.ratesOf(tripId);
     final places = await _places.placesOf(tripId);
+    final days = await _itinerary.daySettingsOf(tripId);
     final refOf = {for (var i = 0; i < activities.length; i++) activities[i].id: 'a$i'};
 
     final media = <String, List<int>>{};
@@ -170,6 +173,26 @@ class TripPackageService {
             'isLocked': a.isLocked,
             'isOptional': a.isOptional,
             'notes': a.notes,
+            if (a.arrivalMode != null) 'travelMode': a.arrivalMode!.name,
+            if (a.arrivalMinutes != null) 'travelMinutes': a.arrivalMinutes,
+            if (a.openingHours case final h?)
+              'openingHours': {
+                'opens': formatMinutes(h.opens),
+                'closes': h.closes == 1440 ? '24:00' : formatMinutes(h.closes),
+                'closedDays': [for (final d in h.closedWeekdays.toList()..sort()) _weekdayNames[d - 1]],
+              },
+            if (a.reservationRequired)
+              'reservation': {'via': a.reservationVia, 'bookAheadDays': a.bookAheadDays, 'remind': a.remindToBook},
+          },
+      ],
+      'days': [
+        for (final d in days)
+          {
+            'date': d.date.toIso(),
+            if (!d.start.isEmpty) 'start': _placeJson(d.start),
+            if (!d.end.isEmpty) 'end': _placeJson(d.end),
+            if (d.endArrivalMode != null) 'endTravelMode': d.endArrivalMode!.name,
+            if (d.endArrivalMinutes != null) 'endTravelMinutes': d.endArrivalMinutes,
           },
       ],
       'expenses': [
@@ -362,6 +385,13 @@ class TripPackageService {
                 isLocked: aj['isLocked'] as bool? ?? false,
                 isOptional: aj['isOptional'] as bool? ?? false,
                 notes: aj['notes'] as String?,
+                arrivalMode: packageTravelMode(aj['travelMode']),
+                arrivalMinutes: (aj['travelMinutes'] as num?)?.round(),
+                openingHours: _openingHours(aj['openingHours'], label),
+                reservationRequired: aj['reservation'] is Map,
+                reservationVia: (aj['reservation'] as Map?)?['via'] as String?,
+                bookAheadDays: ((aj['reservation'] as Map?)?['bookAheadDays'] as num?)?.round(),
+                remindToBook: (aj['reservation'] as Map?)?['remind'] as bool? ?? false,
               ),
             );
             if (aj['ref'] case final String ref) activityIds[ref] = activityId;
@@ -396,6 +426,15 @@ class TripPackageService {
           final rate = (rj['rate'] as num?)?.toDouble();
           if (cur == null || rate == null || rate <= 0 || !RegExp(r'^[A-Z]{3}$').hasMatch(cur)) continue;
           await _budget.setManualRate(id, cur, rate);
+        }
+        for (final dj in _list(json['days'])) {
+          final date = _date(dj['date']);
+          if (date == null) continue;
+          final start = _place(dj['start']), end = _place(dj['end']);
+          if (!start.isEmpty || !end.isEmpty) await _itinerary.setDayAnchors(id, date, start: start, end: end);
+          final mode = packageTravelMode(dj['endTravelMode']);
+          final minutes = (dj['endTravelMinutes'] as num?)?.round();
+          if (mode != null || minutes != null) await _itinerary.setEndArrival(id, date, mode, minutes);
         }
         final placeDrafts = <SavedPlaceDraft>[];
         for (final pj in _list(json['places'])) {
@@ -443,6 +482,45 @@ PlaceRef _place(Object? v) {
   if (v is! Map) return const PlaceRef();
   final point = GeoPoint.tryCreate((v['lat'] as num?)?.toDouble(), (v['lng'] as num?)?.toDouble());
   return PlaceRef(name: v['name'] as String?, point: point, source: point == null ? null : 'import');
+}
+
+const _weekdayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+/// Opening hours `{ "opens": "09:00", "closes": "17:30", "closedDays": ["mon"] }`.
+OpeningHours? _openingHours(Object? v, String label) {
+  if (v is! Map) return null;
+  final opens = parsePackageTime(v['opens']), closes = parsePackageTime(v['closes']);
+  if (opens == null || closes == null) {
+    throw TripPackageException(
+      TripPackageError.invalid,
+      'activity "$label": openingHours needs "opens" and "closes" as HH:mm',
+    );
+  }
+  final days = <int>{
+    for (final d in (v['closedDays'] as List?) ?? const [])
+      if (d is num && d >= 1 && d <= 7)
+        d.toInt()
+      else if (d is String && _weekdayNames.contains(d.trim().toLowerCase().padRight(3).substring(0, 3)))
+        _weekdayNames.indexOf(d.trim().toLowerCase().substring(0, 3)) + 1,
+  };
+  try {
+    return OpeningHours(opens: opens, closes: closes, closedWeekdays: days);
+  } on DomainException catch (e) {
+    throw TripPackageException(TripPackageError.invalid, 'activity "$label": ${e.message}');
+  }
+}
+
+/// Travel modes, with common synonyms ("taxi", "metro", "bike"…).
+TravelMode? packageTravelMode(Object? v) {
+  final k = (v is String ? v : '').trim().toLowerCase();
+  return enumByName(TravelMode.values, k) ??
+      switch (k) {
+        'walk' || 'foot' || 'on foot' => TravelMode.walking,
+        'bike' || 'bicycle' || 'cycle' || 'ebike' => TravelMode.cycling,
+        'car' || 'taxi' || 'drive' || 'didi' || 'grab' || 'ride-hailing' => TravelMode.driving,
+        'train' || 'metro' || 'subway' || 'bus' || 'public transport' || 'tram' => TravelMode.transit,
+        _ => null,
+      };
 }
 
 /// Place categories, with common synonyms.

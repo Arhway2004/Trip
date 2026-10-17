@@ -213,3 +213,23 @@ func TestHealth(t *testing.T) {
 	res, _ = a.do("GET", "/readyz", "", nil)
 	expect(t, res, 200)
 }
+
+func TestDemoSignInDevelopmentOnly(t *testing.T) {
+	a := newAPI(t)
+	res, body := a.do(http.MethodPost, "/v1/auth/demo", "", nil)
+	if res.StatusCode != http.StatusOK {
+		t.Fatalf("demo sign-in: %d %v", res.StatusCode, body)
+	}
+	res, me := a.do(http.MethodGet, "/v1/me", body["token"].(string), nil)
+	if res.StatusCode != http.StatusOK || me["email"] != "demo@wanderplan.test" {
+		t.Fatalf("demo token: %d %v", res.StatusCode, me)
+	}
+
+	cfg := config.Config{Env: "production", Auth: config.AuthOIDC, RequestTimeout: time.Second, MaxBodyBytes: 1024}
+	deps := bootstrap.Deps{Config: cfg, Logger: slog.New(slog.NewTextHandler(io.Discard, nil)), Verifier: auth.NewDevVerifier(secret)}
+	for _, r := range bootstrap.NewRouter(deps, bootstrap.NewServices(deps)).Routes() {
+		if r.Path == "/v1/auth/demo" {
+			t.Fatal("demo sign-in must not exist in production")
+		}
+	}
+}

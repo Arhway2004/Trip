@@ -40,12 +40,14 @@ extension TravelModeUi on TravelMode {
     TravelMode.walking => l.modeWalking,
     TravelMode.cycling => l.modeCycling,
     TravelMode.driving => l.modeDriving,
+    TravelMode.transit => l.modeTransit,
   };
 
   IconData get icon => switch (this) {
     TravelMode.walking => Icons.directions_walk,
     TravelMode.cycling => Icons.directions_bike,
     TravelMode.driving => Icons.directions_car_outlined,
+    TravelMode.transit => Icons.directions_transit_outlined,
   };
 }
 

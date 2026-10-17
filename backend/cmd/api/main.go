@@ -58,7 +58,9 @@ func run() error {
 		return err
 	}
 	deps := bootstrap.Deps{Config: cfg, Logger: log, DB: db, Verifier: verifier}
-	router := bootstrap.NewRouter(deps, bootstrap.NewServices(deps))
+	services := bootstrap.NewServices(deps)
+	router := bootstrap.NewRouter(deps, services)
+	go bootstrap.RunFlightWorker(ctx, services, cfg.Flights.WorkerInterval, log)
 
 	srv := &http.Server{
 		Addr:              cfg.HTTPAddr,

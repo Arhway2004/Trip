@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:wanderplan/contexts/itinerary/presentation/booking_reminder_sync.dart';
 import 'package:wanderplan/app/router.dart';
 import 'package:wanderplan/l10n/gen/app_localizations.dart';
 import 'package:wanderplan/shared/presentation/theme/app_theme.dart';
@@ -156,6 +157,7 @@ Future<bool> _runImport(BuildContext context, WidgetRef ref, Future<String> Func
   try {
     final id = await run();
     final trip = await ref.read(tripServiceProvider).getTrip(id);
+    if (context.mounted) await syncBookingReminders(context, ref, id);
     messenger.showSnackBar(SnackBar(content: Text(l.importSuccess(trip?.title ?? ''))));
     router.go(Routes.trip(id));
     return true;
@@ -212,6 +214,8 @@ class _PasteImportScreenState extends ConsumerState<_PasteImportScreen> {
     try {
       final id = await ref.read(tripPackageServiceProvider).importText(_text.text);
       final trip = await ref.read(tripServiceProvider).getTrip(id);
+      if (!mounted) return;
+      await syncBookingReminders(context, ref, id);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.importSuccess(trip?.title ?? ''))));
       final router = GoRouter.of(context);

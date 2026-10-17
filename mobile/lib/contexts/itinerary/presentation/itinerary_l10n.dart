@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
 import 'package:wanderplan/contexts/itinerary/domain/feasibility.dart';
 import 'package:wanderplan/l10n/gen/app_localizations.dart';
@@ -112,6 +113,7 @@ String issueText(AppLocalizations l, ScheduleIssue i) {
   return switch (i.code) {
     IssueCode.overlap => l.issueOverlap(t(0), t(1), i.minutes ?? 0),
     IssueCode.noTravelTime => l.issueNoTravelTime(t(0), t(1)),
+    IssueCode.tightTravel when i.distanceKm == null => l.issueTightTravelOwn(t(0), t(1), i.minutes ?? 0, i.requiredMinutes ?? 0),
     IssueCode.tightTravel => l.issueTightTravel(
       t(0),
       t(1),
@@ -129,6 +131,13 @@ String issueText(AppLocalizations l, ScheduleIssue i) {
     IssueCode.transportNotBooked => l.issueTransportNotBooked(i.titles.join(', ')),
     IssueCode.outsideTripDates => l.issueOutsideTripDates(i.titles.join(', ')),
     IssueCode.timeNotSet => l.issueTimeNotSet(i.titles.join(', ')),
+    IssueCode.closedOnDay => l.issueClosedOnDay(t(0)),
+    IssueCode.outsideOpeningHours => l.issueOutsideOpeningHours(t(0)),
+    IssueCode.bookingNeeded when i.date != null => l.issueBookBy(
+      t(0),
+      DateFormat.MMMd(l.localeName).format(i.date!.toDateTime()),
+    ),
+    IssueCode.bookingNeeded => l.issueBookingNeeded(t(0)),
   };
 }
 

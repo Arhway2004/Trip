@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:go_router/go_router.dart';
 import 'package:wanderplan/app/providers.dart';
+import 'package:wanderplan/app/router.dart';
 import 'package:wanderplan/contexts/places/domain/map_provider.dart';
 import 'package:wanderplan/contexts/places/presentation/place_category_ui.dart';
 import 'package:wanderplan/contexts/places/presentation/places_providers.dart';
@@ -51,6 +53,14 @@ class SettingsScreen extends ConsumerWidget {
                   ),
               ],
             ),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.flight_takeoff),
+            title: Text(l.flightUpdates),
+            subtitle: Text(l.flightUpdatesSubtitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.flightUpdates),
           ),
           const Divider(),
           ListTile(leading: const Icon(Icons.lock_outline), title: Text(l.privacyTitle), subtitle: Text(l.privacyBody)),

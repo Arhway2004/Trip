@@ -1,5 +1,9 @@
 import 'package:wanderplan/contexts/itinerary/domain/activity.dart';
 import 'package:wanderplan/contexts/itinerary/domain/activity_repository.dart';
+import 'package:wanderplan/contexts/itinerary/domain/day_optimizer.dart';
+import 'package:wanderplan/contexts/itinerary/domain/day_settings.dart';
+import 'package:wanderplan/contexts/itinerary/domain/opening_hours.dart';
+import 'package:wanderplan/contexts/places/domain/route.dart';
 import 'package:wanderplan/shared/application/unit_of_work.dart';
 import 'package:wanderplan/shared/domain/clock.dart';
 import 'package:wanderplan/shared/domain/domain_exception.dart';
@@ -28,6 +32,13 @@ class ActivityDraft {
     this.isLocked = false,
     this.isOptional = false,
     this.notes,
+    this.arrivalMode,
+    this.arrivalMinutes,
+    this.openingHours,
+    this.reservationRequired = false,
+    this.reservationVia,
+    this.bookAheadDays,
+    this.remindToBook = false,
   });
 
   factory ActivityDraft.fromActivity(Activity a) => ActivityDraft(
@@ -49,6 +60,41 @@ class ActivityDraft {
     isLocked: a.isLocked,
     isOptional: a.isOptional,
     notes: a.notes,
+    arrivalMode: a.arrivalMode,
+    arrivalMinutes: a.arrivalMinutes,
+    openingHours: a.openingHours,
+    reservationRequired: a.reservationRequired,
+    reservationVia: a.reservationVia,
+    bookAheadDays: a.bookAheadDays,
+    remindToBook: a.remindToBook,
+  );
+
+  /// A copy saved as "time not decided" (no start or end minute). The editor
+  /// keeps its own draft's times for the pickers.
+  ActivityDraft withoutTime() => ActivityDraft(
+    title: title,
+    kind: kind,
+    date: date,
+    endDate: endDate,
+    location: location,
+    destination: destination,
+    cost: cost,
+    currency: currency,
+    bookingStatus: bookingStatus,
+    provider: provider,
+    serviceNumber: serviceNumber,
+    bookingReference: bookingReference,
+    bookingUrl: bookingUrl,
+    isLocked: isLocked,
+    isOptional: isOptional,
+    notes: notes,
+    arrivalMode: arrivalMode,
+    arrivalMinutes: arrivalMinutes,
+    openingHours: openingHours,
+    reservationRequired: reservationRequired,
+    reservationVia: reservationVia,
+    bookAheadDays: bookAheadDays,
+    remindToBook: remindToBook,
   );
 
   String title;
@@ -71,6 +117,13 @@ class ActivityDraft {
   bool isLocked;
   bool isOptional;
   String? notes;
+  TravelMode? arrivalMode;
+  int? arrivalMinutes;
+  OpeningHours? openingHours;
+  bool reservationRequired;
+  String? reservationVia;
+  int? bookAheadDays;
+  bool remindToBook;
 
   Activity toActivity({
     required String id,
@@ -98,6 +151,13 @@ class ActivityDraft {
     isLocked: isLocked,
     isOptional: isOptional,
     notes: _clean(notes),
+    arrivalMode: arrivalMode,
+    arrivalMinutes: arrivalMinutes,
+    openingHours: openingHours,
+    reservationRequired: reservationRequired,
+    reservationVia: reservationRequired ? _clean(reservationVia) : null,
+    bookAheadDays: reservationRequired ? bookAheadDays : null,
+    remindToBook: reservationRequired && bookAheadDays != null && remindToBook,
     createdAt: createdAt,
     updatedAt: now,
   );
@@ -112,15 +172,18 @@ class LockedActivityException extends DomainException {
 class ItineraryService {
   ItineraryService({
     required ActivityRepository activities,
+    required DaySettingsRepository days,
     required UnitOfWork uow,
     required IdGenerator ids,
     required Clock clock,
   }) : _activities = activities,
+       _days = days,
        _uow = uow,
        _ids = ids,
        _clock = clock;
 
   final ActivityRepository _activities;
+  final DaySettingsRepository _days;
   final UnitOfWork _uow;
   final IdGenerator _ids;
   final Clock _clock;
@@ -163,6 +226,49 @@ class ItineraryService {
       _activities.save((await _require(id)).copyWith(isLocked: locked, updatedAt: _clock()));
 
   Future<void> deleteActivity(String id) => _activities.delete(id);
+
+  // --- Day planning --------------------------------------------------------
+
+  Stream<List<DaySettings>> watchDaySettings(String tripId) => _days.watchByTrip(tripId);
+  Future<List<DaySettings>> daySettingsOf(String tripId) => _days.findByTrip(tripId);
+
+  /// Sets where [date] starts/ends (an empty [PlaceRef] means "the hotel").
+  Future<void> setDayAnchors(String tripId, LocalDate date, {PlaceRef? start, PlaceRef? end}) async {
+    final current = await _days.find(tripId, date) ?? DaySettings(tripId: tripId, date: date);
+    await _days.save(current.copyWith(start: start, end: end));
+  }
+
+  /// How the traveller reaches activity [id] from the previous stop. A null
+  /// [mode] goes back to the day's default.
+  Future<void> setArrival(String id, TravelMode? mode, int? minutes) async {
+    final cleared = (await _require(id)).copyWith(clearArrival: true, updatedAt: _clock());
+    await _activities.save(cleared.copyWith(arrivalMode: mode, arrivalMinutes: minutes));
+  }
+
+  /// How the traveller reaches the day's end point.
+  Future<void> setEndArrival(String tripId, LocalDate date, TravelMode? mode, int? minutes) async {
+    final current = await _days.find(tripId, date) ?? DaySettings(tripId: tripId, date: date);
+    await _days.save(
+      current.copyWith(clearEndArrival: true).copyWith(endArrivalMode: mode, endArrivalMinutes: minutes),
+    );
+  }
+
+  /// Applies an optimized order: each moved visit gets its proposed time on
+  /// [date]. Fixed (locked, booked, transport) items are never touched.
+  Future<int> applyDayPlan(LocalDate date, DayOptimization plan) => _uow.run(() async {
+    var n = 0;
+    final now = _clock();
+    for (final item in plan.moved) {
+      final a = await _activities.findById(item.activity.id);
+      if (a == null || a.isLocked) continue;
+      final end = item.end > 1440 ? 1440 : item.end;
+      await _activities.save(
+        a.copyWith(date: date, startMinute: item.start, endMinute: end, clearEndDate: true, updatedAt: now),
+      );
+      n++;
+    }
+    return n;
+  });
 
   /// Gives every activity of the trip whose location or destination is named
   /// [name] (and has no coordinates yet) the coordinates the user confirmed.

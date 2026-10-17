@@ -67,8 +67,26 @@ Each entry is one item on the timeline: a visit, a meal, a transport segment or 
 | `provider`, `serviceNumber` | string | | Airline / operator / hotel; flight or train number |
 | `bookingReference` | string | | Private. Exported only when you choose to include private details |
 | `bookingUrl`, `notes` | string | | |
-| `isLocked`, `isOptional` | bool | | Locked items can't be moved by dragging |
+| `isLocked`, `isOptional` | bool | | Locked items can't be moved by dragging or by **Optimize order** |
+| `travelMode` | enum | | How you get **to** this stop from the previous one: `walking` `cycling` `driving` `transit` (train/metro/bus). Synonyms like `walk`, `bike`, `taxi`, `metro`, `bus` are accepted |
+| `travelMinutes` | int | | Your own travel time for that leg. Needed for `transit`, which is never calculated |
+| `openingHours` | `{ "opens": "HH:mm", "closes": "HH:mm", "closedDays": ["mon"] }` | | Same hours every open day; a closing time before the opening time means after midnight. `closedDays`: `mon`…`sun` or 1–7 |
+| `reservation` | `{ "via": "…", "bookAheadDays": 7, "remind": true }` | | Needs booking in advance. `via` = where/how to book (app, website, WeChat account…). `remind` sends a notification at 09:00 (trip time) on the book-by date |
 | `ref` | string | | Your own label, so expenses can point to this activity |
+
+### Day start/end: `days[]`
+
+Each day starts at last night's hotel and ends at tonight's, unless you set it:
+
+```json
+"days": [
+  { "date": "2026-12-08", "start": { "name": "Guesthouse", "lat": 27.82, "lng": 99.70 }, "endTravelMode": "driving", "endTravelMinutes": 20 }
+]
+```
+
+`start` / `end` take the same form as `location`. `endTravelMode` / `endTravelMinutes` say how you reach the end point.
+
+These fields (and `travelMode`, `openingHours`, `reservation` above) are optional additions to schema 3: older app versions and the web app ignore what they don't know.
 
 ### Budget: `expenses[]` and `exchangeRates[]` (v2)
 

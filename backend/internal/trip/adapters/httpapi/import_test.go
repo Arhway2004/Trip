@@ -28,7 +28,7 @@ func zipFile(t *testing.T, files map[string][]byte) []byte {
 	return buf.Bytes()
 }
 func TestImportMobileExamples(t *testing.T) {
-	for _, name := range []string{"../../../../../Example/trip_template.json", "../../../../../mobile/test/fixtures/china_winter_trip_2026.json"} {
+	for _, name := range []string{"../../../../../Example/trip_template.json", "../../../../../Example/china_winter_trip_2026.json", "../../../../../mobile/test/fixtures/china_winter_trip_2026.json"} {
 		t.Run(name, func(t *testing.T) {
 			data, err := os.ReadFile(name)
 			if err != nil {
